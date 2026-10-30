@@ -1,0 +1,1937 @@
+---
+/*
+  PAGE  : /
+  FILE  : src/pages/index.astro
+  ROLE  : 首页 — 品牌定位、产品概览、工艺流程、案例、客户评价与转化入口
+
+  IMPORTANT:
+  首页不读取 src/data/products.ts。
+  首页 Products / Selected Work / Client Feedback 都是首页自己的内容 source of truth。
+*/
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+
+import homeHero from "../assets/home/home-hero.jpg";
+import homeHero2 from "../assets/home/home-hero-2.jpg";
+
+import medalsHero from "../assets/home/medals-hero.jpg";
+import challengeCoinHero from "../assets/home/challenge-coins-hero.jpg";
+import enamelPinHero from "../assets/home/enamel-pins-hero.jpg";
+import keychainHero from "../assets/home/keychains-hero.jpg";
+import cufflinkHero from "../assets/home/cufflinks-hero.jpg";
+
+import medalCaseHero from "../assets/home/cases/medals-hero.jpg";
+import challengeCoinCaseHero from "../assets/home/cases/challenge-coins-hero.jpg";
+import keychainCaseHero from "../assets/home/cases/keychains-hero.jpg";
+
+const homeProducts = [
+  {
+    href: "/products/medals",
+    title: "Medals",
+    desc: "For race finishers, award ceremonies and long-service recognition.",
+    image: medalsHero,
+    alt: "Custom medal with detailed 3D relief and premium finish",
+    featured: true,
+  },
+  {
+    href: "/products/challenge-coins",
+    title: "Challenge Coins",
+    desc: "For units, teams and organizations marking service and milestones.",
+    image: challengeCoinHero,
+    alt: "Custom challenge coins",
+    featured: true,
+  },
+  {
+    href: "/products/enamel-pins",
+    title: "Enamel Pins",
+    desc: "For brand campaigns, employee recognition and collectible series.",
+    image: enamelPinHero,
+    alt: "Custom enamel pins",
+    featured: false,
+  },
+  {
+    href: "/products/keychains",
+    title: "Keychains",
+    desc: "For everyday carry, branded giveaways and retail merchandise.",
+    image: keychainHero,
+    alt: "Custom metal keychains",
+    featured: false,
+  },
+  {
+    href: "/products/cufflinks",
+    title: "Cufflinks & Tie Clips",
+    desc: "For corporate gifting, formal occasions and executive gifts.",
+    image: cufflinkHero,
+    alt: "Custom cufflinks and tie clips",
+    featured: false,
+  },
+];
+
+const featuredProducts = homeProducts.filter((product) => product.featured);
+const gridProducts = homeProducts.filter((product) => !product.featured);
+
+const selectedWork = [
+  {
+    href: "/projects/medal",
+    kicker: "Project Story",
+    title: "City Night Run Finisher Medal",
+    meta: "70 mm · 5,000 pcs · 3D relief",
+    text: "A 10K night run finisher medal with a shield profile, layered 3D relief, a branded ribbon and reverse-side engraving.",
+    image: medalCaseHero,
+    alt: "Custom city night run finisher medal",
+  },
+  {
+    href: "/projects/challenge-coin",
+    kicker: "Project Story",
+    title: "Two-Sided Relief Coin",
+    meta: "50.4 mm · 3.5 mm · Deep relief",
+    text: "A double-sided challenge coin built around deep 3D relief, a textured edge and polished-antique contrast.",
+    image: challengeCoinCaseHero,
+    alt: "Custom challenge coin with deep 3D relief",
+  },
+  {
+    href: "/projects/keychain",
+    kicker: "Project Story",
+    title: "20,000-Piece Retail Keychain",
+    meta: "35 mm · 20,000 pcs · 18 days",
+    text: "A 20,000-piece keychain run delivered in 18 days, with metal body, backing card and retail packaging as one coordinated set.",
+    image: keychainCaseHero,
+    alt: "Custom metal keychain with backing card and retail packaging",
+  },
+];
+
+const clientTestimonials = [
+  {
+    quote:
+      "We needed the medals for a race with a tight turnaround. The team was responsive throughout. There was a minor issue with the Pantone matching on the ribbon, but they caught it during QC and fixed it before shipping. Saved our event.",
+    author: "Sarah Jenkins",
+    role: "Event Coordinator",
+  },
+  {
+    quote:
+      "We've used a few different suppliers for our club's challenge coins. The 3D relief on these was noticeably deeper than the last batch we got. The edge detailing is clean and the weight feels right. Will use again.",
+    author: "Marcus T.",
+    role: "Club Manager",
+  },
+  {
+    quote:
+      "We expected a cheaper look. But the keychains feel surprisingly solid in the hand, and the printed backing cards were exactly what we needed for our retail display. Good value for the price.",
+    author: "Tom H.",
+    role: "Founder",
+  },
+];
+
+const customizationSpecs = [
+  {
+    number: "01",
+    title: "Quote",
+    text: "Send artwork, size and quantity. You get unit price, tooling cost and lead time in one reply.",
+  },
+  {
+    number: "02",
+    title: "Proof",
+    text: "Free artwork proof, revised until the layout is right. Nothing is cut before you approve it.",
+  },
+  {
+    number: "03",
+    title: "Sample",
+    text: "A physical sample in 7 days, so you can hold the finish before the run.",
+  },
+  {
+    number: "04",
+    title: "Production & Shipping",
+    text: "Bulk run, inspection, packing and worldwide delivery.",
+  },
+];
+
+const exploreLinks = [
+  {
+    href: "/products",
+    number: "01",
+    title: "Products",
+    text: "Browse medals, coins, pins, keychains, gifts, and the full product catalog.",
+  },
+  {
+    href: "/about",
+    number: "02",
+    title: "About Us",
+    text: "See our manufacturing background, capabilities, quality approach, and values.",
+  },
+  {
+    href: "/resources",
+    number: "03",
+    title: "Resources",
+    text: "Learn about materials, finishes, artwork preparation, and practical selection.",
+  },
+  {
+    href: "/news",
+    number: "04",
+    title: "News",
+    text: "Follow recent projects, exhibitions, company updates, and manufacturing stories.",
+  },
+];
+---
+
+<BaseLayout
+  title="CM Crafts & Gifts — Custom Metal Crafts Manufacturer"
+  description="Custom medals, challenge coins and enamel pins from one factory — free design and proof, no MOQ, 7-day samples."
+>
+  <main class="home-page">
+    <div class="home-container">
+      <section class="hero" id="hero">
+        <div class="hero__copy">
+          <div class="hero__eyebrow">
+            For Race Organizers, Brands &amp; Units · Since 2015
+          </div>
+
+          <h1 class="hero__title">
+            Custom medals,
+            <br />
+            coins &amp; pins.
+          </h1>
+
+          <p class="hero__sub">
+            Send an idea, receive a finished piece — design, tooling, production,
+            inspection and shipping handled end to end.
+          </p>
+
+          <ul class="hero__badges">
+            <li>ISO 9001:2015</li>
+            <li>Free design &amp; proof</li>
+            <li>No MOQ</li>
+            <li>Free sample</li>
+          </ul>
+
+          <div class="hero__actions">
+            <button type="button" class="btn btn--dark" data-modal-open>
+              Get a Free Quote
+            </button>
+
+            <a href="#products" class="btn btn--light">
+              Explore Products
+            </a>
+          </div>
+
+          <div class="service-notes hero__reply-note">
+            <span>We usually reply within 1 hour on working days</span>
+          </div>
+        </div>
+
+        <div class="hero__visual">
+          <div class="hero__image hero__image--main">
+            <Image
+              src={homeHero}
+              alt="Custom metal products manufactured by MetalCrafts"
+              loading="eager"
+              fetchpriority="high"
+              widths={[640, 960, 1280, 1600]}
+              sizes="(max-width: 900px) 92vw, 42vw"
+            />
+          </div>
+
+          <div class="hero__image hero__image--secondary">
+            <Image
+              src={homeHero2}
+              alt="Custom metal products detail"
+              loading="eager"
+              widths={[200, 400, 600]}
+              sizes="200px"
+            />
+          </div>
+
+          <div class="hero__card">
+            <small>Custom crafts &amp; gifts</small>
+            <h3>Every piece, one standard.</h3>
+            <p>All products from one workshop.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="statement">
+        <div class="statement__inner">
+          <div class="kicker">Manufacturing Capabilities</div>
+
+          <h2>
+            One factory,
+            <br />
+            from die to delivery.
+          </h2>
+
+          <p>
+            Tooling, stamping, enamel and inspection in one building — the same
+            team from first proof to final carton.
+          </p>
+
+          <div class="fact-table">
+            <div class="fact-cell">
+              <strong>10+ Years</strong>
+              <span>Manufacturing</span>
+            </div>
+
+            <div class="fact-cell">
+              <strong>2,000+ m²</strong>
+              <span>Factory Floor</span>
+            </div>
+
+            <div class="fact-cell">
+              <strong>30+ Staff</strong>
+              <span>Production Team</span>
+            </div>
+
+            <div class="fact-cell">
+              <strong>10+ Machines</strong>
+              <span>On-Site Equipment</span>
+            </div>
+
+            <div class="fact-cell">
+              <strong>50+ Countries</strong>
+              <span>Global Export</span>
+            </div>
+          </div>
+
+          <div class="service-notes">
+            <span>7-day sampling</span>
+            <span>Proof before tooling</span>
+            <span>NDA on request</span>
+            <span>Worldwide shipping</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="products">
+        <div class="section-top">
+          <div>
+            <div class="kicker">Products</div>
+            <h2>
+              Find the piece
+              <br />
+              that fits.
+            </h2>
+          </div>
+
+          <p class="section-intro">
+            One production floor, one QC standard. Every piece below is made,
+            finished and inspected in-house — start with the one that fits your
+            brief.
+          </p>
+        </div>
+
+        <div class="featured-grid">
+          {featuredProducts.map((product) => (
+            <a href={product.href} class="flagship">
+              <div class="flagship-info">
+                <div class="flagship-label">Signature</div>
+                <h3>{product.title}</h3>
+                <p>{product.desc}</p>
+                <span class="link">View details</span>
+              </div>
+
+              <div class="flagship-image">
+                <Image
+                  src={product.image}
+                  alt={product.alt}
+                  loading="lazy"
+                  widths={[400, 600, 800]}
+                  sizes="(max-width: 900px) 100vw, 30vw"
+                />
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <div class="product-grid">
+          {gridProducts.map((product) => (
+            <a href={product.href} class="product-card">
+              <div class="product-image">
+                <Image
+                  src={product.image}
+                  alt={product.alt}
+                  loading="lazy"
+                  widths={[300, 450, 600]}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 45vw, 22vw"
+                />
+              </div>
+
+              <div class="product-info">
+                <div class="product-index">Core range</div>
+                <h4>{product.title}</h4>
+                <p>{product.desc}</p>
+                <span class="link">Learn more</span>
+              </div>
+            </a>
+          ))}
+
+          <a href="/products" class="product-card product-card--more">
+            <div class="product-more-label">Full catalog</div>
+
+            <div class="product-more-body">
+              <h4>View More Products</h4>
+              <p>
+                Every category we make, in one catalog — including the ones not
+                shown here.
+              </p>
+            </div>
+
+            <div class="product-more-link">
+              <span>Browse all</span>
+              <em>↗</em>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <section class="section" id="process">
+        <div class="process">
+          <div class="process-grid">
+            <div>
+              <div class="kicker kicker--light">How a Project Runs</div>
+              <h2>Four steps, no surprises.</h2>
+
+              <p class="process-intro">
+                From your first email to the delivered carton — what happens at
+                each step, and what we need from you.
+              </p>
+
+              <button type="button" class="btn btn--light" data-modal-open>
+                Get a Free Quote
+              </button>
+            </div>
+
+            <div class="steps">
+              {customizationSpecs.map((spec) => (
+                <div class="step">
+                  <div class="step-no">{spec.number}</div>
+
+                  <div>
+                    <h3>{spec.title}</h3>
+                    <p>{spec.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="selected-work">
+        <div class="section-top">
+          <div>
+            <div class="kicker">Selected Work</div>
+            <h2>
+              Real projects.
+              <br />
+              Real proof.
+            </h2>
+          </div>
+
+          <p class="section-intro">
+            Quantity, size, finish and lead time on three recent runs — the
+            numbers we were held to.
+          </p>
+        </div>
+
+        <div class="case-grid">
+          {selectedWork.map((item, index) => (
+            <a
+              href={item.href}
+              class:list={["case-card", index === 0 && "case-card--large"]}
+            >
+              <div class="case-image">
+                <Image
+                  src={item.image}
+                  alt={item.alt}
+                  widths={index === 0 ? [800, 1200] : [600, 900]}
+                  sizes={
+                    index === 0
+                      ? "(max-width: 900px) 100vw, 58vw"
+                      : "(max-width: 900px) 100vw, 24vw"
+                  }
+                  loading="lazy"
+                  format="webp"
+                />
+              </div>
+
+              <div class="case-body">
+                <p class="case-kicker">{item.kicker}</p>
+                <h3>{item.title}</h3>
+                <p class="case-meta">{item.meta}</p>
+                <p class="case-text">{item.text}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <div class="case-foot">
+          <p>
+            Every project starts with artwork and ends with a piece someone
+            keeps.
+          </p>
+
+          <span class="case-foot__note">Production records</span>
+        </div>
+      </section>
+
+      <section class="section" id="client-feedback">
+        <div class="section-top">
+          <div>
+            <div class="kicker">Client Feedback</div>
+            <h2>
+              What buyers say
+              <br />
+              after delivery.
+            </h2>
+          </div>
+
+          <p class="section-intro">
+            Feedback from event coordinators, club managers and founders who
+            have run production with us.
+          </p>
+        </div>
+
+        <div class="client-quote-grid">
+          {clientTestimonials.map((item) => (
+            <article class="client-quote-card">
+              <div class="client-quote-mark">&ldquo;</div>
+              <p class="client-quote-text">{item.quote}</p>
+              <div class="client-quote-author">{item.author}</div>
+              <div class="client-quote-role">{item.role}</div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="section" id="explore">
+        <div class="about-panel">
+          <div class="about-copy">
+            <div class="kicker">More About CM Crafts &amp; Gifts</div>
+
+            <h2>The Factory Behind Your Custom Metal Products</h2>
+
+            <p>
+              Go one level deeper when you are ready: explore our products,
+              recent news, manufacturing resources, or the story behind the
+              company.
+            </p>
+          </div>
+
+          <div class="about-links">
+            {exploreLinks.map((item) => (
+              <a class="about-link" href={item.href}>
+                <span class="about-link-index">{item.number}</span>
+
+                <span>
+                  <strong>{item.title}</strong>
+                  <small>{item.text}</small>
+                </span>
+
+                <em>↗</em>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="contact-cta">
+        <div class="bottom-grid">
+          <article class="testimonial">
+            <div class="quote-mark">—</div>
+
+            <blockquote>
+              Turn the final piece into something people are proud to present,
+              wear, carry and keep.
+            </blockquote>
+
+            <div class="quote-meta">
+              The standard we build every project against
+            </div>
+          </article>
+
+          <article class="quote-card">
+            <div class="kicker kicker--light">Contact Us</div>
+
+            <h3>Ready to start production?</h3>
+
+            <p>
+              Send your artwork, dimensions and quantity. Start with a direct
+              factory conversation and a free artwork proof.
+            </p>
+
+            <div>
+              <button type="button" class="btn btn--gold" data-modal-open>
+                Get a Free Quote
+              </button>
+            </div>
+
+            <div class="quote-note">
+              NDA on request · Free design revision
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  /* ============================================================
+     PAGE BASE
+     ============================================================ */
+
+  .home-page {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .home-page *,
+  .home-page *::before,
+  .home-page *::after {
+    box-sizing: border-box;
+  }
+
+  .home-container {
+    width: var(--container-width);
+    margin: 0 auto;
+  }
+
+  .home-page img {
+    max-width: 100%;
+    display: block;
+  }
+
+  .home-page a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .home-page button {
+    font-family: inherit;
+  }
+
+  /* ============================================================
+     COMMON
+     ============================================================ */
+
+  .kicker {
+    margin-bottom: 10px;
+    color: var(--color-gold-dark);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .kicker--light {
+    color: var(--color-gold-soft);
+  }
+
+  .home-page h2 {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(34px, 4.2vw, 54px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .section {
+    padding: 54px 0;
+  }
+
+  .section-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 40px;
+    margin-bottom: 32px;
+  }
+
+  .section-intro {
+    max-width: 500px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-ink);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color var(--ease-out);
+  }
+
+  .link::after {
+    content: "↗";
+    color: var(--color-gold);
+    font-size: 14px;
+    transition: transform var(--ease-out);
+  }
+
+  .link:hover {
+    color: var(--color-gold);
+  }
+
+  .link:hover::after {
+    transform: translate(2px, -2px);
+  }
+
+  /* ============================================================
+     BUTTONS
+     ============================================================ */
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 14px 22px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      transform var(--ease-out),
+      background var(--ease-out),
+      color var(--ease-out),
+      box-shadow var(--ease-out);
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn--dark {
+    background: var(--color-ink);
+    color: var(--color-white);
+    box-shadow: 0 14px 28px rgba(27, 26, 24, 0.15);
+  }
+
+  .btn--dark:hover {
+    background: #000;
+  }
+
+  .btn--light {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: var(--color-line);
+    color: var(--color-ink);
+  }
+
+  .btn--light:hover {
+    background: var(--color-white);
+  }
+
+  .btn--gold {
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+    color: var(--color-white);
+  }
+
+  .btn--gold:hover {
+    background: var(--color-gold-hover);
+    border-color: var(--color-gold-hover);
+  }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+
+  .hero {
+    min-height: calc(100vh - 84px);
+    display: grid;
+    grid-template-columns: 0.94fr 1.06fr;
+    align-items: center;
+    gap: 56px;
+    padding: 28px 0 36px;
+  }
+
+  .hero__copy {
+    padding-left: 4px;
+  }
+
+  .hero__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    color: var(--color-gold-dark);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .hero__eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: var(--color-gold);
+  }
+
+  .hero__title {
+    max-width: 660px;
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(44px, 5.5vw, 72px);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  .hero__sub {
+    max-width: 540px;
+    margin: 22px 0 0;
+    color: var(--color-muted);
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  .hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 28px;
+    padding: 0;
+    margin: 22px 0 0;
+    list-style: none;
+  }
+
+  .hero__badges li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .hero__badges li::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--color-gold);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 11px;
+    margin-top: 26px;
+  }
+
+  .hero__visual {
+    position: relative;
+    min-height: 610px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .hero__visual::before {
+    content: "";
+    position: absolute;
+    inset: 18px;
+    z-index: 4;
+    border: 1px solid rgba(116, 95, 63, 0.1);
+    border-radius: var(--radius-sm);
+    pointer-events: none;
+  }
+
+  .hero__image {
+    position: absolute;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+  }
+
+  .hero__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__image--main {
+    inset: 28px 30px 130px 138px;
+    z-index: 1;
+  }
+
+  .hero__image--secondary {
+    left: 30px;
+    bottom: 32px;
+    z-index: 3;
+    width: 200px;
+    height: 200px;
+    border: 6px solid var(--color-white);
+    box-shadow: 0 18px 32px rgba(43, 35, 25, 0.16);
+  }
+
+  .hero__card {
+    position: absolute;
+    left: 250px;
+    right: 30px;
+    bottom: 32px;
+    z-index: 5;
+    max-width: 320px;
+    margin: 0 auto;
+    padding: 14px 18px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: var(--radius-sm);
+    background: rgba(251, 249, 243, 0.82);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 14px 28px rgba(43, 35, 25, 0.12);
+  }
+
+  .hero__card small {
+    display: block;
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .hero__card h3 {
+    margin: 5px 0 4px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .hero__card p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  /* ============================================================
+     STATEMENT
+     ============================================================ */
+
+  .statement {
+    padding: 48px 0 24px;
+    text-align: center;
+  }
+
+  .statement__inner {
+    width: min(960px, 92%);
+    margin: 0 auto;
+  }
+
+  .statement h2 {
+    font-size: clamp(34px, 4.2vw, 54px);
+    line-height: 1.05;
+  }
+
+  .statement p {
+    max-width: 720px;
+    margin: 20px auto 0;
+    color: var(--color-muted);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .fact-table {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin-top: 32px;
+    border-top: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .fact-cell {
+    padding: 22px 16px;
+    border-right: 1px solid var(--color-line);
+    text-align: center;
+  }
+
+  .fact-cell:last-child {
+    border-right: none;
+  }
+
+  .fact-cell strong {
+    display: block;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+  }
+
+  .fact-cell span {
+    display: block;
+    margin-top: 6px;
+    color: var(--color-muted);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .service-notes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 26px;
+    margin-top: 18px;
+    color: var(--color-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero__copy .hero__reply-note {
+    justify-content: flex-start;
+  }
+
+  /* ============================================================
+     PRODUCTS
+     ============================================================ */
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .flagship {
+    display: grid;
+    grid-template-columns: 0.88fr 1.12fr;
+    min-height: 380px;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper-2);
+    transition:
+      transform var(--ease-out),
+      box-shadow var(--ease-out);
+  }
+
+  .flagship:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .flagship-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 32px;
+  }
+
+  .flagship-label {
+    margin-bottom: 10px;
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .flagship h3 {
+    margin: 0 0 12px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(26px, 2.4vw, 32px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .flagship p {
+    max-width: 280px;
+    margin: 0 0 22px;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .flagship-image {
+    position: relative;
+    min-height: 380px;
+    background: var(--color-surface);
+  }
+
+  .flagship-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .product-card {
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper-2);
+    transition:
+      transform var(--ease-out),
+      box-shadow var(--ease-out);
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .product-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--color-surface);
+  }
+
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--ease-slow);
+  }
+
+  .product-card:hover .product-image img {
+    transform: scale(1.04);
+  }
+
+  .product-info {
+    padding: 20px 20px 24px;
+  }
+
+  .product-index {
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .product-info h4 {
+    margin: 8px 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .product-info p {
+    margin: 0 0 16px;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .product-card--more {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 32px 26px;
+    background: var(--color-ink-deep);
+    border-color: var(--color-ink-deep);
+    color: var(--color-cream);
+  }
+
+  .product-more-label {
+    margin-bottom: 14px;
+    color: var(--color-gold-soft);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .product-more-body {
+    max-width: 240px;
+    margin: 0 0 22px;
+  }
+
+  .product-more-body h4 {
+    margin: 0 0 10px;
+    color: var(--color-cream);
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .product-more-body p {
+    margin: 0;
+    color: var(--color-cream-muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .product-more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-gold-soft);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .product-more-link em {
+    color: var(--color-gold);
+    font-size: 15px;
+    font-style: normal;
+    transition: transform var(--ease-out);
+  }
+
+  .product-card--more:hover .product-more-link em {
+    transform: translate(2px, -2px);
+  }
+
+  /* ============================================================
+     PROCESS
+     ============================================================ */
+
+  .process {
+    padding: 68px 58px;
+    border-radius: var(--radius-lg);
+    background: var(--color-ink-deep);
+    color: var(--color-cream);
+  }
+
+  .process-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+  }
+
+  .process .kicker {
+    color: var(--color-gold-soft);
+  }
+
+  .process h2 {
+    max-width: 560px;
+    color: var(--color-cream);
+  }
+
+  .process p {
+    color: var(--color-cream-muted);
+  }
+
+  .process-intro {
+    max-width: 470px;
+    margin: 19px 0 28px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .steps {
+    border-top: 1px solid rgba(255, 255, 255, 0.11);
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.11);
+  }
+
+  .step-no {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: var(--color-gold-soft);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .step h3 {
+    margin: 0 0 6px;
+    color: var(--color-cream);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .step p {
+    margin: 0;
+    color: var(--color-cream-muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  /* ============================================================
+     SELECTED WORK
+     ============================================================ */
+
+  .case-grid {
+    display: grid;
+    grid-template-columns: 1.18fr 0.82fr;
+    grid-template-rows: 300px 300px;
+    gap: 14px;
+  }
+
+  .case-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper-2);
+    color: inherit;
+    transition:
+      transform var(--ease-out),
+      box-shadow var(--ease-out);
+  }
+
+  .case-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .case-card--large {
+    grid-row: 1 / span 2;
+  }
+
+  .case-image {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  .case-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--ease-slow);
+  }
+
+  .case-card:hover .case-image img {
+    transform: scale(1.035);
+  }
+
+  .case-body {
+    padding: 18px 20px 20px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .case-kicker {
+    margin: 0 0 6px;
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .case-body h3 {
+    margin: 0 0 6px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .case-meta {
+    margin: 0 0 7px;
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .case-text {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.55;
+  }
+
+  .case-card--large .case-body {
+    padding: 22px 24px 24px;
+  }
+
+  .case-card--large h3 {
+    font-size: clamp(26px, 2.4vw, 32px);
+  }
+
+  .case-card--large .case-text {
+    font-size: 12px;
+  }
+
+  .case-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .case-foot p {
+    max-width: 700px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .case-foot__note {
+    color: var(--color-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ============================================================
+     CLIENT FEEDBACK
+     ============================================================ */
+
+  .client-quote-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .client-quote-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 340px;
+    padding: 28px 26px 24px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper-2);
+    transition:
+      transform var(--ease-out),
+      box-shadow var(--ease-out);
+  }
+
+  .client-quote-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .client-quote-mark {
+    margin-bottom: 14px;
+    color: var(--color-gold);
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 600;
+    line-height: 0.8;
+  }
+
+  .client-quote-text {
+    flex: 1;
+    margin: 0 0 22px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .client-quote-author {
+    padding-top: 14px;
+    border-top: 1px solid var(--color-line);
+    color: var(--color-ink);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .client-quote-role {
+    margin-top: 4px;
+    color: var(--color-muted);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     EXPLORE MORE
+     ============================================================ */
+
+  .about-panel {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 42px;
+    padding: 44px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper-2);
+  }
+
+  .about-copy h2 {
+    max-width: 620px;
+    font-size: clamp(28px, 3.2vw, 40px);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .about-copy p {
+    max-width: 520px;
+    margin: 18px 0 0;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .about-links {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .about-link {
+    display: grid;
+    grid-template-columns: 42px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 17px 0;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-ink);
+    transition: color var(--ease-out);
+  }
+
+  .about-link-index {
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .about-link strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .about-link small {
+    display: block;
+    margin-top: 4px;
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.55;
+  }
+
+  .about-link em {
+    color: var(--color-gold);
+    font-size: 17px;
+    font-style: normal;
+    transition: transform var(--ease-out);
+  }
+
+  .about-link:hover strong {
+    color: var(--color-gold);
+  }
+
+  .about-link:hover em {
+    transform: translate(2px, -2px);
+  }
+
+  /* ============================================================
+     TESTIMONIAL + CTA
+     ============================================================ */
+
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 16px;
+  }
+
+  .testimonial,
+  .quote-card {
+    min-height: 300px;
+    border-radius: var(--radius-lg);
+  }
+
+  .testimonial {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 45px;
+    border: 1px solid var(--color-line);
+    background: linear-gradient(145deg, #e9dfcf, #faf6ed);
+  }
+
+  .quote-mark {
+    color: var(--color-gold-dark);
+    font-family: var(--font-display);
+    font-size: 80px;
+    font-weight: 600;
+    line-height: 0.7;
+  }
+
+  .testimonial blockquote {
+    max-width: 640px;
+    margin: 18px 0 25px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+  }
+
+  .quote-meta {
+    color: var(--color-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .quote-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 45px;
+    background: var(--color-ink-deep);
+    color: var(--color-cream);
+  }
+
+  .quote-card .kicker {
+    color: var(--color-gold-soft);
+  }
+
+  .quote-card h3 {
+    margin: 0 0 16px;
+    color: var(--color-cream);
+    font-family: var(--font-display);
+    font-size: 38px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .quote-card p {
+    max-width: 430px;
+    margin: 0 0 24px;
+    color: var(--color-cream-muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .quote-note {
+    margin-top: 18px;
+    color: var(--color-cream-muted);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     TABLET
+     ============================================================ */
+
+  @media (max-width: 1024px) {
+    .section {
+      padding: 44px 0;
+    }
+
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+      gap: 44px;
+    }
+
+    .hero__visual {
+      min-height: 540px;
+    }
+
+    .hero__image--main {
+      inset: 24px 24px 130px 110px;
+    }
+
+    .hero__image--secondary {
+      left: 24px;
+      bottom: 24px;
+      width: 160px;
+      height: 160px;
+    }
+
+    .hero__card {
+      left: 200px;
+      right: 24px;
+      bottom: 24px;
+    }
+
+    .fact-table {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .fact-cell:nth-child(3n) {
+      border-right: none;
+    }
+
+    .fact-cell:nth-child(-n + 3) {
+      border-bottom: 1px solid var(--color-line);
+    }
+
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .process {
+      padding: 52px 40px;
+    }
+
+    .process-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .about-panel {
+      grid-template-columns: 1fr;
+      padding: 32px;
+      gap: 28px;
+    }
+
+    .bottom-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ============================================================
+     MOBILE
+     ============================================================ */
+
+  @media (max-width: 640px) {
+    .section {
+      padding: 34px 0;
+    }
+
+    .home-container {
+      width: calc(100% - 36px);
+    }
+
+    .hero {
+      padding: 20px 0 30px;
+    }
+
+    .hero__title {
+      font-size: clamp(36px, 10vw, 48px);
+    }
+
+    .hero__sub {
+      font-size: 16px;
+    }
+
+    .hero__badges {
+      gap: 12px 20px;
+      margin-top: 20px;
+    }
+
+    .hero__badges li {
+      font-size: 9px;
+    }
+
+    .hero__visual {
+      min-height: 460px;
+    }
+
+    .hero__image--main {
+      inset: 20px 20px 118px 66px;
+    }
+
+    .hero__image--secondary {
+      width: 130px;
+      height: 130px;
+      left: 20px;
+      bottom: 18px;
+      border-width: 4px;
+    }
+
+    .hero__card {
+      left: 158px;
+      right: 18px;
+      bottom: 18px;
+      padding: 12px 14px;
+    }
+
+    .hero__card h3 {
+      font-size: 18px;
+    }
+
+    .hero__card p {
+      font-size: 10px;
+    }
+
+    .statement {
+      padding: 40px 0 22px;
+    }
+
+    .fact-table {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .fact-cell {
+      padding: 18px 12px;
+    }
+
+    .fact-cell:nth-child(3n) {
+      border-right: 1px solid var(--color-line);
+    }
+
+    .fact-cell:nth-child(2n) {
+      border-right: none;
+    }
+
+    .fact-cell:nth-child(-n + 3) {
+      border-bottom: none;
+    }
+
+    .fact-cell:nth-child(-n + 4) {
+      border-bottom: 1px solid var(--color-line);
+    }
+
+    .fact-cell strong {
+      font-size: 18px;
+    }
+
+    .fact-cell:last-child {
+      grid-column: 1 / -1;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .section-top {
+      display: block;
+      margin-bottom: 22px;
+    }
+
+    .section-intro {
+      margin-top: 14px;
+    }
+
+    .featured-grid,
+    .product-grid,
+    .case-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .flagship {
+      grid-template-columns: 1fr;
+    }
+
+    .flagship-image {
+      min-height: 260px;
+      order: -1;
+    }
+
+    .flagship-info {
+      padding: 26px 24px 30px;
+    }
+
+    .flagship h3 {
+      font-size: 26px;
+    }
+
+    .case-grid {
+      grid-template-rows: none;
+    }
+
+    .case-card--large {
+      grid-row: auto;
+    }
+
+    .case-card {
+      min-height: 340px;
+    }
+
+    .case-card--large {
+      min-height: 420px;
+    }
+
+    .product-card--more {
+      min-height: 260px;
+    }
+
+    .process {
+      padding: 40px 24px;
+      border-radius: var(--radius-md);
+    }
+
+    .process h2 {
+      font-size: 28px;
+    }
+
+    .step h3 {
+      font-size: 18px;
+    }
+
+    .about-panel {
+      padding: 26px 22px;
+      border-radius: var(--radius-md);
+    }
+
+    .about-link {
+      grid-template-columns: 34px 1fr auto;
+      padding: 15px 0;
+    }
+
+    .about-link strong {
+      font-size: 18px;
+    }
+
+    .testimonial,
+    .quote-card {
+      min-height: 260px;
+      padding: 32px 26px;
+      border-radius: var(--radius-md);
+    }
+
+    .testimonial blockquote {
+      font-size: 22px;
+    }
+
+    .quote-card h3 {
+      font-size: 30px;
+    }
+
+    .case-foot {
+      display: block;
+    }
+
+    .case-foot__note {
+      display: block;
+      margin-top: 12px;
+    }
+  }
+</style>

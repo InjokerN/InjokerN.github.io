@@ -1,0 +1,2215 @@
+---
+/*
+  PAGE: /resources/metal-craft-guide/quality-control-tolerances
+  FILE: src/pages/resources/metal-craft-guide/quality-control-tolerances.astro
+  ROLE: Deep dive 06 — Quality control, tolerances, AQL and batch consistency
+*/
+
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import { formatNewsDate, toNewsISO } from "../../../data/news-list";
+
+import qcShot from "../../../assets/resources/guide/glow-in-the-dark.jpg";
+
+const meta = {
+  date: "2026-10-21",
+  title: "Quality Control & Tolerances",
+  subtitle: "AQL, inspection points, and the difference between conforming and consistent",
+  excerpt:
+    "A batch is not good because someone looked at it. It is good because the defect classes, the sample size and the decision rule were agreed before the first piece was made — and because the next batch can be compared with this one.",
+  ogImage: qcShot.src,
+};
+
+const sections = [
+  { id: "system", number: "01", title: "Checking is not a system" },
+  { id: "tolerance", number: "02", title: "What a tolerance can promise" },
+  { id: "weights", number: "03", title: "Defects have three weights" },
+  { id: "aql", number: "04", title: "AQL: sample to decision" },
+  { id: "points", number: "05", title: "The four inspection points" },
+  { id: "report", number: "06", title: "What a useful report contains" },
+  { id: "consistency", number: "07", title: "Consistency is not conformance" },
+  { id: "fail", number: "08", title: "When a batch fails" },
+];
+
+const weights = [
+  {
+    num: "01",
+    label: "Critical",
+    text: "Unsafe or unusable. A sharp edge, an attachment that lets go, a restricted substance above the limit.",
+    rule: "Zero accepted, whatever the sample says.",
+  },
+  {
+    num: "02",
+    label: "Major",
+    text: "The piece cannot be sold as intended: wrong colour, a missing enamel cell, plating broken through, the wrong hardware.",
+    rule: "Judged against the agreed AQL for the class.",
+  },
+  {
+    num: "03",
+    label: "Minor",
+    text: "Visible but acceptable at arm's length: a faint mark on the reverse, a slight polish trace on a rim.",
+    rule: "Judged against a looser AQL, or accepted by count.",
+  },
+];
+
+const chain = [
+  {
+    num: "01",
+    title: "Lot size",
+    text: "How many pieces are in the shipment. This is the only input that comes from the order.",
+  },
+  {
+    num: "02",
+    title: "Sample code",
+    text: "The standard's table converts lot size into a code letter, and the code into a sample size.",
+  },
+  {
+    num: "03",
+    title: "Draw the sample",
+    text: "Random, from across the lot — not the top layer, not the pieces the line set aside.",
+  },
+  {
+    num: "04",
+    title: "Accept or reject",
+    text: "Count the defects by class and compare with the acceptance number. One rule, applied to every lot.",
+  },
+];
+
+const points = [
+  {
+    num: "01",
+    title: "Incoming material",
+    text: "Base metal, enamel batch, plating chemistry. Nothing later in the process can fix a bad input — it can only hide it for a while.",
+  },
+  {
+    num: "02",
+    title: "First article",
+    text: "The first piece off the tool or the first production piece, measured against the approved sample and the drawing. Catches a setup error before it becomes a thousand pieces.",
+  },
+  {
+    num: "03",
+    title: "In-process",
+    text: "At fixed intervals during the run. Catches drift: tool wear, bath depletion, a colour that has moved since the morning.",
+  },
+  {
+    num: "04",
+    title: "Pre-shipment",
+    text: "The AQL gate. It catches what the earlier points missed, and it produces the record the buyer actually receives.",
+  },
+];
+
+const reportFields = [
+  { label: "Batch and PO", text: "Two numbers that tie the report to a physical carton." },
+  { label: "Standard and level", text: "Which sampling standard, which inspection level, which AQL per defect class." },
+  { label: "Sample size", text: "How many pieces were drawn, and from where in the lot." },
+  { label: "Defect counts", text: "Critical, major and minor, counted separately — never as one total." },
+  { label: "Measurements", text: "The functional dimensions, with the specification beside each reading." },
+  { label: "Photographs", text: "The defects that were found, not only the ones that were not." },
+  { label: "Verdict", text: "Accept, reject, or accept after sorting — stated plainly, with a signature and a date." },
+];
+
+const failSteps = [
+  {
+    num: "01",
+    title: "Contain",
+    text: "Stop the lot. Mark it, move it, and keep it away from anything that could ship. The first hour decides whether the problem stays small.",
+  },
+  {
+    num: "02",
+    title: "Establish the extent",
+    text: "A 100% sort, or a larger sample, to find out whether this is one carton or the whole run.",
+  },
+  {
+    num: "03",
+    title: "Rework or remake",
+    text: "Re-plating and re-enamelling are cheaper than a new run, but they rarely restore the approved surface. Say which one you are doing, and why.",
+  },
+  {
+    num: "04",
+    title: "Record it",
+    text: "What failed, how many, what was done, who paid. Without the record, the same failure arrives again with the next order.",
+  },
+];
+---
+
+<BaseLayout
+  title={`${meta.title} — ${meta.subtitle} | MetalCrafts`}
+  description={meta.excerpt}
+  ogImage={meta.ogImage}
+>
+  <main class="qc-page">
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+    <header class="qc-hero">
+      <div class="qc-shell">
+        <div class="qc-hero__grid">
+          <div class="qc-hero__copy">
+            <p class="qc-hero__overline">
+              Deep dive 06 · Quality &amp; reliability
+            </p>
+
+            <h1 class="qc-hero__title">
+              Quality Control
+              <span>&amp; Tolerances</span>
+            </h1>
+
+            <p class="qc-hero__desc">{meta.excerpt}</p>
+
+            <div class="qc-hero__meta">
+              <time datetime={toNewsISO(meta.date)}>
+                {formatNewsDate(meta.date)}
+              </time>
+              <span class="qc-hero__dot"></span>
+              <span>METALCRAFTS</span>
+              <span class="qc-hero__dot"></span>
+              <span>Deep dive · 06 of 06</span>
+            </div>
+          </div>
+
+          <figure class="qc-hero__visual">
+            <div class="qc-hero__frame">
+              <Image
+                src={qcShot}
+                alt="Inspection reference"
+                loading="eager"
+                widths={[720, 1080, 1440]}
+                sizes="(max-width: 820px) 100vw, 52vw"
+              />
+            </div>
+            <figcaption>
+              <span>Inspection &amp; measurement</span>
+              <span>Reference</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </header>
+
+    <!-- =====================================================
+         ARTICLE
+    ====================================================== -->
+    <section class="qc-article">
+      <div class="qc-shell">
+        <div class="qc-reading">
+          <!-- Desktop contents -->
+          <aside class="qc-sidebar" aria-label="Article contents">
+            <div class="qc-sidebar__sticky">
+              <p class="qc-sidebar__heading">In this deep dive</p>
+
+              <nav class="qc-toc">
+                {sections.map((item) => (
+                  <a
+                    href={`#${item.id}`}
+                    class="qc-toc__link"
+                    data-toc-link={item.id}
+                  >
+                    <span class="qc-toc__number">{item.number}</span>
+                    <span class="qc-toc__text">{item.title}</span>
+                  </a>
+                ))}
+              </nav>
+
+              <div class="qc-sidebar__note">
+                <span class="qc-sidebar__mark">MC</span>
+                <div class="qc-sidebar__note-body">
+                  <p>
+                    The last of six. If the earlier guides describe how a part
+                    is made, this one describes how it is accepted.
+                  </p>
+
+                  <a
+                    href="/resources/metal-craft-guide"
+                    class="qc-sidebar__back"
+                  >
+                    <span aria-hidden="true">←</span>
+                    Back to the full guide
+                  </a>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Body -->
+          <article class="qc-content">
+            <!-- Mobile contents -->
+            <details class="qc-mobile-toc">
+              <summary>
+                <span>In this deep dive</span>
+                <span class="qc-mobile-toc__icon" aria-hidden="true">+</span>
+              </summary>
+              <nav aria-label="Mobile article contents">
+                {sections.map((item) => (
+                  <a href={`#${item.id}`}>
+                    <span>{item.number}</span>
+                    {item.title}
+                  </a>
+                ))}
+              </nav>
+            </details>
+
+            <!-- ---------- THESIS ---------- -->
+            <section class="qc-thesis" aria-label="The short answer">
+              <span class="qc-thesis__label">The short answer</span>
+              <p>
+                A batch is not good because someone looked at it. It is good
+                because the defect classes, the sample size and the decision rule
+                were agreed before the first piece was made — and because the
+                next batch can be compared with this one on the same numbers.
+              </p>
+            </section>
+
+            <!-- ---------- 01 ---------- -->
+            <section
+              id="system"
+              class="qc-section"
+              data-article-section="system"
+            >
+              <header class="qc-section__header">
+                <span class="qc-section__index">01</span>
+                <div>
+                  <p class="qc-section__eyebrow">Principle</p>
+                  <h2>Checking is not a system</h2>
+                </div>
+              </header>
+
+              <p>
+                “We check every piece” is a statement about effort. It is not a
+                statement about method, and the two are not the same thing. A
+                hundred percent inspection has its own failure modes: an
+                inspector working through a tray of five thousand pieces stops
+                seeing the fifth defect, applies the standard differently on
+                Thursday than on Monday, and leaves behind no record that anyone
+                can argue with later.
+              </p>
+
+              <p>
+                Sampling has different failure modes, and they are at least
+                visible. It accepts a known risk, in exchange for a rule that two
+                people can apply the same way: a defined sample size, defects
+                sorted into classes, an acceptance number, and a record.
+              </p>
+
+              <p>
+                So the useful question is not “how much do you inspect”. It is:
+                what would let a buyer accept a lot they have never seen? The
+                answer has to be a system, because a promise cannot be checked
+                and a system can.
+              </p>
+
+              <div class="qc-note">
+                <p class="qc-note__label">What this page is for</p>
+                <p class="qc-note__foot">
+                  The five earlier guides describe how a part is made and what
+                  can go wrong at each stage. This one describes how a batch is
+                  accepted: what is measured, how many pieces, by which rule, and
+                  what happens when the rule says no.
+                </p>
+              </div>
+            </section>
+
+            <!-- ---------- 02 ---------- -->
+            <section
+              id="tolerance"
+              class="qc-section"
+              data-article-section="tolerance"
+            >
+              <header class="qc-section__header">
+                <span class="qc-section__index">02</span>
+                <div>
+                  <p class="qc-section__eyebrow">Tolerance</p>
+                  <h2>What a tolerance can promise</h2>
+                </div>
+              </header>
+
+              <p>
+                A tolerance is not a wish. It is the space a process needs in
+                order to be repeatable, and that space is created by the process
+                itself — long before anyone writes a number on a drawing.
+              </p>
+
+              <figure class="qc-figure">
+                <div class="qc-figure__frame">
+                  <svg
+                    viewBox="0 0 660 214"
+                    role="img"
+                    aria-labelledby="tol-title tol-desc"
+                  >
+                    <title id="tol-title">
+                      A tolerance band with a process distribution inside it
+                    </title>
+                    <desc id="tol-desc">
+                      The band runs between an upper and a lower limit. A stable
+                      process sits inside it with room on both sides.
+                    </desc>
+
+                    <rect
+                      x="80"
+                      y="70"
+                      width="480"
+                      height="80"
+                      fill="var(--color-gold)"
+                      opacity="0.08"
+                      stroke="var(--color-line)"
+                      stroke-width="1"
+                      stroke-dasharray="5 4"
+                    ></rect>
+
+                    <line
+                      x1="80"
+                      y1="110"
+                      x2="560"
+                      y2="110"
+                      stroke="var(--color-line)"
+                      stroke-width="1"
+                      stroke-dasharray="2 5"
+                    ></line>
+
+                    <path
+                      d="M230 150 C 275 150, 290 84, 320 84 C 350 84, 365 150, 410 150"
+                      fill="none"
+                      stroke="var(--color-gold)"
+                      stroke-width="1.5"
+                    ></path>
+
+                    <text
+                      x="80"
+                      y="60"
+                      font-family="var(--font-body)"
+                      font-size="10"
+                      fill="var(--color-muted-2)"
+                    >
+                      upper limit
+                    </text>
+                    <text
+                      x="80"
+                      y="168"
+                      font-family="var(--font-body)"
+                      font-size="10"
+                      fill="var(--color-muted-2)"
+                    >
+                      lower limit
+                    </text>
+                    <text
+                      x="80"
+                      y="104"
+                      font-family="var(--font-body)"
+                      font-size="10"
+                      fill="var(--color-muted-2)"
+                    >
+                      nominal
+                    </text>
+
+                    <text
+                      x="320"
+                      y="196"
+                      font-family="var(--font-body)"
+                      font-size="10"
+                      fill="var(--color-muted)"
+                      text-anchor="middle"
+                    >
+                      a stable process leaves room on both sides
+                    </text>
+                  </svg>
+                </div>
+                <figcaption>
+                  The band is the specification. The curve is what the process
+                  actually does. A tolerance that the curve cannot fit inside is
+                  not a quality improvement.
+                </figcaption>
+              </figure>
+
+              <p>
+                Where the space comes from: a die wears, so dimensions drift as
+                the tool runs; plating adds to every surface it touches, so a
+                plated dimension is not the machined dimension; casting needs
+                draft and shrinks as it cools; hard enamel is ground back after
+                filling, which removes material from the face. Each of those is a
+                physical allowance, and none of them can be argued away by
+                tightening a number.
+              </p>
+
+              <p>
+                This is why the same drawing gets a different tolerance from a
+                stamped part and a cast part. It is also why a drawing should
+                say which dimensions are functional — a hole position, a stem
+                diameter, an overall size — and which are cosmetic. When every
+                dimension carries the same tight tolerance, the inspection bench
+                ends up enforcing a standard the process was never able to meet,
+                and the argument moves from the drawing to the loading dock.
+              </p>
+            </section>
+
+            <!-- ---------- 03 ---------- -->
+            <section
+              id="weights"
+              class="qc-section"
+              data-article-section="weights"
+            >
+              <header class="qc-section__header">
+                <span class="qc-section__index">03</span>
+                <div>
+                  <p class="qc-section__eyebrow">Classification</p>
+                  <h2>Defects have three weights</h2>
+                </div>
+              </header>
+
+              <p>
+                Before any sampling plan means anything, the defects have to be
+                sorted. A scratch on the back and a clutch that lets go are not
+                the same event, and counting them in one column makes the
+                acceptance number meaningless.
+              </p>
+
+              <div class="qc-weights">
+                {weights.map((item) => (
+                  <div class="qc-weight">
+                    <span class="qc-weight__num">{item.num}</span>
+                    <h3>{item.label}</h3>
+                    <p>{item.text}</p>
+                    <p class="qc-weight__rule">{item.rule}</p>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                The classification has to be agreed before the inspection, not
+                after a dispute. It is the only way two inspectors, in two
+                places, reach the same count — and the only way a rejection can
+                be explained without appealing to taste. If a supplier and a
+                buyer cannot agree on which class a defect belongs to, they are
+                not going to agree on the verdict either.
+              </p>
+            </section>
+
+            <!-- ---------- 04 ---------- -->
+            <section id="aql" class="qc-section" data-article-section="aql">
+              <header class="qc-section__header">
+                <span class="qc-section__index">04</span>
+                <div>
+                  <p class="qc-section__eyebrow">Sampling</p>
+                  <h2>AQL: from sample to decision</h2>
+                </div>
+              </header>
+
+              <p>
+                AQL is the most quoted and least understood number in this
+                trade. It is not “the percentage of defects we allow”. It is the
+                quality level at which a lot still has a defined, low probability
+                of being rejected — a rule for turning a sample into a decision,
+                with the risk stated rather than hidden.
+              </p>
+
+              <div class="qc-chain">
+                {chain.map((item) => (
+                  <div class="qc-chain__step">
+                    <span class="qc-chain__num">{item.num}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                Two risks sit inside that rule. A good lot can still be rejected
+                — that is the producer's risk — and a bad lot can still be
+                accepted, which is the buyer's. A tighter AQL reduces the second
+                and increases the first, and it also increases the sample size.
+                There is no setting where both risks disappear; there is only a
+                setting where both are known.
+              </p>
+
+              <p>
+                Which is why the level has to be named in the order. The
+                standard, the inspection level and the AQL for each defect class
+                are agreed per order — usually the buyer's specification, or the
+                one written into the quotation. When nobody names them, the
+                inspection has no decision rule, and what is left is an opinion
+                with a clipboard.
+              </p>
+
+              <div class="qc-note">
+                <p class="qc-note__label">What AQL cannot tell you</p>
+                <p class="qc-note__foot">
+                  It says nothing about the next lot, and nothing about whether
+                  the process is stable. It answers one question only: given this
+                  sample, should this lot be accepted? The next section is about
+                  the question it leaves open.
+                </p>
+              </div>
+            </section>
+
+            <!-- ---------- 05 ---------- -->
+            <section id="points" class="qc-section" data-article-section="points">
+              <header class="qc-section__header">
+                <span class="qc-section__index">05</span>
+                <div>
+                  <p class="qc-section__eyebrow">Inspection</p>
+                  <h2>The four inspection points</h2>
+                </div>
+              </header>
+
+              <p>
+                Inspection is not one event at the end. It is four events, and
+                each one catches something the others cannot.
+              </p>
+
+              <div class="qc-points">
+                {points.map((item) => (
+                  <div class="qc-point">
+                    <span class="qc-point__num">{item.num}</span>
+                    <div>
+                      <h3>{item.title}</h3>
+                      <p>{item.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                The economics of the four points are not equal. A fault caught at
+                incoming material costs a phone call; the same fault caught at
+                pre-shipment costs a sorted lot, a delayed container, and an
+                argument about who pays for the sort. That is the entire reason
+                to inspect early, and it has nothing to do with distrust.
+              </p>
+            </section>
+
+            <!-- ---------- 06 ---------- -->
+            <section id="report" class="qc-section" data-article-section="report">
+              <header class="qc-section__header">
+                <span class="qc-section__index">06</span>
+                <div>
+                  <p class="qc-section__eyebrow">Evidence</p>
+                  <h2>What a useful report contains</h2>
+                </div>
+              </header>
+
+              <p>
+                An inspection that leaves no record is a conversation. A record
+                that cannot be tied to a carton is a story. What a buyer needs is
+                a document that answers “which pieces, measured how, against
+                what, and what did you find”.
+              </p>
+
+              <div class="qc-report">
+                <div class="qc-report__head">
+                  <span class="qc-report__title">Inspection record</span>
+                  <span class="qc-report__stamp">Batch linked</span>
+                </div>
+
+                <div class="qc-report__rows">
+                  {reportFields.map((item) => (
+                    <div class="qc-report__row">
+                      <span class="qc-report__label">{item.label}</span>
+                      <p>{item.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <p>
+                The two fields people leave out are the two that matter most in
+                an argument: the sample size, and photographs of the defects
+                that were found. A report that only shows the good pieces proves
+                nothing except that the photographer chose well.
+              </p>
+            </section>
+
+            <!-- ---------- 07 ---------- -->
+            <section
+              id="consistency"
+              class="qc-section"
+              data-article-section="consistency"
+            >
+              <header class="qc-section__header">
+                <span class="qc-section__index">07</span>
+                <div>
+                  <p class="qc-section__eyebrow">Drift</p>
+                  <h2>Consistency is not conformance</h2>
+                </div>
+              </header>
+
+              <p>
+                AQL compares a lot with a standard. Consistency compares lots
+                with each other. Those are different questions, and a supplier
+                can pass the first one for a very long time while failing the
+                second.
+              </p>
+
+              <figure class="qc-figure">
+                <div class="qc-figure__frame">
+                  <svg
+                    viewBox="0 0 660 250"
+                    role="img"
+                    aria-labelledby="drift-title drift-desc"
+                  >
+                    <title id="drift-title">
+                      Six lots, all inside tolerance, drifting upward
+                    </title>
+                    <desc id="drift-desc">
+                      Every lot mean sits inside the band, but the trend moves
+                      toward the upper limit with each shipment.
+                    </desc>
+
+                    <rect
+                      x="70"
+                      y="70"
+                      width="530"
+                      height="110"
+                      fill="var(--color-gold)"
+                      opacity="0.06"
+                      stroke="var(--color-line)"
+                      stroke-width="1"
+                      stroke-dasharray="5 4"
+                    ></rect>
+
+                    <text
+                      x="70"
+                      y="60"
+                      font-family="var(--font-body)"
+                      font-size="10"
+                      fill="var(--color-muted-2)"
+                    >
+                      upper limit
+                    </text>
+                    <text
+                      x="70"
+                      y="196"
+                      font-family="var(--font-body)"
+                      font-size="10"
+                      fill="var(--color-muted-2)"
+                    >
+                      lower limit
+                    </text>
+
+                    <polyline
+                      points="100,158 180,152 260,144 340,132 420,116 500,100"
+                      fill="none"
+                      stroke="var(--color-gold)"
+                      stroke-width="1.5"
+                    ></polyline>
+
+                    <circle cx="100" cy="158" r="3.5" fill="var(--color-gold)"></circle>
+                    <circle cx="180" cy="152" r="3.5" fill="var(--color-gold)"></circle>
+                    <circle cx="260" cy="144" r="3.5" fill="var(--color-gold)"></circle>
+                    <circle cx="340" cy="132" r="3.5" fill="var(--color-gold)"></circle>
+                    <circle cx="420" cy="116" r="3.5" fill="var(--color-gold)"></circle>
+                    <circle cx="500" cy="100" r="3.5" fill="var(--color-gold)"></circle>
+
+                    <text
+                      x="100"
+                      y="222"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-muted-2)"
+                      text-anchor="middle"
+                    >
+                      lot 1
+                    </text>
+                    <text
+                      x="180"
+                      y="222"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-muted-2)"
+                      text-anchor="middle"
+                    >
+                      lot 2
+                    </text>
+                    <text
+                      x="260"
+                      y="222"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-muted-2)"
+                      text-anchor="middle"
+                    >
+                      lot 3
+                    </text>
+                    <text
+                      x="340"
+                      y="222"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-muted-2)"
+                      text-anchor="middle"
+                    >
+                      lot 4
+                    </text>
+                    <text
+                      x="420"
+                      y="222"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-muted-2)"
+                      text-anchor="middle"
+                    >
+                      lot 5
+                    </text>
+                    <text
+                      x="500"
+                      y="222"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-muted-2)"
+                      text-anchor="middle"
+                    >
+                      lot 6
+                    </text>
+
+                    <text
+                      x="600"
+                      y="140"
+                      font-family="var(--font-body)"
+                      font-size="10"
+                      fill="var(--color-muted-2)"
+                      text-anchor="end"
+                    >
+                      every lot passes
+                    </text>
+                  </svg>
+                </div>
+                <figcaption>
+                  Six shipments, six accepted lots, one trend. Nothing here is a
+                  rejection — and nothing here is stable.
+                </figcaption>
+              </figure>
+
+              <p>
+                This is what drift looks like from inside a quality system. A
+                die wears, a bath depletes, a pigment lot changes, an operator
+                compensates a little. Every individual lot can be inside the
+                band while the process walks toward one edge of it. Then one
+                shipment crosses the line, and to everyone on the buyer's side it
+                arrives without warning.
+              </p>
+
+              <p>
+                Seeing it needs a different instrument: pick two or three
+                functional characteristics, measure the same one on every lot,
+                and plot the readings against the band over time. The trend
+                appears long before the failure. That is also the answer to the
+                most common complaint in this trade — “the second batch doesn't
+                match the first”. It usually matched the standard exactly.
+              </p>
+
+              <div class="qc-note">
+                <p class="qc-note__label">Why colour and plating drift first</p>
+                <p class="qc-note__foot">
+                  They are the two characteristics with the most inputs: pigment
+                  batch, bath chemistry, plating thickness, polishing time. They
+                  are also the two the buyer notices first, which is why a
+                  consistency chart is worth more than another inspection.
+                </p>
+              </div>
+            </section>
+
+            <!-- ---------- 08 ---------- -->
+            <section id="fail" class="qc-section" data-article-section="fail">
+              <header class="qc-section__header">
+                <span class="qc-section__index">08</span>
+                <div>
+                  <p class="qc-section__eyebrow">Response</p>
+                  <h2>When a batch fails</h2>
+                </div>
+              </header>
+
+              <p>
+                A rejection is not the end of the system — it is the moment the
+                system either works or doesn't. Four steps, in this order, and
+                the order matters more than the speed.
+              </p>
+
+              <div class="qc-fail">
+                {failSteps.map((item) => (
+                  <div class="qc-fail__step">
+                    <span class="qc-fail__num">{item.num}</span>
+                    <div>
+                      <h3>{item.title}</h3>
+                      <p>{item.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                The part people skip is the last one. A failure that is fixed but
+                not recorded is a failure that will be repeated, usually on the
+                next order, usually with a different person explaining it.
+              </p>
+            </section>
+
+            <!-- ---------- CLOSING ---------- -->
+            <footer class="qc-conclusion">
+              <div class="qc-conclusion__rule"></div>
+              <p class="qc-conclusion__label">The decision</p>
+
+              <div class="qc-rule">
+                <p>
+                  <strong>Agree the classes before the inspection.</strong>
+                  Critical, major, minor — written down, with examples. Without
+                  that, two inspectors cannot produce the same number.
+                </p>
+                <p>
+                  <strong>Name the standard, the level and the sample size.</strong>
+                  An AQL without a level is an adjective; with one, it is a
+                  decision rule that both sides can apply.
+                </p>
+                <p>
+                  <strong>Judge the series, not only the lot.</strong> Conformance
+                  asks whether this batch is acceptable. Consistency asks whether
+                  it is the same product you approved.
+                </p>
+              </div>
+
+              <p class="qc-conclusion__text">
+                That is the end of the six. If you have a batch on the water, or
+                a first article waiting for a decision, send the numbers — the
+                measurements, the sample size, and what you were told. Reading
+                the record is usually faster than inspecting again.
+              </p>
+
+              <div class="qc-conclusion__signature">
+                <span>METALCRAFTS</span>
+                <span>CRAFT · DETAIL · QUALITY</span>
+              </div>
+
+              {/*
+                Cluster navigation rule:
+                01 → left: back to the guide, right: next deep dive
+                02–05 → left: previous deep dive, right: next deep dive
+                06 → left: previous deep dive, right: back to the guide
+              */}
+              <nav class="qc-cluster" aria-label="Guide navigation">
+                <a
+                  href="/resources/metal-craft-guide/attachments-packaging"
+                  class="qc-cluster__link"
+                >
+                  <span class="qc-cluster__label">Previous deep dive</span>
+                  <span class="qc-cluster__title">
+                    <span aria-hidden="true">←</span> Attachments &amp; packaging
+                  </span>
+                </a>
+
+                <a
+                  href="/resources/metal-craft-guide"
+                  class="qc-cluster__link qc-cluster__link--next"
+                >
+                  <span class="qc-cluster__label">Back to</span>
+                  <span class="qc-cluster__title">
+                    The full guide <span aria-hidden="true">→</span>
+                  </span>
+                </a>
+              </nav>
+            </footer>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<!-- =========================================================
+     TABLE OF CONTENTS INTERACTION
+========================================================== -->
+<script>
+  type QcWindow = Window & {
+    __qcGuideCleanup?: () => void;
+  };
+
+  function initQcGuide() {
+    const root = document.querySelector<HTMLElement>(".qc-page");
+    const nav = document.querySelector<HTMLElement>(".nav");
+    const tocLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]")
+    );
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-article-section]")
+    );
+
+    if (!root || !nav || !tocLinks.length || !sections.length) return;
+
+    const win = window as QcWindow;
+    win.__qcGuideCleanup?.();
+
+    const syncNavHeight = () => {
+      root.style.setProperty(
+        "--qc-nav-height",
+        `${nav.getBoundingClientRect().height}px`
+      );
+    };
+
+    const setActive = (id: string) => {
+      tocLinks.forEach((link) => {
+        const active = link.dataset.tocLink === id;
+        link.classList.toggle("is-active", active);
+
+        if (active) {
+          link.setAttribute("aria-current", "location");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+
+    const handleLinkClick = (event: MouseEvent) => {
+      const link = event.currentTarget as HTMLAnchorElement;
+      const id = link.dataset.tocLink;
+      if (!id) return;
+
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      event.preventDefault();
+
+      const navHeight = nav.getBoundingClientRect().height;
+      const targetTop =
+        target.getBoundingClientRect().top + window.scrollY - navHeight - 28;
+
+      window.scrollTo({
+        top: targetTop,
+        behavior: "smooth",
+      });
+
+      history.replaceState(null, "", `#${id}`);
+      setActive(id);
+
+      const mobileToc = root.querySelector<HTMLDetailsElement>(
+        ".qc-mobile-toc"
+      );
+
+      if (mobileToc?.open) {
+        mobileToc.open = false;
+      }
+    };
+
+    tocLinks.forEach((link) => {
+      link.addEventListener("click", handleLinkClick);
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+        if (!visible.length) return;
+
+        const activeId = (visible[0].target as HTMLElement).dataset
+          .articleSection;
+
+        if (activeId) setActive(activeId);
+      },
+      {
+        root: null,
+        rootMargin: `-${nav.getBoundingClientRect().height + 48}px 0px -62% 0px`,
+        threshold: 0,
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    syncNavHeight();
+
+    const resizeObserver = new ResizeObserver(syncNavHeight);
+    resizeObserver.observe(nav);
+
+    const handleResize = () => syncNavHeight();
+    window.addEventListener("resize", handleResize);
+
+    const hash = window.location.hash.replace("#", "");
+    if (hash && sections.some((section) => section.id === hash)) {
+      setActive(hash);
+    } else {
+      setActive(sections[0]?.id ?? "");
+    }
+
+    win.__qcGuideCleanup = () => {
+      tocLinks.forEach((link) => {
+        link.removeEventListener("click", handleLinkClick);
+      });
+
+      observer.disconnect();
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", handleResize);
+      win.__qcGuideCleanup = undefined;
+    };
+  }
+
+  initQcGuide();
+  document.addEventListener("astro:page-load", initQcGuide);
+</script>
+
+<style>
+  /* =========================================================
+     BASE
+  ========================================================== */
+
+  .qc-page {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .qc-page *,
+  .qc-page *::before,
+  .qc-page *::after {
+    box-sizing: border-box;
+  }
+
+  .qc-page img {
+    display: block;
+    max-width: 100%;
+  }
+
+  .qc-shell {
+    width: min(1240px, 92%);
+    margin-inline: auto;
+  }
+
+  /* =========================================================
+     HERO
+  ========================================================== */
+
+  .qc-hero {
+    padding: calc(var(--qc-nav-height, 72px) + 32px) 0 52px;
+  }
+
+  .qc-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+    gap: clamp(40px, 5vw, 64px);
+    align-items: start;
+    padding-block: clamp(34px, 4.4vw, 62px) 0;
+  }
+
+  .qc-hero__copy {
+    min-width: 0;
+    max-width: 540px;
+  }
+
+  .qc-hero__overline {
+    margin: 0 0 20px;
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .qc-hero__title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(42px, 5vw, 74px);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+
+  .qc-hero__title span {
+    display: block;
+    color: var(--color-muted);
+  }
+
+  .qc-hero__desc {
+    max-width: 470px;
+    margin: 28px 0 0;
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: clamp(17px, 1.4vw, 20px);
+    line-height: 1.62;
+  }
+
+  .qc-hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+    text-transform: uppercase;
+  }
+
+  .qc-hero__dot {
+    width: 3px;
+    height: 3px;
+    flex: 0 0 3px;
+    border-radius: 50%;
+    background: var(--color-gold);
+  }
+
+  .qc-hero__visual {
+    position: relative;
+    min-width: 0;
+    margin: 0;
+    padding-bottom: 22px;
+  }
+
+  .qc-hero__frame {
+    position: relative;
+    z-index: 1;
+  }
+
+  .qc-hero__frame::before {
+    position: absolute;
+    z-index: -1;
+    inset: -12px;
+    border: 1px solid var(--color-line);
+    content: "";
+    pointer-events: none;
+  }
+
+  .qc-hero__frame img {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.13 / 1;
+    object-fit: cover;
+    background: var(--color-surface);
+  }
+
+  .qc-hero__visual figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 2px 0;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  /* =========================================================
+     ARTICLE LAYOUT
+  ========================================================== */
+
+  .qc-article {
+    padding: 62px 0 104px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .qc-reading {
+    display: grid;
+    grid-template-columns: minmax(180px, 216px) minmax(0, 1fr);
+    gap: clamp(40px, 6vw, 76px);
+  }
+
+  .qc-sidebar {
+    min-width: 0;
+  }
+
+  .qc-sidebar__sticky {
+    position: sticky;
+    top: calc(var(--qc-nav-height, 72px) + 34px);
+  }
+
+  .qc-sidebar__heading {
+    margin: 0 0 20px;
+    color: var(--color-ink);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .qc-toc {
+    position: relative;
+    display: grid;
+    gap: 2px;
+  }
+
+  .qc-toc::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    background: var(--color-line);
+    content: "";
+  }
+
+  .qc-toc__link {
+    position: relative;
+    display: grid;
+    grid-template-columns: 25px minmax(0, 1fr);
+    gap: 11px;
+    align-items: start;
+    padding: 12px 0 12px 16px;
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: 15px;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: color 180ms ease;
+  }
+
+  .qc-toc__number {
+    padding-top: 3px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .qc-toc__link:hover,
+  .qc-toc__link.is-active {
+    color: var(--color-ink);
+  }
+
+  .qc-toc__link.is-active::before {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 2px;
+    background: var(--color-gold);
+    content: "";
+  }
+
+  .qc-toc__link.is-active .qc-toc__number {
+    color: var(--color-gold-dark);
+  }
+
+  .qc-sidebar__note {
+    display: flex;
+    gap: 13px;
+    align-items: flex-start;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .qc-sidebar__mark {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    place-items: center;
+    border: 1px solid var(--color-line);
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 12px;
+  }
+
+  .qc-sidebar__note-body {
+    min-width: 0;
+  }
+
+  .qc-sidebar__note p {
+    margin: 0;
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .qc-sidebar__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 12px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-ink);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition:
+      color var(--ease-out),
+      border-color var(--ease-out),
+      gap var(--ease-out);
+  }
+
+  .qc-sidebar__back span {
+    color: var(--color-gold);
+    font-size: 12px;
+  }
+
+  .qc-sidebar__back:hover {
+    color: var(--color-gold-dark);
+    border-color: var(--color-gold);
+    gap: 11px;
+  }
+
+  .qc-content {
+    min-width: 0;
+    font-size: 16px;
+    line-height: 1.85;
+  }
+
+  .qc-content p {
+    margin: 0 0 20px;
+  }
+
+  .qc-content a {
+    color: var(--color-ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-gold);
+  }
+
+  .qc-mobile-toc {
+    display: none;
+  }
+
+  /* =========================================================
+     THESIS
+  ========================================================== */
+
+  .qc-thesis {
+    position: relative;
+    margin-bottom: 64px;
+    padding: 36px 40px 34px 72px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper-2);
+  }
+
+  .qc-thesis::before {
+    content: "\201C";
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: var(--color-gold);
+    font-family: var(--font-serif);
+    font-size: 76px;
+    line-height: 1;
+    opacity: 0.7;
+  }
+
+  .qc-thesis__label {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .qc-thesis p {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: clamp(18px, 1.9vw, 22px);
+    line-height: 1.58;
+    letter-spacing: -0.012em;
+  }
+
+  /* =========================================================
+     SECTIONS
+  ========================================================== */
+
+  .qc-section {
+    min-width: 0;
+    margin-top: 78px;
+    scroll-margin-top: calc(var(--qc-nav-height, 72px) + 32px);
+  }
+
+  .qc-section__header {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .qc-section__index {
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 34px;
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .qc-section__eyebrow {
+    margin: 0 0 9px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .qc-section h2 {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: clamp(27px, 2.9vw, 37px);
+    font-weight: 400;
+    line-height: 1.14;
+    letter-spacing: -0.035em;
+  }
+
+  /* =========================================================
+     NOTE
+  ========================================================== */
+
+  .qc-note {
+    margin: 30px 0 8px;
+    padding: 24px 26px;
+    border: 1px solid var(--color-line);
+    border-left: 2px solid var(--color-gold);
+    background: var(--color-paper-2);
+  }
+
+  .qc-note__label {
+    margin: 0 0 10px;
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .qc-note__foot {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  /* =========================================================
+     FIGURE
+  ========================================================== */
+
+  .qc-figure {
+    margin: 30px 0 26px;
+  }
+
+  .qc-figure__frame {
+    padding: 22px 18px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper-2);
+    overflow-x: auto;
+  }
+
+  .qc-figure svg {
+    display: block;
+    width: 100%;
+    min-width: 520px;
+    height: auto;
+  }
+
+  .qc-figure figcaption {
+    margin-top: 12px;
+    color: var(--color-muted-2);
+    font-size: 11px;
+    line-height: 1.65;
+  }
+
+  /* =========================================================
+     DEFECT WEIGHTS
+  ========================================================== */
+
+  .qc-weights {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    margin: 28px 0 26px;
+    background: var(--color-line);
+    border: 1px solid var(--color-line);
+  }
+
+  .qc-weight {
+    padding: 22px 22px 20px;
+    background: var(--color-paper-2);
+  }
+
+  .qc-weight__num {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 14px;
+  }
+
+  .qc-weight h3 {
+    margin: 0 0 8px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.018em;
+  }
+
+  .qc-weight p {
+    margin: 0 0 10px;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.68;
+  }
+
+  .qc-weight__rule {
+    margin: 0 !important;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-line);
+    color: var(--color-ink) !important;
+    font-size: 12px !important;
+    line-height: 1.55 !important;
+  }
+
+  /* =========================================================
+     AQL CHAIN
+  ========================================================== */
+
+  .qc-chain {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 28px 0 28px;
+    border-top: 1px solid var(--color-ink);
+  }
+
+  .qc-chain__step {
+    padding: 18px 20px 0 0;
+    border-right: 1px solid var(--color-line);
+  }
+
+  .qc-chain__step:last-child {
+    border-right: 0;
+    padding-right: 0;
+  }
+
+  .qc-chain__num {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 14px;
+  }
+
+  .qc-chain h3 {
+    margin: 0 0 7px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  .qc-chain p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  /* =========================================================
+     INSPECTION POINTS
+  ========================================================== */
+
+  .qc-points {
+    margin: 28px 0 26px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .qc-point {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 18px;
+    padding: 20px 0 18px;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .qc-point__num {
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .qc-point h3 {
+    margin: 0 0 7px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.018em;
+  }
+
+  .qc-point p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.72;
+  }
+
+  /* =========================================================
+     REPORT MOCK
+  ========================================================== */
+
+  .qc-report {
+    margin: 28px 0 26px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper-2);
+  }
+
+  .qc-report__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-surface);
+  }
+
+  .qc-report__title {
+    color: var(--color-ink);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .qc-report__stamp {
+    padding: 3px 8px;
+    border: 1px solid var(--color-gold);
+    color: var(--color-gold-dark);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .qc-report__rows {
+    padding: 6px 22px 14px;
+  }
+
+  .qc-report__row {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 18px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .qc-report__row:last-child {
+    border-bottom: 0;
+  }
+
+  .qc-report__label {
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    line-height: 1.9;
+    text-transform: uppercase;
+  }
+
+  .qc-report__row p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  /* =========================================================
+     FAILURE STEPS
+  ========================================================== */
+
+  .qc-fail {
+    margin: 28px 0 26px;
+    border-left: 1px solid var(--color-line);
+  }
+
+  .qc-fail__step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 16px;
+    padding: 0 0 24px 20px;
+  }
+
+  .qc-fail__step::before {
+    position: absolute;
+    top: 5px;
+    left: -4px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-gold);
+    content: "";
+  }
+
+  .qc-fail__num {
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .qc-fail h3 {
+    margin: 0 0 6px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.018em;
+  }
+
+  .qc-fail p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.72;
+  }
+
+  /* =========================================================
+     CONCLUSION
+  ========================================================== */
+
+  .qc-conclusion {
+    margin-top: 78px;
+  }
+
+  .qc-conclusion__rule {
+    width: 48px;
+    height: 2px;
+    margin-bottom: 22px;
+    background: var(--color-gold);
+  }
+
+  .qc-conclusion__label {
+    margin-bottom: 16px;
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .qc-rule {
+    margin-bottom: 30px;
+    padding-left: 22px;
+    border-left: 2px solid var(--color-gold);
+  }
+
+  .qc-rule p {
+    margin: 0 0 12px;
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .qc-rule p:last-child {
+    margin-bottom: 0;
+  }
+
+  .qc-rule strong {
+    color: var(--color-ink);
+    font-weight: 400;
+  }
+
+  .qc-conclusion__text {
+    color: var(--color-muted);
+    font-size: 16px;
+    line-height: 1.85;
+  }
+
+  .qc-conclusion__signature {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-line);
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+
+  /* =========================================================
+     CLUSTER NAV
+  ========================================================== */
+
+  .qc-cluster {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 34px;
+  }
+
+  .qc-cluster__link {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 22px;
+    border: 1px solid var(--color-line);
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: border-color var(--ease-out), background var(--ease-out);
+  }
+
+  .qc-cluster__link:hover {
+    border-color: var(--color-gold);
+    background: var(--color-paper-2);
+  }
+
+  .qc-cluster__link--next {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  .qc-cluster__label {
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .qc-cluster__title {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  .qc-cluster__title span {
+    color: var(--color-gold);
+  }
+
+  /* =========================================================
+     RESPONSIVE — TABLET
+  ========================================================== */
+
+  @media (max-width: 1100px) {
+    .qc-reading {
+      grid-template-columns: minmax(165px, 195px) minmax(0, 1fr);
+      gap: 38px;
+    }
+
+    .qc-content {
+      font-size: 15px;
+    }
+
+    .qc-thesis {
+      padding: 30px 30px 28px 60px;
+    }
+
+    .qc-chain {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: 22px;
+    }
+
+    .qc-chain__step {
+      border-right: 0;
+      padding-right: 0;
+    }
+  }
+
+  /* =========================================================
+     RESPONSIVE — SMALL TABLET
+  ========================================================== */
+
+  @media (max-width: 820px) {
+    .qc-hero {
+      padding-top: calc(var(--qc-nav-height, 72px) + 26px);
+    }
+
+    .qc-hero__grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding-block: 26px 30px;
+    }
+
+    .qc-hero__copy {
+      max-width: 680px;
+    }
+
+    .qc-hero__title {
+      font-size: clamp(40px, 7.6vw, 62px);
+    }
+
+    .qc-hero__desc {
+      max-width: 600px;
+    }
+
+    .qc-hero__frame img {
+      aspect-ratio: 1.6 / 1;
+    }
+
+    .qc-article {
+      padding-block: 46px 76px;
+    }
+
+    .qc-reading {
+      display: block;
+    }
+
+    .qc-sidebar {
+      display: none;
+    }
+
+    .qc-content {
+      max-width: 760px;
+      margin-inline: auto;
+      font-size: 16px;
+    }
+
+    .qc-mobile-toc {
+      display: block;
+      margin-bottom: 40px;
+      border: 1px solid var(--color-line);
+      background: var(--color-paper-2);
+    }
+
+    .qc-mobile-toc summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 18px;
+      color: var(--color-ink);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      list-style: none;
+      text-transform: uppercase;
+    }
+
+    .qc-mobile-toc summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .qc-mobile-toc__icon {
+      color: var(--color-gold-dark);
+      font-size: 19px;
+      font-weight: 400;
+      transition: transform 180ms ease;
+    }
+
+    .qc-mobile-toc[open] .qc-mobile-toc__icon {
+      transform: rotate(45deg);
+    }
+
+    .qc-mobile-toc nav {
+      display: grid;
+      padding: 0 18px 12px;
+    }
+
+    .qc-mobile-toc nav a {
+      display: flex;
+      gap: 14px;
+      align-items: baseline;
+      padding: 10px 0;
+      border-top: 1px solid var(--color-line);
+      color: var(--color-muted);
+      font-family: var(--font-serif);
+      font-size: 15px;
+      text-decoration: none;
+    }
+
+    .qc-mobile-toc nav a span {
+      color: var(--color-gold-dark);
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .qc-thesis {
+      margin-bottom: 52px;
+    }
+
+    .qc-section {
+      margin-top: 64px;
+    }
+
+    .qc-cluster {
+      grid-template-columns: 1fr;
+    }
+
+    .qc-cluster__link--next {
+      text-align: left;
+      align-items: flex-start;
+    }
+  }
+
+  /* =========================================================
+     RESPONSIVE — MOBILE
+  ========================================================== */
+
+  @media (max-width: 560px) {
+    .qc-hero {
+      padding-top: calc(var(--qc-nav-height, 72px) + 18px);
+    }
+
+    .qc-hero__grid {
+      gap: 26px;
+      padding-block: 22px 26px;
+    }
+
+    .qc-hero__overline {
+      margin-bottom: 14px;
+      font-size: 9px;
+    }
+
+    .qc-hero__title {
+      font-size: clamp(34px, 9.4vw, 48px);
+      letter-spacing: -0.045em;
+    }
+
+    .qc-hero__desc {
+      margin-top: 18px;
+      font-size: 16px;
+      line-height: 1.68;
+    }
+
+    .qc-hero__meta {
+      gap: 8px;
+      margin-top: 22px;
+      font-size: 8px;
+    }
+
+    .qc-hero__frame::before {
+      inset: -8px;
+    }
+
+    .qc-hero__frame img {
+      aspect-ratio: 1.2 / 1;
+    }
+
+    .qc-hero__visual figcaption {
+      padding-top: 10px;
+      font-size: 8px;
+    }
+
+    .qc-article {
+      padding-block: 32px 62px;
+    }
+
+    .qc-mobile-toc {
+      margin-bottom: 32px;
+    }
+
+    .qc-thesis {
+      margin-bottom: 42px;
+      padding: 22px 20px 22px 44px;
+    }
+
+    .qc-thesis::before {
+      top: 12px;
+      left: 10px;
+      font-size: 54px;
+    }
+
+    .qc-thesis p {
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .qc-section {
+      margin-top: 52px;
+    }
+
+    .qc-section__header {
+      grid-template-columns: 36px minmax(0, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+    }
+
+    .qc-section__index {
+      font-size: 26px;
+    }
+
+    .qc-section__eyebrow {
+      margin-bottom: 7px;
+      font-size: 8px;
+    }
+
+    .qc-section h2 {
+      font-size: clamp(24px, 6.8vw, 30px);
+      line-height: 1.18;
+    }
+
+    .qc-content {
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .qc-content p {
+      margin-bottom: 17px;
+    }
+
+    .qc-weights {
+      grid-template-columns: 1fr;
+    }
+
+    .qc-chain {
+      grid-template-columns: 1fr;
+      row-gap: 18px;
+    }
+
+    .qc-point {
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .qc-point h3,
+    .qc-fail h3 {
+      font-size: 17px;
+    }
+
+    .qc-report__row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+
+    .qc-report__label {
+      line-height: 1.5;
+    }
+
+    .qc-fail__step {
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 12px;
+      padding-left: 16px;
+    }
+
+    .qc-rule p {
+      font-size: 17px;
+    }
+
+    .qc-conclusion {
+      margin-top: 54px;
+    }
+
+    .qc-conclusion__text {
+      font-size: 15px;
+    }
+  }
+
+  /* =========================================================
+     ACCESSIBILITY
+  ========================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+    .qc-page *,
+    .qc-page *::before,
+    .qc-page *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+</style>

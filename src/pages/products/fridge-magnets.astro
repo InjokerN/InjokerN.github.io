@@ -1,0 +1,1947 @@
+---
+import { Image } from "astro:assets";
+import ProductDetailLayout from "../../components/ProductDetailLayout.astro";
+
+import { manufacturingProcess } from "../../data/manufacturing-process";
+
+/*
+  FRIDGE MAGNETS — PRODUCT DETAIL PAGE
+
+  设计主线：The surface decides.
+  这是全站唯一「必须依赖别人家的墙面才能存在」的品类。
+  冰箱门是否导磁、是否弧面、是否有油污，直接决定产品能不能用。
+  整页按「表面 → 吸附力 → 做法 → 场景」组织。
+
+  图片：暂时沿用 Medals / Crafts 目录，等实拍到位后替换。
+  性能：全页 7 张图（Hero 4 + 工艺 2 + 零售卡 1）。
+        表面吸附矩阵、磁力剖面、尺寸对位、零售卡结构全部用 CSS 绘制。
+*/
+
+import magnetGallery01 from "../../assets/products/medals/medal-gallery-01.jpg";
+import magnetGallery02 from "../../assets/products/medals/medal-gallery-02.jpg";
+import magnetGallery03 from "../../assets/products/medals/medal-gallery-03.jpg";
+import magnetGallery05 from "../../assets/products/medals/medal-gallery-05.jpg";
+
+import epoxy from "../../assets/crafts/exposy.jpg";
+import uvPrinting from "../../assets/crafts/uv-printing.jpg";
+
+const sections = [
+  { id: "hero", number: "", label: "Overview" },
+  { id: "specifications", number: "I", label: "Specifications" },
+  { id: "surface", number: "II", label: "Surface & Grip" },
+  { id: "routes", number: "III", label: "Four Ways to Make One" },
+  { id: "craft", number: "IV", label: "Print & Protection" },
+  { id: "applications", number: "V", label: "Applications" },
+  { id: "production", number: "VI", label: "Production & QC" },
+  { id: "faq", number: "VII", label: "FAQ" },
+  { id: "inquiry", number: "VIII", label: "Inquiry" },
+];
+
+/* ------------------------------------------------------------
+   HERO
+   ------------------------------------------------------------ */
+
+const heroGallery = [
+  {
+    image: magnetGallery02,
+    label: "The kitchen door",
+    note: "Painted steel, warm, slightly greasy, touched dozens of times a day. The real test surface.",
+    alt: "Custom fridge magnet on a kitchen door",
+  },
+  {
+    image: magnetGallery01,
+    label: "Die-cut to the artwork",
+    note: "The outline follows the shape instead of framing it. Magnet sits behind, invisible.",
+    alt: "Die-cut custom fridge magnet in a city skyline shape",
+  },
+  {
+    image: magnetGallery03,
+    label: "The dome",
+    note: "Epoxy adds a glassy layer that lifts colour and wipes clean. Also the first thing you feel.",
+    alt: "Custom fridge magnet with a domed epoxy finish",
+  },
+  {
+    image: magnetGallery05,
+    label: "Off the fridge",
+    note: "A magnet that only works in one place has to look right in the hand too — it is a gift first.",
+    alt: "Custom fridge magnet held in the hand",
+  },
+];
+
+const quickFacts = [
+  { value: "500 pcs", label: "MOQ per design" },
+  { value: "0.5–1.0 mm", label: "Magnetic backing" },
+  { value: "50–90 mm", label: "Typical long edge" },
+];
+
+/* ------------------------------------------------------------
+   I. SPECIFICATIONS
+   ------------------------------------------------------------ */
+
+const specs = [
+  { label: "MOQ", value: "500 pcs per design; mixed designs printed in one run" },
+  { label: "Magnet Strength", value: "0.5–1.0 mm ferrite backing; rated for painted steel" },
+  { label: "Typical Size", value: "50–90 mm long edge; up to 150 mm for display pieces" },
+  { label: "Surface Support", value: "Painted steel, whiteboard, galvanised sheet; not 304 stainless" },
+  { label: "Material", value: "PVC soft magnet, metal base + printed face, rubber sheet" },
+  { label: "Print", value: "Offset litho, UV direct print, digital; CMYK + Pantone" },
+  { label: "Finish", value: "Epoxy dome, matte lamination, gloss lamination, bare print" },
+  { label: "Shape", value: "Rectangle, circle, free-form die-cut, multi-piece set" },
+  { label: "QC", value: "Print registration and magnetic pull tested per batch" },
+];
+
+/* ------------------------------------------------------------
+   II. SURFACE & GRIP — 表面矩阵
+   ------------------------------------------------------------ */
+
+const surfaces = [
+  {
+    name: "Painted steel door",
+    sub: "Most domestic fridges",
+    level: 3,
+    grade: "Holds",
+    note: "The reference surface. 0.5 mm backing is enough; 0.75 mm is comfortable through a thick paint coat.",
+  },
+  {
+    name: "Whiteboard",
+    sub: "Office, classroom",
+    level: 3,
+    grade: "Holds",
+    note: "Smooth and thin. Holds easily, but a domed face can slide — a flat back grips better here.",
+  },
+  {
+    name: "Galvanised sheet",
+    sub: "Signage, racks, lockers",
+    level: 2,
+    grade: "Usually holds",
+    note: "Zinc coating dims the pull slightly. Fine for 0.75 mm and up; marginal at 0.5 mm.",
+  },
+  {
+    name: "304 stainless",
+    sub: "Premium appliances",
+    level: 0,
+    grade: "Does not hold",
+    note: "Austenitic stainless is effectively non-magnetic. No backing thickness fixes this — it needs an adhesive plate or a stand.",
+  },
+  {
+    name: "Glass & wood",
+    sub: "Furniture, panelling",
+    level: 0,
+    grade: "Does not hold",
+    note: "Not a magnetic surface at all. If the piece must live here, it becomes a display object, not a magnet.",
+  },
+  {
+    name: "Greasy / textured",
+    sub: "Above a hob, old paint",
+    level: 1,
+    grade: "Unreliable",
+    note: "Air gaps break the magnetic circuit. A domed wipeable face helps cleaning, but grip depends on flat contact.",
+  },
+];
+
+const backingGrades = [
+  { mm: "0.5 mm", text: "Lightweight prints, flat rectangles, smallest sizes." },
+  { mm: "0.75 mm", text: "The default. Holds through paint and light texture." },
+  { mm: "1.0 mm", text: "Large or thick pieces; heavier metal-base magnets." },
+];
+
+/* ------------------------------------------------------------
+   III. FOUR ROUTES
+   ------------------------------------------------------------ */
+
+const routes = [
+  {
+    id: "pvc",
+    index: "01",
+    name: "Printed PVC sheet",
+    text: "The volume route. Artwork prints directly onto a magnetic sheet, then the outline is die-cut. Cheapest per unit and the fastest to produce, because the magnet and the print are the same piece of material.",
+    rows: [
+      { label: "Unit cost", value: "Lowest" },
+      { label: "Shape freedom", value: "Full die-cut" },
+      { label: "Weight", value: "Light — the complaint" },
+      { label: "Best run", value: "1,000–50,000" },
+    ],
+  },
+  {
+    id: "metal",
+    index: "02",
+    name: "Metal base + print",
+    text: "A thin steel or zinc body carries the print and the magnet sits behind it. The extra mass changes how the object feels in the hand — which is what separates a souvenir from a flyer at the same price point.",
+    rows: [
+      { label: "Unit cost", value: "Mid" },
+      { label: "Shape freedom", value: "Die-cut or stamped" },
+      { label: "Weight", value: "Substantial" },
+      { label: "Best run", value: "500–10,000" },
+    ],
+  },
+  {
+    id: "dome",
+    index: "03",
+    name: "Epoxy domed print",
+    text: "A resin dome is applied over a flat print. It lifts colour saturation, adds a tactile edge and protects the print from kitchen grease — but it softens fine type, so it is the wrong choice for small print.",
+    rows: [
+      { label: "Unit cost", value: "Mid-plus" },
+      { label: "Shape freedom", value: "Full die-cut" },
+      { label: "Weight", value: "Light" },
+      { label: "Best run", value: "500–20,000" },
+    ],
+  },
+  {
+    id: "resin",
+    index: "04",
+    name: "Resin / cast relief",
+    text: "The face is cast or moulded rather than printed, giving genuine three-dimensional relief. The most expensive route and the only one that reads like a small sculpture — used for premium souvenir and character ranges.",
+    rows: [
+      { label: "Unit cost", value: "Highest" },
+      { label: "Shape freedom", value: "Mould-bound" },
+      { label: "Weight", value: "Heaviest" },
+      { label: "Best run", value: "1,000–20,000" },
+    ],
+  },
+];
+
+/* ------------------------------------------------------------
+   IV. PRINT & PROTECTION
+   ------------------------------------------------------------ */
+
+const printMedia = [
+  {
+    title: "Offset litho",
+    text: "The best colour fidelity for large runs. Gradients, photography and fine mapping all hold. Requires a separate print run before lamination, so it adds a few days but lowers unit cost at volume.",
+  },
+  {
+    title: "UV direct print",
+    text: "Prints straight onto the sheet or metal base, skipping the separate print stage. Marginally less smooth in gradients than offset, but far faster for short and mixed runs.",
+  },
+];
+
+const craftDetails = [
+  {
+    index: "01",
+    title: "Print is the whole product",
+    text: "Unlike enamel pins or challenge coins, nothing here is built from metal cells. Every colour, gradient and photograph arrives in one printing pass — which means the artwork does not need simplifying, and the failure modes are registration and dot gain rather than fill and polish.",
+    note: "Fine lines below about 0.3 mm still need checking at sample stage.",
+    image: uvPrinting,
+    alt: "Full-colour printing on a custom fridge magnet",
+    tone: "light",
+  },
+  {
+    index: "02",
+    title: "What actually wears out",
+    text: "Not the magnet. Ferrite loses a fraction of its pull over years, not months. What fails first is the print — kitchen grease, sunlight and repeated wiping. The epoxy dome exists to solve a wear problem, not a decorative one.",
+    note: "Dome for kitchens and souvenir retail; flat lamination for text-heavy corporate work.",
+    image: epoxy,
+    alt: "Epoxy domed finish protecting a printed magnet",
+    tone: "dark",
+  },
+];
+
+/* ------------------------------------------------------------
+   V. APPLICATIONS
+   ------------------------------------------------------------ */
+
+const applications = [
+  {
+    name: "Travel & Souvenirs",
+    text: "Destination series for airport, museum and gift shops. Sold on a rack, so the backing card matters as much as the magnet.",
+    place: "Gift shop rack",
+  },
+  {
+    name: "Brand & Character",
+    text: "Collectible series and character shapes where a whole range has to read as one family on a shelf.",
+    place: "Collector shelf",
+  },
+  {
+    name: "Events & Fairs",
+    text: "Tradeshow giveaways and conference welcome gifts that survive the trip home and the following year.",
+    place: "Show bag",
+  },
+  {
+    name: "Schools & Alumni",
+    text: "Campus maps, graduation sets and parent-community giveaways — text-heavy work where flat lamination beats a dome.",
+    place: "Family fridge",
+  },
+  {
+    name: "Sports & Clubs",
+    text: "Fixture lists, fundraiser sets and supporter keepsakes that stay up for the whole season.",
+    place: "Club fridge",
+  },
+  {
+    name: "Office & Corporate",
+    text: "Whiteboard magnets and branded desk items for internal programs and client gifts.",
+    place: "Meeting board",
+  },
+];
+
+/* ------------------------------------------------------------
+   VII. FAQ
+   ------------------------------------------------------------ */
+
+const faq = [
+  {
+    q: "Will the magnet hold on my client's fridge?",
+    a: "On painted steel doors, yes — that is the reference surface and 0.5 mm backing is enough. The exception is 304 stainless steel, which is used on many premium appliances and is effectively non-magnetic. No backing thickness will fix that, so if the recipient's kitchen is unknown, plan for a metal-base magnet plus an adhesive plate.",
+  },
+  {
+    q: "How do I know whether a surface is magnetic?",
+    a: "A fridge magnet held against it is the only reliable test. Appliance spec sheets often do not state steel grade, and the terms 'stainless steel finish' and 'stainless steel body' mean different things. Ask for a photo of a magnet stuck to the actual door rather than relying on the model name.",
+  },
+  {
+    q: "Does the magnet weaken over time?",
+    a: "Barely. A ferrite backing loses a small fraction of its pull over years, not months, and the loss is not measurable in normal use. What actually makes a magnet fall off is an uneven, textured or greasy surface creating an air gap — which is why flat contact matters more than thickness.",
+  },
+  {
+    q: "Epoxy dome or flat lamination?",
+    a: "Dome for kitchens and souvenir retail: glossier, wipeable, better perceived value. Flat lamination for text-heavy corporate and whiteboard work, because the dome visibly softens small type and fine line work. If the artwork contains a lot of copy, the dome is the wrong choice.",
+  },
+  {
+    q: "What is the minimum order quantity?",
+    a: "500 pieces per design. Magnets print on shared sheets, so mixed designs can normally be combined in one run and the per-unit cost drops quickly above 1,000 pieces.",
+  },
+  {
+    q: "How much artwork detail survives?",
+    a: "Because the artwork is printed rather than enamel-filled, gradients, photographs, maps and small type all reproduce well — far more detail than enamel can hold in the same area. Fine lines under roughly 0.3 mm should still be confirmed at sample stage.",
+  },
+  {
+    q: "Can magnets be packed for retail display?",
+    a: "Yes. Printed backing cards, blister packs with hang holes, and magnetic display boards are all available, and we can print the card artwork and pack in-house before shipment.",
+  },
+  {
+    q: "How long does sampling and production take?",
+    a: "Sampling runs 5–7 working days after artwork approval. Production of 500–5,000 pieces normally takes 10–15 working days depending on print process and finishing.",
+  },
+];
+
+const hasProcess = manufacturingProcess.length > 0;
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<ProductDetailLayout
+  title="Fridge Magnets"
+  description="Custom printed fridge magnets in PVC sheet, metal base, epoxy dome and cast resin. Specify the backing for the surface it will live on. MOQ 500 pcs."
+  ogImage={heroGallery[0].image.src}
+  sections={sections}
+>
+  <Fragment slot="structured-data">
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section id="hero" class="product-hero">
+    <div class="fm-hero">
+      <div class="fm-hero__copy">
+        <p class="fm-hero__eyebrow">CUSTOM FRIDGE MAGNETS</p>
+        <h1 class="fm-hero__title">The surface decides.</h1>
+        <p class="fm-hero__desc">
+          A fridge magnet is the only product here that cannot work on its own.
+          It depends entirely on a surface it does not own — someone else's
+          kitchen door, a whiteboard, a shop rack. Get the surface wrong and
+          nothing else in the specification matters.
+        </p>
+
+        <div class="fm-hero__magnet" aria-hidden="true">
+          <span class="fm-hero__magnet-face"></span>
+          <span class="fm-hero__magnet-back"></span>
+          <span class="fm-hero__magnet-gap"></span>
+        </div>
+
+        <p class="fm-hero__note">
+          The gap is the whole story. Every millimetre of paint, texture or
+          grease between backing and steel costs pull — which is why we ask
+          where it will live before we ask what it should look like.
+        </p>
+
+        <ul class="fm-hero__facts">
+          {quickFacts.map((fact) => (
+            <li>
+              <strong>{fact.value}</strong>
+              <span>{fact.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div
+        class="fm-gallery"
+        data-fm-gallery
+        data-gallery-data={JSON.stringify(
+          heroGallery.map((item) => ({ label: item.label, note: item.note }))
+        )}
+      >
+        <div class="fm-gallery__stage">
+          {heroGallery.map((item, index) => (
+            <div
+              class:list={["fm-gallery__frame", index === 0 && "is-active"]}
+              data-gallery-stage
+            >
+              <Image
+                src={item.image}
+                alt={item.alt}
+                loading={index === 0 ? "eager" : "lazy"}
+                sizes="(min-width: 1000px) 44vw, 92vw"
+              />
+            </div>
+          ))}
+        </div>
+
+        <div class="fm-gallery__meta">
+          <div class="fm-gallery__caption">
+            <span class="fm-gallery__caption-label" data-caption-label>
+              {heroGallery[0].label}
+            </span>
+            <span class="fm-gallery__caption-note" data-caption-note>
+              {heroGallery[0].note}
+            </span>
+          </div>
+
+          <div class="fm-gallery__rail">
+            {heroGallery.map((item, index) => (
+              <button
+                type="button"
+                class:list={["fm-gallery__thumb", index === 0 && "is-active"]}
+                data-gallery-thumb={String(index)}
+                aria-pressed={index === 0 ? "true" : "false"}
+                aria-label={`Show ${item.label}`}
+              >
+                <span class="fm-gallery__thumb-index">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <Image src={item.image} alt="" loading="lazy" sizes="90px" />
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       I. SPECIFICATIONS
+       ============================================================ -->
+  <section id="specifications" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">I · SPECIFICATIONS</p>
+          <h2 class="product-section__title">Specified for the surface it sticks to.</h2>
+        </div>
+        <p class="product-section__lead">
+          Magnet strength sits second for a reason. It is the only line here
+          that can make a perfectly printed magnet useless.
+        </p>
+      </div>
+
+      <div class="specs-layout">
+        <div class="specs-feature">
+          <div class="specs-feature__value">0.75 mm</div>
+          <div class="specs-feature__label">The Default Backing</div>
+          <div class="specs-feature__line"></div>
+          <div class="specs-feature__mark">
+            PULL<br />TESTED
+          </div>
+        </div>
+
+        <div class="specs-list">
+          {specs.map((spec, index) => (
+            <div class="spec-row">
+              <div class="spec-row__number">
+                {String(index + 1).padStart(2, "0")}
+              </div>
+              <div class="spec-row__label">{spec.label}</div>
+              <div class="spec-row__value">{spec.value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       II. SURFACE & GRIP
+       ============================================================ -->
+  <section id="surface" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">II · SURFACE &amp; GRIP</p>
+          <h2 class="product-section__title">Six surfaces, one question.</h2>
+        </div>
+        <p class="product-section__lead">
+          Whether it holds is decided by the wall, not the backing. This is the
+          table we walk through before quoting — most magnet failures we see
+          were a surface mismatch, not a manufacturing defect.
+        </p>
+      </div>
+
+      <div class="surface-matrix">
+        <div class="surface-matrix__head">
+          <span>Surface</span>
+          <span>Grip</span>
+          <span>Verdict</span>
+        </div>
+
+        {surfaces.map((item) => (
+          <article class:list={["surface-row", `surface-row--${item.level}`]}>
+            <div class="surface-row__name">
+              <strong>{item.name}</strong>
+              <span>{item.sub}</span>
+            </div>
+
+            <div class="surface-row__meter" aria-hidden="true">
+              <span class="surface-row__bar"></span>
+              <span class="surface-row__bar"></span>
+              <span class="surface-row__bar"></span>
+            </div>
+
+            <span class="surface-row__grade">{item.grade}</span>
+
+            <p class="surface-row__note">{item.note}</p>
+          </article>
+        ))}
+      </div>
+
+      <h3 class="product-section__subhead-title">Backing thickness</h3>
+      <p class="product-section__subhead-lead">
+        Three grades in common use. Thicker is not automatically better —
+        beyond what the surface needs, it only adds cost and weight.
+      </p>
+
+      <div class="backing-scale">
+        {backingGrades.map((item, index) => (
+          <div class:list={["backing-cell", index === 1 && "is-standard"]}>
+            <div class="backing-cell__profile">
+              <span
+                class="backing-cell__magnet"
+                style={`--h: ${(index + 1) * 6 + 4}px`}
+              ></span>
+              <span class="backing-cell__steel"></span>
+            </div>
+            <strong>{item.mm}</strong>
+            <p>{item.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       III. FOUR ROUTES
+       ============================================================ -->
+  <section id="routes" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">III · FOUR WAYS TO MAKE ONE</p>
+          <h2 class="product-section__title">Same picture, four objects.</h2>
+        </div>
+        <p class="product-section__lead">
+          The artwork can be identical across all four. What changes is how the
+          piece feels in the hand, how it survives a kitchen, and what it costs
+          per unit — which is usually the real decision.
+        </p>
+      </div>
+
+      <div class="route-grid">
+        {routes.map((item) => (
+          <article class="route-card">
+            <div class="route-card__head">
+              <span class="route-card__index">{item.index}</span>
+              <h3>{item.name}</h3>
+            </div>
+            <p class="route-card__text">{item.text}</p>
+            <dl class="route-card__rows">
+              {item.rows.map((row) => (
+                <div>
+                  <dt>{row.label}</dt>
+                  <dd>{row.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </article>
+        ))}
+      </div>
+
+      <div class="route-note">
+        <strong>Choose by failure mode, not by price.</strong>
+        A cheap printed sheet is the right answer for a 20,000-piece
+        tradeshow giveaway and the wrong answer for a museum shop where the
+        magnet will be picked up, turned over and judged against a £6 souvenir.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       IV. PRINT & PROTECTION
+       ============================================================ -->
+  <section id="craft" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">IV · PRINT &amp; PROTECTION</p>
+          <h2 class="product-section__title">Printed art, not filled enamel.</h2>
+        </div>
+        <p class="product-section__lead">
+          This is the one category where the artwork is printed in full colour
+          rather than built from metal cells. Nothing needs simplifying — which
+          changes what can go wrong.
+        </p>
+      </div>
+
+      <div class="craft-pair">
+        {craftDetails.map((item) => (
+          <article class:list={["craft-panel", `craft-panel--${item.tone}`]}>
+            <div class="craft-panel__media">
+              <Image
+                src={item.image}
+                alt={item.alt}
+                loading="lazy"
+                sizes="(min-width: 1000px) 46vw, 92vw"
+              />
+              <span class="craft-panel__index">{item.index}</span>
+            </div>
+            <div class="craft-panel__body">
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+              <p class="craft-panel__note">{item.note}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="print-choice">
+        <div class="print-choice__intro">
+          <h3>Two printing routes</h3>
+          <p>
+            Both reach full colour. The difference is whether the sheet is
+            printed separately and laminated, or printed directly — which is a
+            question of run length and how sharp the fine detail must stay.
+          </p>
+        </div>
+
+        <div class="print-choice__compare">
+          {printMedia.map((item) => (
+            <article class="print-option">
+              <h4>{item.title}</h4>
+              <p>{item.text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div class="retail-strip">
+        <div class="retail-strip__diagram" aria-hidden="true">
+          <span class="retail-strip__hole"></span>
+          <span class="retail-strip__magnet"></span>
+          <span class="retail-strip__copy"></span>
+          <span class="retail-strip__barcode"></span>
+        </div>
+        <div class="retail-strip__body">
+          <h3>The backing card is half the product</h3>
+          <p>
+            A magnet sold on a rack spends its whole retail life on a printed
+            card. The card carries the hang hole, the brand copy, the barcode
+            and the price — and it is often the only part of the range a
+            shopper actually reads. We print and pack it in-house so the magnet
+            and the card are approved together, not separately.
+          </p>
+          <ul>
+            <li>Printed backing card with euro-slot or hang hole</li>
+            <li>Blister pack for premium retail channels</li>
+            <li>Barcode and price area reserved during artwork review</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="product-section__note">
+        <strong>Want the technical walkthrough?</strong>
+        Offset versus UV printing, epoxy doming, lamination options, die-cut
+        shape design, magnet strength testing and retail backing cards — our
+        craft guides cover each technique with reference photos and production
+        notes you can hand to a designer.
+      </div>
+
+      <a href="/resources#craft-guides" class="product-section__link-btn">
+        Explore Craft Guides
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       V. APPLICATIONS
+       ============================================================ -->
+  <section id="applications" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">V · APPLICATIONS</p>
+          <h2 class="product-section__title">Where it stays in sight.</h2>
+        </div>
+        <p class="product-section__lead">
+          The magnet's advantage is placement — it lives at eye level in a room
+          people pass through every day, and it stays for years.
+        </p>
+      </div>
+
+      <div class="place-index">
+        {applications.map((item, index) => (
+          <article class="place-row">
+            <span class="place-row__number">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <div class="place-row__body">
+              <h4>{item.name}</h4>
+              <p>{item.text}</p>
+            </div>
+            <span class="place-row__tag">{item.place}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VI. PRODUCTION & QC
+       ============================================================ -->
+  {hasProcess && (
+    <section id="production" class="product-section">
+      <div class="product-section__inner">
+        <div class="section-heading">
+          <div>
+            <p class="product-eyebrow">VI · PRODUCTION &amp; QC</p>
+            <h2 class="product-section__title">Artwork to pull-tested batch.</h2>
+          </div>
+          <p class="product-section__lead">
+            Six stages, with an extra check most categories do not need —
+            every batch is pull-tested, not just visually inspected.
+          </p>
+        </div>
+
+        <div class="production-strip">
+          {manufacturingProcess.map((step) => (
+            <article class="production-strip__step">
+              <span class="production-strip__dot">{step.step}</span>
+              <div class="production-strip__image">
+                <Image
+                  src={step.image}
+                  alt={step.alt}
+                  loading="lazy"
+                  sizes="(min-width: 900px) 15vw, 45vw"
+                />
+              </div>
+              <div class="production-strip__body">
+                <h3>{step.title}</h3>
+                {step.text && <p>{step.text}</p>}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ============================================================
+       VII. FAQ
+       ============================================================ -->
+  <section id="faq" class="product-section">
+    <div class="product-section__inner">
+      <p class="product-eyebrow">VII · FAQ</p>
+
+      <div class="faq-grid">
+        <div class="faq-intro">
+          <h2 class="product-section__title">Frequently asked questions.</h2>
+          <p class="faq-intro__text">
+            Still unsure? Tell us where the magnet will live — fridge,
+            whiteboard or shop rack — and we will specify the backing and
+            finish accordingly.
+          </p>
+        </div>
+
+        <div class="faq-list">
+          {faq.map((item) => (
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>{item.q}</span>
+                <span class="faq-plus" aria-hidden="true">+</span>
+              </summary>
+              <div class="faq-answer">
+                <p>{item.a}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</ProductDetailLayout>
+
+<style>
+  /* ============================================================
+     SHARED — 章节标题
+     ============================================================ */
+
+  .section-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
+    gap: clamp(24px, 4vw, 50px);
+    align-items: end;
+    margin-bottom: clamp(32px, 4vw, 48px);
+  }
+
+  .product-section__lead {
+    margin: 0;
+  }
+
+  .product-section__subhead-title {
+    margin: clamp(44px, 5vw, 64px) 0 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.4vw, 30px);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+
+  .product-section__subhead-lead {
+    max-width: 640px;
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .product-section__note {
+    max-width: 840px;
+    margin: 44px 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.85;
+  }
+
+  .product-section__note strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+
+  .fm-hero {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: start;
+  }
+
+  .fm-hero__copy {
+    min-width: 0;
+    max-width: 470px;
+  }
+
+  .fm-hero__eyebrow {
+    margin: 0 0 20px;
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .fm-hero__title {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(38px, 5vw, 64px);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+  }
+
+  .fm-hero__desc {
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  /* 吸附剖面示意：面板 / 磁体 / 间隙 */
+  .fm-hero__magnet {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 230px;
+    margin: 30px 0 0;
+  }
+
+  .fm-hero__magnet-face {
+    display: block;
+    height: 26px;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: 3px 3px 0 0;
+  }
+
+  .fm-hero__magnet-back {
+    display: block;
+    height: 9px;
+    background: var(--ink);
+    border-radius: 0 0 2px 2px;
+  }
+
+  .fm-hero__magnet-gap {
+    position: relative;
+    display: block;
+    height: 10px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--line) 0 3px,
+      transparent 3px 7px
+    );
+  }
+
+  .fm-hero__magnet-gap::after {
+    content: "air gap";
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 10px);
+    transform: translateY(-50%);
+    color: var(--muted2);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .fm-hero__note {
+    margin: 18px 0 0;
+    padding-left: 14px;
+    border-left: 2px solid var(--line);
+    color: var(--muted2);
+    font-size: 13px;
+    line-height: 1.75;
+  }
+
+  /* ---- gallery ---- */
+
+  .fm-gallery {
+    min-width: 0;
+  }
+
+  .fm-gallery__stage {
+    position: relative;
+    aspect-ratio: 5 / 4;
+    overflow: hidden;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .fm-gallery__frame {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .fm-gallery__frame.is-active {
+    opacity: 1;
+  }
+
+  .fm-gallery__frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .fm-gallery__meta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: start;
+    margin-top: 14px;
+  }
+
+  .fm-gallery__caption {
+    display: grid;
+    gap: 5px;
+    padding-left: 14px;
+    border-left: 2px solid var(--gold);
+    min-height: 44px;
+  }
+
+  .fm-gallery__caption-label {
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .fm-gallery__caption-note {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .fm-gallery__rail {
+    display: flex;
+    gap: 8px;
+  }
+
+  .fm-gallery__thumb {
+    position: relative;
+    display: block;
+    width: 62px;
+    height: 62px;
+    padding: 0;
+    overflow: hidden;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .fm-gallery__thumb:hover {
+    border-color: var(--muted2);
+  }
+
+  .fm-gallery__thumb.is-active {
+    border-color: var(--gold);
+    transform: translateY(-3px);
+  }
+
+  .fm-gallery__thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+    transition: opacity 0.2s ease;
+  }
+
+  .fm-gallery__thumb:hover img,
+  .fm-gallery__thumb.is-active img {
+    opacity: 1;
+  }
+
+  .fm-gallery__thumb-index {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    padding: 2px 4px;
+    background: var(--paper2);
+    color: var(--muted2);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  /* ---- hero facts ---- */
+
+  .fm-hero__facts {
+    display: grid;
+    gap: 12px;
+    margin: 28px 0 0;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+  }
+
+  .fm-hero__facts li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .fm-hero__facts li:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .fm-hero__facts strong {
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  .fm-hero__facts span {
+    color: var(--muted2);
+    font-size: 10px;
+    letter-spacing: 0.07em;
+    line-height: 1.5;
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  /* ============================================================
+     II. SURFACE MATRIX
+     ============================================================ */
+
+  .surface-matrix {
+    border-top: 1px solid var(--line);
+  }
+
+  .surface-matrix__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) 110px 130px;
+    gap: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .surface-matrix__head span:nth-child(2),
+  .surface-matrix__head span:nth-child(3) {
+    text-align: center;
+  }
+
+  .surface-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) 110px 130px;
+    gap: 20px;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.2s ease;
+  }
+
+  .surface-row:hover {
+    background: var(--paper2);
+  }
+
+  .surface-row__name {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .surface-row__name strong {
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  .surface-row__name span {
+    color: var(--muted2);
+    font-size: 11px;
+    letter-spacing: 0.03em;
+  }
+
+  .surface-row__meter {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .surface-row__bar {
+    display: block;
+    width: 20px;
+    height: 5px;
+    background: var(--line);
+    border-radius: 1px;
+  }
+
+  .surface-row--3 .surface-row__bar {
+    background: var(--gold);
+  }
+
+  .surface-row--2 .surface-row__bar:nth-child(1),
+  .surface-row--2 .surface-row__bar:nth-child(2) {
+    background: var(--gold);
+  }
+
+  .surface-row--1 .surface-row__bar:nth-child(1) {
+    background: var(--muted2);
+  }
+
+  .surface-row__grade {
+    justify-self: center;
+    padding: 5px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    color: var(--muted2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .surface-row--3 .surface-row__grade {
+    border-color: var(--gold);
+    background: var(--gold);
+    color: var(--paper2);
+  }
+
+  .surface-row--2 .surface-row__grade {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .surface-row--0 .surface-row__grade {
+    color: var(--muted2);
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+
+  .surface-row__note {
+    grid-column: 1 / -1;
+    max-width: 78ch;
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* ---- backing scale ---- */
+
+  .backing-scale {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .backing-cell {
+    padding: 22px;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .backing-cell.is-standard {
+    border-color: var(--gold);
+  }
+
+  .backing-cell__profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 74px;
+    margin-bottom: 18px;
+  }
+
+  .backing-cell__magnet {
+    display: block;
+    width: 118px;
+    height: var(--h);
+    background: var(--ink);
+    border-radius: 2px 2px 0 0;
+  }
+
+  .backing-cell.is-standard .backing-cell__magnet {
+    background: var(--gold);
+  }
+
+  .backing-cell__steel {
+    display: block;
+    width: 150px;
+    height: 6px;
+    background: var(--muted2);
+    border-radius: 0 0 2px 2px;
+  }
+
+  .backing-cell strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .backing-cell.is-standard strong {
+    color: var(--gold);
+  }
+
+  .backing-cell p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  /* ============================================================
+     III. ROUTES
+     ============================================================ */
+
+  .route-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .route-card {
+    display: flex;
+    flex-direction: column;
+    padding: 26px 24px;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .route-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-3px);
+  }
+
+  .route-card__head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .route-card__index {
+    flex: 0 0 auto;
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .route-card__head h3 {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(18px, 1.9vw, 22px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+  }
+
+  .route-card__text {
+    flex: 1;
+    margin: 16px 0 20px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.72;
+  }
+
+  .route-card__rows {
+    display: grid;
+    margin: 0;
+    padding-top: 4px;
+    border-top: 1px solid var(--line);
+  }
+
+  .route-card__rows div {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .route-card__rows div:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .route-card__rows dt {
+    color: var(--muted2);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .route-card__rows dd {
+    margin: 0;
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .route-note {
+    margin-top: 20px;
+    padding: 20px 24px;
+    background: var(--dark);
+    border-radius: var(--radius-lg);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 13px;
+    line-height: 1.75;
+  }
+
+  .route-note strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--gold2);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     IV. CRAFT
+     ============================================================ */
+
+  .craft-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .craft-panel {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .craft-panel__media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--paper2);
+  }
+
+  .craft-panel__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .craft-panel__index {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 4px 9px;
+    background: var(--paper2);
+    border-radius: var(--radius-pill);
+    color: var(--ink);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .craft-panel__body {
+    flex: 1;
+    padding: 26px 24px 28px;
+  }
+
+  .craft-panel--light .craft-panel__body {
+    background: var(--paper2);
+  }
+
+  .craft-panel--dark .craft-panel__body {
+    background: var(--dark);
+  }
+
+  .craft-panel__body h3 {
+    margin: 0 0 14px;
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2vw, 26px);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+  }
+
+  .craft-panel--light .craft-panel__body h3 {
+    color: var(--ink);
+  }
+
+  .craft-panel--dark .craft-panel__body h3 {
+    color: var(--gold2);
+  }
+
+  .craft-panel__body > p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.78;
+  }
+
+  .craft-panel--light .craft-panel__body > p {
+    color: var(--muted);
+  }
+
+  .craft-panel--dark .craft-panel__body > p {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .craft-panel__note {
+    margin-top: 18px !important;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 12px !important;
+    line-height: 1.7 !important;
+  }
+
+  .craft-panel--light .craft-panel__note {
+    color: var(--muted2) !important;
+  }
+
+  .craft-panel--dark .craft-panel__note {
+    border-top-color: rgba(216, 194, 157, 0.24);
+    color: var(--gold2) !important;
+  }
+
+  /* ---- print choice ---- */
+
+  .print-choice {
+    display: grid;
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+    gap: clamp(24px, 4vw, 56px);
+    margin-top: clamp(32px, 4vw, 48px);
+    padding-top: clamp(28px, 3.4vw, 40px);
+    border-top: 1px solid var(--line);
+  }
+
+  .print-choice__intro h3 {
+    margin: 0 0 14px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.4vw, 30px);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+
+  .print-choice__intro p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.78;
+  }
+
+  .print-choice__compare {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .print-option {
+    padding: 22px;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .print-option h4 {
+    margin: 0 0 10px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .print-option p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  /* ---- retail ---- */
+
+  .retail-strip {
+    display: grid;
+    grid-template-columns: minmax(0, 0.66fr) minmax(0, 1.34fr);
+    gap: clamp(24px, 4vw, 52px);
+    align-items: center;
+    margin-top: clamp(32px, 4vw, 48px);
+    padding: clamp(24px, 3vw, 36px);
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .retail-strip__diagram {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    max-width: 230px;
+    margin: 0 auto;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+
+  .retail-strip__hole {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    width: 34px;
+    height: 12px;
+    transform: translateX(-50%);
+    border: 2px solid var(--muted2);
+    border-radius: var(--radius-pill);
+  }
+
+  .retail-strip__magnet {
+    position: absolute;
+    top: 46px;
+    left: 50%;
+    width: 58%;
+    aspect-ratio: 1 / 1;
+    transform: translateX(-50%);
+    background: var(--ink);
+    border-radius: 4px;
+    opacity: 0.9;
+  }
+
+  .retail-strip__copy {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    width: 62%;
+    height: 34px;
+    transform: translateX(-50%);
+    background: repeating-linear-gradient(
+      180deg,
+      var(--line) 0 3px,
+      transparent 3px 10px
+    );
+  }
+
+  .retail-strip__barcode {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    width: 46%;
+    height: 26px;
+    transform: translateX(-50%);
+    background: repeating-linear-gradient(
+      90deg,
+      var(--ink) 0 2px,
+      transparent 2px 5px
+    );
+    opacity: 0.6;
+  }
+
+  .retail-strip__body h3 {
+    margin: 0 0 14px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.4vw, 30px);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+
+  .retail-strip__body > p {
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.78;
+  }
+
+  .retail-strip__body ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 8px;
+  }
+
+  .retail-strip__body li {
+    position: relative;
+    padding-left: 15px;
+    color: var(--muted2);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .retail-strip__body li::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+
+  /* ============================================================
+     V. APPLICATIONS
+     ============================================================ */
+
+  .place-index {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+
+  .place-row {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr) auto;
+    gap: clamp(14px, 2.4vw, 32px);
+    align-items: start;
+    padding: clamp(20px, 2.4vw, 28px) 0;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.2s ease;
+  }
+
+  .place-row:hover {
+    background: var(--paper2);
+  }
+
+  .place-row__number {
+    color: var(--muted2);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.7;
+  }
+
+  .place-row__body h4 {
+    margin: 0 0 6px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(17px, 1.8vw, 21px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  .place-row__body p {
+    max-width: 58ch;
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .place-row__tag {
+    justify-self: end;
+    padding-top: 4px;
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+
+  @media (max-width: 1024px) {
+    .section-heading,
+    .fm-hero,
+    .print-choice,
+    .retail-strip {
+      grid-template-columns: 1fr;
+    }
+
+    .section-heading {
+      gap: 18px;
+      align-items: start;
+    }
+
+    .fm-hero__copy {
+      max-width: none;
+    }
+
+    .craft-pair,
+    .route-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .retail-strip__diagram {
+      max-width: 190px;
+    }
+  }
+
+  @media (max-width: 820px) {
+    .surface-matrix__head {
+      display: none;
+    }
+
+    .surface-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .surface-row__meter {
+      grid-column: 1;
+      justify-content: flex-start;
+    }
+
+    .surface-row__grade {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: end;
+    }
+
+    .surface-row__note {
+      grid-column: 1 / -1;
+    }
+
+    .backing-scale {
+      grid-template-columns: 1fr;
+    }
+
+    .print-choice__compare {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .fm-gallery__meta {
+      grid-template-columns: 1fr;
+    }
+
+    .fm-gallery__rail {
+      order: -1;
+    }
+
+    .fm-gallery__thumb {
+      width: 54px;
+      height: 54px;
+    }
+
+    .place-row {
+      grid-template-columns: 32px minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .place-row__tag {
+      grid-column: 2;
+      justify-self: start;
+      text-align: left;
+      padding-top: 0;
+      margin-top: 6px;
+    }
+
+    .route-card__rows div {
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .route-card__rows dd {
+      text-align: left;
+    }
+  }
+</style>
+
+<script>
+  /* ============================================================
+     FRIDGE MAGNET PAGE INTERACTIONS
+
+     - Hero 画廊（data-fm-gallery）：图 + 随图说明
+     独立 data-* 属性与独立 cleanup 键，
+     不与 ProductDetailLayout 的 initProductGallery 冲突。
+     ============================================================ */
+
+  type MagnetWindow = Window & {
+    __fmGalleryCleanup?: () => void;
+  };
+
+  function initFmGallery() {
+    const root = document.querySelector<HTMLElement>("[data-fm-gallery]");
+    if (!root || root.dataset.bound === "true") return;
+    root.dataset.bound = "true";
+
+    const thumbs = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-gallery-thumb]")
+    );
+    const stages = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-gallery-stage]")
+    );
+    const captionLabel = root.querySelector<HTMLElement>("[data-caption-label]");
+    const captionNote = root.querySelector<HTMLElement>("[data-caption-note]");
+
+    let data: { label: string; note: string }[] = [];
+
+    try {
+      data = JSON.parse(root.dataset.galleryData ?? "[]");
+    } catch {
+      return;
+    }
+
+    if (!thumbs.length || !stages.length) return;
+
+    function activate(index: number) {
+      thumbs.forEach((thumb, i) => {
+        const isActive = i === index;
+        thumb.classList.toggle("is-active", isActive);
+        thumb.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+
+      stages.forEach((stage, i) => {
+        stage.classList.toggle("is-active", i === index);
+      });
+
+      const item = data[index];
+      if (!item) return;
+      if (captionLabel) captionLabel.textContent = item.label;
+      if (captionNote) captionNote.textContent = item.note;
+    }
+
+    function onThumbClick(event: Event) {
+      const thumb = event.currentTarget as HTMLButtonElement;
+      const index = Number(thumb.dataset.galleryThumb);
+      if (!Number.isNaN(index)) activate(index);
+    }
+
+    thumbs.forEach((thumb) => thumb.addEventListener("click", onThumbClick));
+
+    const cleanup = () => {
+      thumbs.forEach((thumb) =>
+        thumb.removeEventListener("click", onThumbClick)
+      );
+    };
+
+    const win = window as MagnetWindow;
+    win.__fmGalleryCleanup?.();
+    win.__fmGalleryCleanup = cleanup;
+  }
+
+  initFmGallery();
+
+  document.addEventListener("astro:page-load", initFmGallery);
+</script>

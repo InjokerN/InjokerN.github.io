@@ -1,0 +1,1779 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+
+import challengeCoinsHero from "../../assets/home/cases/challenge-coins-hero.jpg";
+import challengeCoins02 from "../../assets/home/cases/challenge-coins-02.jpg";
+
+const project = {
+  title: "Custom Challenge Coin",
+  category: "Custom Coin Case Study",
+  description:
+    "A double-sided custom challenge coin designed as a collectible recognition object, built around one core decision: deep 3D relief that gives the coin real physical presence in the hand.",
+};
+
+const objectStats = [
+  { value: "45 mm", label: "Coin Diameter" },
+  { value: "3.5 mm", label: "Coin Thickness" },
+  { value: "2 Sides", label: "Front + Reverse" },
+  { value: "360°", label: "Edge / Object View" },
+];
+
+const requirements = [
+  "Deliver a coin that feels substantial in the hand, not a thin metal tag.",
+  "Make the 3D relief visible in photographs without additional lighting.",
+  "Keep both sides readable on their own, without one feeling like filler.",
+  "Ensure the edge and thickness match the visual weight of the front face.",
+];
+
+const sideData = [
+  {
+    key: "front",
+    number: "01",
+    label: "Front Side",
+    eyebrow: "01 / FRONT",
+    title: "Lead with the identity.",
+    body: "The front side establishes the primary symbol, hierarchy and visual weight of the coin. Relief depth keeps the central mark readable while giving the metal a strong light-and-shadow response.",
+    caption: "Front face · Hero side",
+  },
+  {
+    key: "back",
+    number: "02",
+    label: "Reverse Side",
+    eyebrow: "02 / BACK",
+    title: "Complete the story on the reverse.",
+    body: "The reverse side carries supporting recognition information without competing with the main identity. It is designed as part of the same visual system rather than as an afterthought.",
+    caption: "Reverse face · Supporting side",
+  },
+];
+
+const principles = [
+  {
+    number: "01",
+    label: "Central Relief",
+    title: "Depth is the first decision, not the last.",
+    body: "The primary emblem is raised noticeably higher than the surrounding field, so the center reads as the visual anchor from any angle and catches light on its own.",
+  },
+  {
+    number: "02",
+    label: "Edge Treatment",
+    title: "The perimeter has to match the face.",
+    body: "A thicker edge and a textured rim reinforce the sense of mass. The coin is designed to be picked up, not just looked at from the front.",
+  },
+  {
+    number: "03",
+    label: "Finish & Contrast",
+    title: "Contrast makes the relief readable.",
+    body: "Antique recesses and polished raised areas separate the layers without adding visual noise. Depth becomes readable in photographs and in hand.",
+  },
+];
+
+const specifications = [
+  ["Material", "Zinc Alloy / Custom Metal"],
+  ["Diameter", "45 mm"],
+  ["Thickness", "3.5 mm"],
+  ["Finish", "Antique + Polished Contrast"],
+  ["Front", "3D Relief + Raised Emblem"],
+  ["Back", "3D Relief + Fine Detail"],
+  ["Edge", "Textured / Machined Edge"],
+  ["Packaging", "Individual OPP + Presentation Box"],
+];
+
+const processSteps = [
+  [
+    "01",
+    "Artwork Review",
+    "Confirm the visual hierarchy, intended meaning and manufacturing constraints before modeling.",
+  ],
+  [
+    "02",
+    "3D Development",
+    "Separate the artwork into relief layers, recessed areas, text and edge details.",
+  ],
+  [
+    "03",
+    "Sample Approval",
+    "Review front / back details, metal appearance, plating contrast and edge treatment.",
+  ],
+  [
+    "04",
+    "Production",
+    "Tooling, forming, plating, polishing, coloring, finishing and quality inspection.",
+  ],
+  [
+    "05",
+    "Presentation",
+    "Pack the finished coins for delivery so the object arrives as a complete recognition piece.",
+  ],
+];
+
+const results = [
+  ["2 Sides", "Designed as one visual system"],
+  ["3.5 mm", "Substantial metal presence"],
+  ["360°", "Front / back / edge considered"],
+  ["Demo", "Representative project data"],
+];
+---
+
+<BaseLayout
+  title={`${project.title} — MetalCrafts`}
+  description={project.description}
+>
+  <main class="coin-page">
+    <div class="coin-wrap">
+      <section class="coin-hero" aria-labelledby="coin-title">
+        <div class="coin-hero__copy">
+          <div class="eyebrow">{project.category}</div>
+
+          <h1 id="coin-title">A double-sided coin built to be held.</h1>
+
+          <p class="coin-hero__intro">
+            A custom challenge coin is easy to make. Making one that feels
+            substantial in the hand is not. This project treats the front,
+            reverse and edge as one physical object, with 3D relief driving
+            every design decision.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn-case btn-case--ghost" href="#outcome">
+              Explore the Finished Coin
+            </a>
+          </div>
+
+          <div class="coin-stats">
+            {objectStats.map((item) => (
+              <div class="coin-stat">
+                <strong>{item.value}</strong>
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="coin-hero__visual">
+          <div class="coin-hero__image">
+            <Image
+              src={challengeCoinsHero}
+              alt="Custom challenge coin hero view"
+              widths={[900, 1200, 1600, 2000]}
+              sizes="(max-width: 900px) 100vw, 52vw"
+              loading="eager"
+              fetchpriority="high"
+            />
+
+            <div class="coin-image-note">
+              <span>Hero Object</span>
+              <strong>Front / Back / Edge</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="coin-section coin-brief" id="brief">
+        <div class="section-kicker">01 · The Brief</div>
+
+        <div class="brief-grid">
+          <div class="brief-copy">
+            <h2>The client did not want another thin metal tag.</h2>
+
+            <p>
+              The project came from a recognition program that had already tried
+              a stock challenge coin. The previous piece carried the right
+              artwork, but it felt light and flat in the hand — closer to a
+              printed token than a keepsake. The brief for this project was
+              specific: it had to feel different the moment someone picked it
+              up.
+            </p>
+          </div>
+
+          <div class="brief-card">
+            <span class="micro-label">Core Requirements</span>
+
+            <ul class="brief-list">
+              {requirements.map((item) => (
+                <li>
+                  <span class="brief-list__dot" aria-hidden="true">
+                    ✓
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="coin-section coin-design" id="design">
+        <div class="section-head">
+          <div class="section-head__main">
+            <div class="section-kicker">02 · The Design</div>
+
+            <h2>3D relief became the project's central decision.</h2>
+          </div>
+
+          <p class="section-head__lead">
+            Once the coin needed to feel substantial, every other design choice
+            followed. The relief depth determined where the eye lands, how the
+            metal catches light, and how the coin reads in the hand. The design
+            was planned around that constraint from the first sketch.
+          </p>
+        </div>
+
+        <div class="principles">
+          {principles.map((item) => (
+            <article class="principle">
+              <div class="principle__number">{item.number}</div>
+
+              <span class="principle__label">{item.label}</span>
+
+              <h3>{item.title}</h3>
+
+              <p>{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="coin-section coin-build" id="build">
+        <div class="section-head">
+          <div class="section-head__main">
+            <div class="section-kicker">03 · The Build</div>
+
+            <h2>Specifications, then proof the relief survived production.</h2>
+          </div>
+
+          <p class="section-head__lead">
+            Relief planning matters only if it holds up once the coin moves from
+            screen to metal. The specification below set the target. The
+            production flow below that showed how the target stayed on track.
+          </p>
+        </div>
+
+        <dl class="spec-table">
+          {specifications.map(([label, value]) => (
+            <div class="spec-row">
+              <dt>{label}</dt>
+              <dd>{value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div class="build-divider"></div>
+
+        <div class="build-process-head">
+          <span class="micro-label">Production Flow</span>
+          <h3>From artwork to a physical object with real depth.</h3>
+        </div>
+
+        <div class="process-grid">
+          {processSteps.map(([number, title, body]) => (
+            <article class="process-item">
+              <div class="process-item__number">{number}</div>
+
+              <h3>{title}</h3>
+
+              <p>{body}</p>
+            </article>
+          ))}
+        </div>
+
+        <div class="blank-feature">
+          <div class="blank-feature__image">
+            <Image
+              src={challengeCoins02}
+              alt="Unplated blank of the custom challenge coin"
+              widths={[1100, 1400, 1800, 2200]}
+              sizes="(max-width: 900px) 100vw, 1240px"
+              loading="lazy"
+            />
+
+            <div class="blank-feature__caption">
+              Unplated Blank · Relief Check
+            </div>
+          </div>
+
+          <div class="blank-feature__copy">
+            <div class="blank-feature__left">
+              <h3>The relief was checked before any plating was applied.</h3>
+            </div>
+
+            <div class="blank-feature__right">
+              <p>
+                Before the coin entered the plating stage, the unplated blank
+                was inspected for relief height, edge thickness and surface
+                consistency. If the depth was not correct at this stage, it
+                could not be fixed later. The blank confirmed the 3D relief held
+                up in real metal.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="coin-section coin-outcome" id="outcome">
+        <div class="section-kicker">04 · The Outcome</div>
+
+        <div class="outcome-head">
+          <h2>Front, reverse and edge should feel like one object.</h2>
+
+          <p>
+            The finished coin is shown below as a real object — front face,
+            reverse face and physical presence included. The result is a
+            recognition piece that reads as a keepsake, not a giveaway.
+          </p>
+        </div>
+
+        <div class="coin-switcher">
+          <div class="coin-switcher__visual">
+            {sideData.map((side, index) => (
+              <div
+                class:list={["side-panel", { active: index === 0 }]}
+                data-side-panel={side.key}
+                aria-hidden={index === 0 ? "false" : "true"}
+              >
+                <div class="side-panel__image">
+                  <Image
+                    src={challengeCoinsHero}
+                    alt={`${side.label} of a custom challenge coin`}
+                    widths={[900, 1200, 1600, 2000]}
+                    sizes="(max-width: 900px) 100vw, 720px"
+                    loading={index === 0 ? "eager" : "lazy"}
+                  />
+                </div>
+
+                <div class="side-panel__caption">
+                  <span>{side.caption}</span>
+                  <span>{side.eyebrow}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div class="coin-switcher__copy">
+            <div
+              class="side-tabs"
+              role="tablist"
+              aria-label="Coin side selector"
+            >
+              {sideData.map((side, index) => (
+                <button
+                  type="button"
+                  class:list={["side-tab", { active: index === 0 }]}
+                  data-side-trigger={side.key}
+                  role="tab"
+                  aria-selected={index === 0 ? "true" : "false"}
+                >
+                  <span class="side-tab__image">
+                    <Image
+                      src={challengeCoinsHero}
+                      alt=""
+                      widths={[420, 640, 900]}
+                      sizes="(max-width: 900px) 40vw, 190px"
+                      loading="lazy"
+                    />
+                  </span>
+
+                  <span class="side-tab__overlay">
+                    <small>{side.number}</small>
+                    <strong>{side.label}</strong>
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {sideData.map((side, index) => (
+              <article
+                class:list={["side-copy", { active: index === 0 }]}
+                data-side-copy={side.key}
+                aria-hidden={index === 0 ? "false" : "true"}
+              >
+                <div class="side-copy__eyebrow">{side.eyebrow}</div>
+
+                <h3>{side.title}</h3>
+
+                <p>{side.body}</p>
+              </article>
+            ))}
+
+            <div class="side-copy__note">
+              <span>Design Principle</span>
+              <strong>
+                Every side should still feel complete when seen alone.
+              </strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="outcome-grid">
+          <div class="outcome-copy">
+            <span class="micro-label">Project Outcome</span>
+
+            <h3>
+              A recognition piece that feels more like an object than a
+              giveaway.
+            </h3>
+
+            <p>
+              The value of a challenge coin comes from its physical presence. By
+              treating both sides and the edge as part of a single visual
+              system, and by committing to 3D relief as the first decision, the
+              finished piece feels more considered and easier to keep.
+            </p>
+          </div>
+
+          <div class="result-metrics">
+            {results.map(([value, label]) => (
+              <div class="result-metric">
+                <strong>{value}</strong>
+                <span>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="outcome-quote">
+          <p>
+            "The goal was never to make both sides busy. It was to make both
+            sides feel intentional — so the coin still looked complete no matter
+            which face the owner happened to hold."
+          </p>
+
+          <span>— Product Development Lead</span>
+        </div>
+      </section>
+
+      <section id="next-step" class="case-next-step">
+        <div class="cta">
+          <div>
+            <div class="section-kicker">Next Step</div>
+
+            <h2>Have a front-and-back concept in mind?</h2>
+
+            <p>
+              Send us your artwork, quantity, diameter, destination and
+              preferred finish. We can help translate the concept into a
+              manufacturable challenge coin and review both sides before
+              sampling.
+            </p>
+          </div>
+
+          <div>
+            <a
+              class="btn-case btn-case--primary"
+              href="#contact"
+              data-modal-open
+              data-modal-product={project.title}
+            >
+              Request a Quote
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    function initCoinSwitcher() {
+      const root = document.querySelector<HTMLElement>(".coin-switcher");
+
+      if (!root || root.dataset.bound === "1") return;
+
+      root.dataset.bound = "1";
+
+      const triggers = Array.from(
+        root.querySelectorAll<HTMLElement>("[data-side-trigger]"),
+      );
+
+      const panels = Array.from(
+        root.querySelectorAll<HTMLElement>("[data-side-panel]"),
+      );
+
+      const copies = Array.from(
+        root.querySelectorAll<HTMLElement>("[data-side-copy]"),
+      );
+
+      function setActive(key: string) {
+        triggers.forEach((trigger) => {
+          const active = trigger.dataset.sideTrigger === key;
+
+          trigger.classList.toggle("active", active);
+
+          trigger.setAttribute("aria-selected", String(active));
+        });
+
+        panels.forEach((panel) => {
+          const active = panel.dataset.sidePanel === key;
+
+          panel.classList.toggle("active", active);
+
+          panel.setAttribute("aria-hidden", String(!active));
+        });
+
+        copies.forEach((copy) => {
+          const active = copy.dataset.sideCopy === key;
+
+          copy.classList.toggle("active", active);
+
+          copy.setAttribute("aria-hidden", String(!active));
+        });
+      }
+
+      triggers.forEach((trigger) => {
+        trigger.addEventListener("click", () => {
+          const key = trigger.dataset.sideTrigger;
+
+          if (key) {
+            setActive(key);
+          }
+        });
+      });
+
+      setActive("front");
+    }
+
+    initCoinSwitcher();
+
+    document.addEventListener("astro:page-load", initCoinSwitcher);
+  </script>
+</BaseLayout>
+
+<style>
+  /* ==========================================================
+     PAGE
+  =========================================================== */
+
+  .coin-page {
+    min-height: 100vh;
+    overflow: clip;
+
+    background:
+      radial-gradient(
+        circle at 84% -6%,
+        rgba(174, 141, 90, 0.15),
+        transparent 31%
+      ),
+      linear-gradient(
+        180deg,
+        var(--color-cream) 0%,
+        var(--color-cream) 48%,
+        var(--color-paper) 100%
+      );
+
+    color: var(--color-ink);
+  }
+
+  .coin-page,
+  .coin-page *,
+  .coin-page *::before,
+  .coin-page *::after {
+    box-sizing: border-box;
+  }
+
+  .coin-wrap {
+    width: var(--container-width);
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+
+  /* ==========================================================
+     SHARED TYPE
+  =========================================================== */
+
+  .section-kicker,
+  .eyebrow,
+  .micro-label {
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .micro-label {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.13em;
+  }
+
+  /* ==========================================================
+     BUTTONS
+  =========================================================== */
+
+  .btn-case {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    min-height: 44px;
+    padding: 13px 18px;
+
+    border: 1px solid transparent;
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    transition:
+      background var(--ease-out),
+      border-color var(--ease-out),
+      color var(--ease-out),
+      transform var(--ease-out),
+      box-shadow var(--ease-out);
+  }
+
+  .btn-case--primary {
+    background: var(--color-gold);
+    color: var(--color-white);
+    box-shadow: 0 8px 24px rgba(174, 141, 90, 0.18);
+  }
+
+  .btn-case--primary:hover {
+    background: var(--color-gold-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(174, 141, 90, 0.24);
+  }
+
+  .btn-case--ghost {
+    background: rgba(174, 141, 90, 0.1);
+    border-color: rgba(174, 141, 90, 0.28);
+    color: var(--color-ink);
+  }
+
+  .btn-case--ghost:hover {
+    background: rgba(174, 141, 90, 0.18);
+    border-color: var(--color-gold-soft);
+    transform: translateY(-2px);
+  }
+
+  /* ==========================================================
+     HERO
+  =========================================================== */
+
+  .coin-hero {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 0.9fr)
+      minmax(0, 1.1fr);
+    gap: clamp(48px, 6vw, 84px);
+    align-items: center;
+    padding: 126px 0 72px;
+  }
+
+  .coin-hero__copy {
+    min-width: 0;
+  }
+
+  .coin-hero .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .coin-hero .eyebrow::before {
+    width: 28px;
+    height: 1px;
+    content: "";
+    background: var(--color-gold);
+  }
+
+  .coin-hero h1 {
+    max-width: 720px;
+    margin: 17px 0 21px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(46px, 5.5vw, 74px);
+    font-weight: 600;
+    line-height: 0.99;
+    letter-spacing: -0.055em;
+  }
+
+  .coin-hero__intro {
+    max-width: 590px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.82;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .coin-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin-top: 40px;
+    overflow: hidden;
+    background: rgba(222, 217, 207, 0.8);
+    border: 1px solid rgba(222, 217, 207, 0.8);
+    border-radius: var(--radius-md);
+  }
+
+  .coin-stat {
+    min-width: 0;
+    padding: 15px 16px;
+    background: rgba(247, 243, 235, 0.38);
+  }
+
+  .coin-stat strong {
+    display: block;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.05;
+  }
+
+  .coin-stat span {
+    display: block;
+    margin-top: 4px;
+    color: var(--color-muted-2);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .coin-hero__visual {
+    min-width: 0;
+  }
+
+  .coin-hero__image {
+    position: relative;
+    overflow: hidden;
+    min-height: 600px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .coin-hero__image::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(23, 23, 23, 0.04),
+      transparent 38%,
+      rgba(23, 23, 23, 0.1)
+    );
+  }
+
+  .coin-hero__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .coin-image-note {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+    z-index: 2;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+
+    padding: 11px 14px;
+
+    background: rgba(251, 250, 247, 0.84);
+    border: 1px solid rgba(174, 141, 90, 0.22);
+    border-radius: var(--radius-sm);
+
+    backdrop-filter: blur(12px);
+  }
+
+  .coin-image-note span {
+    color: var(--color-gold-dark);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .coin-image-note strong {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* ==========================================================
+     SECTIONS
+  =========================================================== */
+
+  .coin-section,
+  .case-next-step {
+    padding: 74px 0;
+    border-top: 1px solid var(--color-line);
+    scroll-margin-top: 100px;
+  }
+
+  .coin-section > .section-kicker {
+    display: block;
+    margin-bottom: 38px;
+  }
+
+  .coin-section h2 {
+    max-width: 880px;
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(34px, 4vw, 54px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+  }
+
+  /* ==========================================================
+     SECTION HEAD — 6:4 two-column
+  =========================================================== */
+
+  .section-head {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 6fr)
+      minmax(0, 4fr);
+    gap: 50px;
+    align-items: center;
+    margin-bottom: 42px;
+  }
+
+  .section-head__main {
+    min-width: 0;
+  }
+
+  .section-head__main .section-kicker {
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .section-head__lead {
+    min-width: 0;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.82;
+  }
+
+  /* ==========================================================
+     01 · BRIEF
+  =========================================================== */
+
+  .brief-grid {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1.1fr)
+      minmax(340px, 0.9fr);
+    gap: 64px;
+    align-items: start;
+  }
+
+  .brief-copy h2 {
+    max-width: 640px;
+  }
+
+  .brief-copy p {
+    max-width: 640px;
+    margin: 25px 0 0;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.85;
+  }
+
+  .brief-card {
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.42);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .brief-list {
+    display: grid;
+    gap: 16px;
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .brief-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: var(--color-ink);
+    font-size: 13px;
+    line-height: 1.72;
+  }
+
+  .brief-list__dot {
+    flex: 0 0 22px;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+    border: 1px solid var(--color-gold-soft);
+    border-radius: 50%;
+    color: var(--color-gold-dark);
+    font-size: 11px;
+  }
+
+  /* ==========================================================
+     02 · DESIGN
+  =========================================================== */
+
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .principle {
+    padding: 26px 24px 28px;
+    background: rgba(255, 255, 255, 0.34);
+    border: 1px solid var(--color-line);
+    border-top: 2px solid var(--color-gold);
+    border-radius: var(--radius-md);
+  }
+
+  .principle__number {
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+  }
+
+  .principle__label {
+    display: block;
+    margin: 14px 0 10px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .principle h3 {
+    margin: 0 0 10px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  .principle p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.72;
+  }
+
+  /* ==========================================================
+     03 · BUILD
+  =========================================================== */
+
+  .spec-table {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 64px;
+    margin: 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .spec-row {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.6fr) 1fr;
+    gap: 24px;
+    align-items: baseline;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .spec-row dt {
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .spec-row dd {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .build-divider {
+    height: 1px;
+    margin: 56px 0 38px;
+    background: var(--color-line);
+  }
+
+  .build-process-head {
+    margin-bottom: 28px;
+  }
+
+  .build-process-head h3 {
+    max-width: 760px;
+    margin: 9px 0 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3vw, 38px);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+  }
+
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 56px;
+  }
+
+  .process-item {
+    min-width: 0;
+    padding: 22px 20px 24px;
+    background: rgba(255, 255, 255, 0.32);
+    border: 1px solid var(--color-line);
+    border-top: 2px solid var(--color-gold);
+    border-radius: var(--radius-md);
+  }
+
+  .process-item__number {
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .process-item h3 {
+    margin: 11px 0 7px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .process-item p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.72;
+  }
+
+  .blank-feature {
+    display: grid;
+    gap: 34px;
+  }
+
+  .blank-feature__image {
+    position: relative;
+    max-height: 520px;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .blank-feature__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .blank-feature__caption {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    z-index: 2;
+
+    padding: 10px 14px;
+
+    background: rgba(251, 250, 247, 0.88);
+    border: 1px solid rgba(174, 141, 90, 0.22);
+    border-radius: var(--radius-sm);
+
+    backdrop-filter: blur(12px);
+
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .blank-feature__copy {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 6fr)
+      minmax(0, 4fr);
+    gap: 64px;
+    align-items: start;
+  }
+
+  .blank-feature__left h3 {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(24px, 2.8vw, 36px);
+    font-weight: 600;
+    line-height: 1.06;
+    letter-spacing: -0.04em;
+  }
+
+  .blank-feature__right p {
+    max-width: 560px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.85;
+  }
+
+  /* ==========================================================
+     04 · OUTCOME
+  =========================================================== */
+
+  .outcome-head {
+    margin-bottom: 44px;
+  }
+
+  .outcome-head p {
+    max-width: 690px;
+    margin: 21px 0 0;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.82;
+  }
+
+  .coin-switcher {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1.35fr)
+      minmax(330px, 0.65fr);
+    gap: 34px;
+    align-items: start;
+  }
+
+  .coin-switcher__visual {
+    position: relative;
+    min-width: 0;
+    aspect-ratio: 1.18 / 1;
+  }
+
+  .side-panel {
+    position: absolute;
+    inset: 0;
+    display: none;
+  }
+
+  .side-panel.active {
+    display: block;
+  }
+
+  .side-panel__image {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .side-panel__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .side-panel__caption {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    padding: 10px 13px;
+    background: rgba(251, 250, 247, 0.88);
+    border: 1px solid rgba(174, 141, 90, 0.2);
+    border-radius: var(--radius-sm);
+    backdrop-filter: blur(12px);
+  }
+
+  .side-panel__caption span:first-child {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .side-panel__caption span:last-child {
+    color: var(--color-gold-dark);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .coin-switcher__copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* ---------- Side tabs: 1 : 1.5 portrait, side by side ---------- */
+
+  .side-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .side-tab {
+    position: relative;
+
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1.5;
+
+    min-width: 0;
+    padding: 0;
+
+    overflow: hidden;
+
+    background: var(--color-surface);
+    border: 0;
+    border-radius: var(--radius-md);
+
+    text-align: left;
+    cursor: pointer;
+
+    transition: transform var(--ease-out);
+  }
+
+  .side-tab::after {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    content: "";
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    pointer-events: none;
+    transition:
+      border-color var(--ease-out),
+      box-shadow var(--ease-out);
+  }
+
+  .side-tab:hover::after {
+    border-color: var(--color-gold-soft);
+    box-shadow: inset 0 0 0 1px var(--color-gold-soft);
+  }
+
+  .side-tab.active::after {
+    border-color: var(--color-gold);
+    box-shadow: inset 0 0 0 2px var(--color-gold);
+  }
+
+  .side-tab__image {
+    position: absolute;
+    inset: 0;
+    display: block;
+    overflow: hidden;
+  }
+
+  .side-tab__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .side-tab__overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+
+    display: grid;
+    gap: 3px;
+
+    padding: 12px 14px 11px;
+
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.72) 45%,
+      rgba(255, 255, 255, 0.92) 100%
+    );
+  }
+
+  .side-tab__overlay small {
+    color: var(--color-gold-dark);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+  }
+
+  .side-tab__overlay strong {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+
+  .side-copy {
+    display: none;
+  }
+
+  .side-copy.active {
+    display: block;
+  }
+
+  .side-copy__eyebrow {
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .side-copy h3 {
+    max-width: 470px;
+    margin: 13px 0 13px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(24px, 2.6vw, 34px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+  }
+
+  .side-copy p {
+    max-width: 520px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.82;
+  }
+
+  .side-copy__note {
+    padding-top: 20px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .side-copy__note span {
+    display: block;
+    color: var(--color-muted-2);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .side-copy__note strong {
+    display: block;
+    max-width: 440px;
+    margin-top: 6px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .outcome-grid {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1.1fr)
+      minmax(320px, 0.9fr);
+    gap: 64px;
+    align-items: end;
+    margin-top: 60px;
+  }
+
+  .outcome-copy h3 {
+    max-width: 720px;
+    margin: 12px 0 14px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.3vw, 44px);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.04em;
+  }
+
+  .outcome-copy p {
+    max-width: 660px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.82;
+  }
+
+  .result-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .result-metric {
+    min-width: 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.32);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+  }
+
+  .result-metric strong {
+    display: block;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .result-metric span {
+    display: block;
+    margin-top: 5px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    line-height: 1.5;
+  }
+
+  .outcome-quote {
+    margin-top: 42px;
+    padding: 27px 30px;
+    background: rgba(255, 255, 255, 0.28);
+    border-left: 2px solid var(--color-gold);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .outcome-quote p {
+    max-width: 900px;
+    margin: 0 0 12px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.005em;
+  }
+
+  .outcome-quote span {
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ==========================================================
+     CTA
+  =========================================================== */
+
+  .case-next-step {
+    border-top: 0;
+  }
+
+  .cta {
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto;
+
+    gap: 28px;
+
+    align-items: center;
+
+    padding: 34px;
+
+    background:
+      radial-gradient(
+        circle at 90% 10%,
+        rgba(174, 141, 90, 0.17),
+        transparent 36%
+      ),
+      rgba(255, 255, 255, 0.4);
+
+    border: 1px solid rgba(174, 141, 90, 0.28);
+
+    border-radius: var(--radius-lg);
+  }
+
+  .cta h2 {
+    margin: 6px 0 10px;
+
+    font-size: 34px;
+  }
+
+  .cta p {
+    max-width: 680px;
+
+    margin: 0;
+
+    color: var(--color-muted);
+
+    font-size: 14px;
+
+    line-height: 1.75;
+  }
+
+  /* ==========================================================
+     RESPONSIVE
+  =========================================================== */
+
+  @media (max-width: 1100px) {
+    .coin-hero {
+      grid-template-columns: 1fr;
+    }
+
+    .coin-hero__visual {
+      max-width: 860px;
+    }
+
+    .spec-table {
+      gap: 0 40px;
+    }
+
+    .process-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .coin-wrap {
+      width: min(92%, 760px);
+    }
+
+    .coin-hero {
+      padding-top: 112px;
+    }
+
+    .brief-grid,
+    .blank-feature__copy,
+    .outcome-grid,
+    .cta {
+      grid-template-columns: 1fr;
+    }
+
+    .brief-grid,
+    .blank-feature__copy,
+    .outcome-grid {
+      gap: 38px;
+    }
+
+    .section-head {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      align-items: start;
+      margin-bottom: 34px;
+    }
+
+    .principles {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .spec-table {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .process-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .coin-switcher {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .coin-switcher__visual {
+      aspect-ratio: 1.4 / 1;
+    }
+
+    .side-tabs {
+      max-width: 460px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .coin-wrap {
+      width: calc(100% - 36px);
+    }
+
+    .coin-hero {
+      padding-top: 92px;
+      padding-bottom: 54px;
+    }
+
+    .coin-hero h1 {
+      font-size: clamp(38px, 10vw, 52px);
+    }
+
+    .coin-hero__intro {
+      font-size: 14px;
+      line-height: 1.78;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .btn-case {
+      width: 100%;
+    }
+
+    .coin-stats {
+      margin-top: 30px;
+    }
+
+    .coin-stat {
+      padding: 14px;
+    }
+
+    .coin-stat strong {
+      font-size: 18px;
+    }
+
+    .coin-hero__image {
+      min-height: 390px;
+    }
+
+    .coin-section,
+    .case-next-step {
+      padding: 58px 0;
+    }
+
+    .coin-section h2 {
+      font-size: clamp(30px, 8vw, 38px);
+    }
+
+    .coin-section > .section-kicker {
+      margin-bottom: 28px;
+    }
+
+    .coin-image-note,
+    .side-panel__caption {
+      left: 11px;
+      right: 11px;
+      bottom: 11px;
+    }
+
+    .coin-image-note strong,
+    .side-panel__caption span:first-child {
+      font-size: 10px;
+    }
+
+    .coin-image-note span,
+    .side-panel__caption span:last-child {
+      font-size: 7px;
+    }
+
+    .brief-grid,
+    .blank-feature__copy,
+    .outcome-grid {
+      gap: 30px;
+    }
+
+    .brief-card {
+      padding: 24px;
+    }
+
+    .spec-row {
+      grid-template-columns: minmax(100px, 0.5fr) 1fr;
+      gap: 16px;
+      padding: 16px 0;
+    }
+
+    .spec-row dd {
+      font-size: 13px;
+    }
+
+    .process-grid {
+      grid-template-columns: 1fr;
+      margin-bottom: 42px;
+    }
+
+    .blank-feature {
+      gap: 24px;
+    }
+
+    .blank-feature__image {
+      max-height: 320px;
+    }
+
+    .blank-feature__caption {
+      left: 11px;
+      bottom: 11px;
+      padding: 8px 11px;
+      font-size: 8px;
+    }
+
+    .side-tabs {
+      gap: 10px;
+    }
+
+    .side-tab__overlay {
+      padding: 9px 11px 8px;
+    }
+
+    .side-tab__overlay small {
+      font-size: 7px;
+    }
+
+    .side-tab__overlay strong {
+      font-size: 11px;
+    }
+
+    .side-copy h3 {
+      font-size: 26px;
+    }
+
+    .outcome-quote {
+      padding: 22px 20px;
+    }
+
+    .outcome-quote p {
+      font-size: 17px;
+    }
+
+    .cta {
+      padding: 24px;
+    }
+
+    .cta h2 {
+      font-size: 34px;
+    }
+  }
+</style>

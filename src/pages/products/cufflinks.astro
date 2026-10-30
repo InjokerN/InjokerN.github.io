@@ -1,0 +1,2548 @@
+---
+import { Image } from "astro:assets";
+import ProductDetailLayout from "../../components/ProductDetailLayout.astro";
+
+import { manufacturingProcess } from "../../data/manufacturing-process";
+
+/*
+  CUFFLINKS & TIE CLIPS — PRODUCT DETAIL PAGE
+
+  设计主线：The third button rule.
+  这是全站唯一「戴上之后只剩 16 mm 可见」的品类。所有设计决策都围绕
+  「远看」「近看」两个距离展开：展厅里只看得到轮廓与光泽，
+  握手距离才看得到图案，拆封那一刻才看得到背面。
+
+  图片：暂时沿用 Medals / Crafts 目录，等 cufflinks 实拍到位后替换。
+  性能：全页 7 张图（Hero 4 + 工艺 2 + 礼盒 1）。
+        佩戴位置、闭合结构、尺寸对位、领带夹细节全部用 CSS 绘制。
+*/
+
+import cufflinkGallery01 from "../../assets/products/medals/medal-gallery-01.jpg";
+import cufflinkGallery02 from "../../assets/products/medals/medal-gallery-02.jpg";
+import cufflinkGallery03 from "../../assets/products/medals/medal-gallery-03.jpg";
+import cufflinkGallery04 from "../../assets/products/medals/medal-gallery-04.jpg";
+
+import dieStruck from "../../assets/crafts/die-struck.jpg";
+import platingColor from "../../assets/crafts/plating-color.jpg";
+import velvetBox from "../../assets/crafts/velvet-box.jpg";
+
+const sections = [
+  { id: "hero", number: "", label: "Overview" },
+  { id: "specifications", number: "I", label: "Specifications" },
+  { id: "pairs", number: "II", label: "Cufflinks & Tie Clips" },
+  { id: "closing", number: "III", label: "Closing & Fit" },
+  { id: "craft", number: "IV", label: "Craft at 16 mm" },
+  { id: "presentation", number: "V", label: "Presentation" },
+  { id: "applications", number: "VI", label: "Applications" },
+  { id: "production", number: "VII", label: "Production & QC" },
+  { id: "faq", number: "VIII", label: "FAQ" },
+  { id: "inquiry", number: "IX", label: "Inquiry" },
+];
+
+/* ------------------------------------------------------------
+   HERO — 远看与近看
+   ------------------------------------------------------------ */
+
+const heroGallery = [
+  {
+    image: cufflinkGallery01,
+    label: "At arm's length",
+    note: "Two shapes, one highlight. This is the whole impression from across a boardroom.",
+    alt: "Custom metal cufflinks photographed at a distance",
+  },
+  {
+    image: cufflinkGallery02,
+    label: "At handshake distance",
+    note: "Where the artwork finally reads — relief, enamel and plating all resolved.",
+    alt: "Cufflink face close-up showing logo relief",
+  },
+  {
+    image: cufflinkGallery03,
+    label: "The pair, matched",
+    note: "Left and right are inspected together, never separately. Mirroring is the whole point.",
+    alt: "Matched pair of custom cufflinks",
+  },
+  {
+    image: cufflinkGallery04,
+    label: "Inside the cuff",
+    note: "What the wearer feels and only they ever see — the shaft, the spring, the tolerance.",
+    alt: "Cufflink fitting detail inside a French cuff",
+  },
+];
+
+const quickFacts = [
+  { value: "100 pairs", label: "MOQ per design" },
+  { value: "14–18 mm", label: "Typical face size" },
+  { value: "7–10 days", label: "Precision sampling" },
+];
+
+/* ------------------------------------------------------------
+   I. SPECIFICATIONS
+   ------------------------------------------------------------ */
+
+const specs = [
+  { label: "MOQ", value: "100 pairs per design; mixed designs per order accepted" },
+  { label: "Cufflink Face", value: "14–18 mm; oval, round or square, flat or domed" },
+  { label: "Tie Clip Length", value: "45–55 mm; face width 6–8 mm" },
+  { label: "Material", value: "Brass, zinc alloy, stainless steel" },
+  { label: "Craft", value: "Die-struck, die-cast, laser engraving, hard or soft enamel" },
+  { label: "Plating", value: "Gold, rose gold, rhodium, black nickel, antique finishes" },
+  { label: "Closing", value: "Swivel post, bullet back, fixed toggle, chain fitting" },
+  { label: "Tie Clip Grip", value: "Spring bar tuned for silk; no snag on twill or knitted ties" },
+  { label: "QC", value: "Pair mirroring, spring tension and plating adhesion checked 100%" },
+];
+
+/* ------------------------------------------------------------
+   II. CUFFLINKS & TIE CLIPS — 两件东西，两条工程线
+   ------------------------------------------------------------ */
+
+const companions = [
+  {
+    id: "cufflink",
+    index: "A",
+    name: "Cufflink",
+    role: "Decides whether the sleeve closes cleanly",
+    text: "The face is the visible half, but the mechanism is what people actually live with. A cufflink with a weak spring turns a French cuff into a ten-second fumble at the beginning and end of every meeting — and a cufflink that grips too hard takes skin with it.",
+    rows: [
+      { label: "Judged by", value: "The eye, twice — across the room and at the wrist" },
+      { label: "Tolerance", value: "Shaft length must clear a folded cuff, 8–11 mm" },
+      { label: "Failure mode", value: "Spring weakens; face and shaft separate" },
+      { label: "Repairable", value: "Return to stock, not to repair" },
+    ],
+    facts: ["Face 14–18 mm", "Pair-matched", "Swivel post standard"],
+  },
+  {
+    id: "tieclip",
+    index: "B",
+    name: "Tie Clip",
+    role: "Decides whether the silk survives the day",
+    text: "A tie clip is a clamp that presses against fabric all day. Every clip looks identical on a table — the difference shows up after a month of use, when an over-tensioned spring has left a permanent crease across the tie.",
+    rows: [
+      { label: "Judged by", value: "The hand — how it opens, how it lets go" },
+      { label: "Tolerance", value: "Spring travel 2–3 mm with soft landing on silk" },
+      { label: "Failure mode", value: "Over-tension creases fabric; loose spring slides" },
+      { label: "Repairable", value: "Same plating as the cufflink, so sets stay matched" },
+    ],
+    facts: ["Length 45–55 mm", "Face up to 30 mm", "Silk-tuned spring"],
+  },
+];
+
+const pairings = [
+  {
+    name: "Cufflink only",
+    text: "The safest corporate gift. One decision, one tool, no fit risk.",
+    best: "Client gifting",
+    parts: "1 pair",
+  },
+  {
+    name: "Cufflink + tie clip",
+    text: "The classic set. Both pieces share plating so they read as one object.",
+    best: "Board & wedding",
+    parts: "3 pcs",
+  },
+  {
+    name: "Set + lapel pin",
+    text: "Three pieces for full formalwear, boxed in a single foam tray.",
+    best: "Awards & heritage",
+    parts: "4 pcs",
+  },
+  {
+    name: "Set + studs",
+    text: "Adds a dress-shirt pairing for black tie. Higher unit cost, highest perceived value.",
+    best: "Milestone events",
+    parts: "9 pcs",
+  },
+];
+
+/* ------------------------------------------------------------
+   III. CLOSING & FIT
+   ------------------------------------------------------------ */
+
+const closings = [
+  {
+    id: "swivel",
+    name: "Swivel Post",
+    tag: "Standard",
+    text: "The default for a reason. The rear bar rotates through 90° and locks across the cuff fold, so the face can never slide forward. Most French cuffs are cut with a gap that suits a 10–11 mm post.",
+    best: "Almost every French-cuff shirt",
+    effort: "Two seconds per cuff",
+  },
+  {
+    id: "bullet",
+    name: "Bullet Back",
+    tag: "Most secure",
+    text: "A cylindrical toggle sits in line with the shaft and turns to lock. It holds the firmest of any mechanism and feels the most solid in the hand, but it is slower to put on and less forgiving on a tight cuff gap.",
+    best: "Heavy faces and daily wear",
+    effort: "Three seconds per cuff",
+  },
+  {
+    id: "toggle",
+    name: "Fixed Toggle",
+    tag: "Most affordable",
+    text: "A single fixed T-bar that you angle through the cuff. Cheapest to manufacture and the least likely to break, because there is no pivot — but it only fits cuffs with a wide enough gap, and it feels less refined.",
+    best: "High-volume promo programs",
+    effort: "Fastest, but fit-dependent",
+  },
+  {
+    id: "chain",
+    name: "Chain Fitting",
+    tag: "Most formal",
+    text: "A short chain links the face to a bar rather than a rigid shaft. Historically the dressiest option and the only one that tolerates an unusual cuff gap, but it hangs loose and is more prone to tangling.",
+    best: "Black tie and vintage cuffs",
+    effort: "Slowest to fasten",
+  },
+];
+
+const tieClipPositions = [
+  {
+    id: "correct",
+    level: "correct",
+    name: "Between the third and fourth buttons",
+    verdict: "Correct",
+    text: "Level with the sternum, anchored to the shirt placket so the tie and shirt move together. The tie stays flat and the clip stays hidden under the jacket.",
+  },
+  {
+    id: "high",
+    level: "high",
+    name: "Above the third button",
+    verdict: "Risky",
+    text: "Sits in the narrow part of the tie where the fabric is already springing away from the shirt. The clip only holds one of the two layers, so the tie still swings.",
+  },
+  {
+    id: "low",
+    level: "low",
+    name: "Below the fourth button",
+    verdict: "Risky",
+    text: "Grips the wide end where the tie is heaviest. It pulls the fabric taut across the belly and leaves a visible crease that does not press out.",
+  },
+  {
+    id: "none",
+    level: "none",
+    name: "No clip, jacket off",
+    verdict: "Fails",
+    text: "The tie lifts away from the shirt the moment you move. Not a manufacturing problem, but the reason most corporate tie clips end up in a drawer.",
+  },
+];
+
+const sizes = [
+  { id: "12", mm: 12, text: "12 mm — a ring or a headshot only. Detail disappears." },
+  { id: "14", mm: 14, text: "14 mm — the practical minimum for a real logo." },
+  { id: "16", mm: 16, text: "16 mm — the commonest face, reads at handshake distance." },
+  { id: "18", mm: 18, text: "18 mm — largest before it stops looking like a cufflink." },
+];
+
+/* ------------------------------------------------------------
+   IV. CRAFT AT 16 mm
+   ------------------------------------------------------------ */
+
+const craftDetails = [
+  {
+    index: "01",
+    title: "Die-Struck Micro-Relief",
+    text: "The face is struck under high pressure rather than cast, so the relief edge stays vertical instead of sloping. At 16 mm that edge is what separates a crisp logo from a soft blob — and it is settled in artwork, not in production.",
+    note: "Lines below roughly 0.15 mm will fill in or crumble. We flag them at proof stage.",
+    image: dieStruck,
+    alt: "Die-struck cufflink face with fine logo relief",
+    tone: "light",
+  },
+  {
+    index: "02",
+    title: "Plating That Has to Wear Evenly",
+    text: "The face wears against a jacket cuff hundreds of times a year. Rhodium and 18K gold over brass hold their tone longest; the high points of the relief rub first, which is exactly why relief depth and plating thickness have to be planned together.",
+    note: "Polished for formal shine, brushed for matte. Dual-tone is possible but lengthens lead time.",
+    image: platingColor,
+    alt: "Plating finish options for custom cufflinks",
+    tone: "dark",
+  },
+];
+
+/* ------------------------------------------------------------
+   V. PRESENTATION
+   ------------------------------------------------------------ */
+
+const presentation = [
+  {
+    name: "Foam tray in rigid box",
+    text: "The workhorse. Die-cut foam holds the shafts upright so the faces present flat when the lid lifts.",
+    tier: "Standard",
+  },
+  {
+    name: "Velvet pouch",
+    text: "Lower cost, softer feel, weaker presentation. Often chosen for volume programs where packaging is secondary.",
+    tier: "Volume",
+  },
+  {
+    name: "Wooden box",
+    text: "For retention and retirement gifts where the box is expected to outlive the occasion.",
+    tier: "Premium",
+  },
+  {
+    name: "Numbered edition card",
+    text: "A printed card with a serial inside the lid. Cheap to add and it converts a set into a collectible.",
+    tier: "Add-on",
+  },
+];
+
+/* ------------------------------------------------------------
+   VI. APPLICATIONS
+   ------------------------------------------------------------ */
+
+const applications = [
+  {
+    name: "Executive & Board Gifts",
+    text: "The category where a cufflink set is expected to feel like a keepsake rather than merchandise.",
+    moment: "Handshake",
+  },
+  {
+    name: "Weddings & Groomsmen",
+    text: "Matched sets with individual engraving. Volume is small but personalization per unit is high.",
+    moment: "Ceremony",
+  },
+  {
+    name: "Long-Service & Retirement",
+    text: "Occasions where the gift has to outlast the job title. Engraved reverse faces are the usual request.",
+    moment: "Departure",
+  },
+  {
+    name: "Aviation & Regimental",
+    text: "Squadron and regimental sets, crew gifts, and heritage-brand anniversary pieces.",
+    moment: "Squadron",
+  },
+  {
+    name: "Brand & Collector Editions",
+    text: "Numbered drops for retail and fan audiences, boxed and carded as a limited run.",
+    moment: "Retail",
+  },
+  {
+    name: "Conferences & Speaker Gifts",
+    text: "Standardized sets given at scale, where photography and unboxing matter more than personalization.",
+    moment: "Stage",
+  },
+];
+
+/* ------------------------------------------------------------
+   VIII. FAQ
+   ------------------------------------------------------------ */
+
+const faq = [
+  {
+    q: "Are cufflinks always sold in pairs?",
+    a: "Yes — they ship as a matched pair. Left and right are compared side by side for plating tone and relief orientation before boxing, because a mismatched pair is the most common complaint in this category and it cannot be fixed once it leaves the factory.",
+  },
+  {
+    q: "Which closing mechanism should we choose?",
+    a: "Swivel post for almost everything, bullet back if you want the most secure hold and do not mind a slower fastening, fixed toggle when unit cost is the deciding factor. Chain fittings are only worth it for vintage or unusually cut cuffs.",
+  },
+  {
+    q: "How small can the logo detail go?",
+    a: "At a 14–18 mm face, reliefs and clean lettering reproduce well. Serifs, hairlines and lines under about 0.15 mm will fill in during plating or crumble during striking. Send the mark at actual size and we will tell you before tooling, not after.",
+  },
+  {
+    q: "Can the tie clip share the same design as the cufflinks?",
+    a: "Yes, and it should. The tie clip face is 6–8 mm wide and up to 30 mm long, so the artwork usually needs to be a simplified or cropped version of the cufflink face so both pieces read as the same object at different distances.",
+  },
+  {
+    q: "Is the tie clip spring tension adjustable?",
+    a: "The spring is tuned to a target range for silk and fine wool, and we can bias it slightly softer or firmer within that range. We do not recommend going outside it — an over-tensioned clip creases the tie permanently.",
+  },
+  {
+    q: "Is gift packaging included in the unit price?",
+    a: "A rigid box with a die-cut foam insert and a printed sleeve is quoted as standard, because a matched pair needs something to be matched inside. Velvet pouches, wooden boxes and numbered cards are priced per piece.",
+  },
+  {
+    q: "Can we engrave different names for each pair?",
+    a: "Yes. Individual initials or full names can be laser-engraved on the reverse face or on the box sleeve. Reverse-face engraving keeps the gift discreet; sleeve engraving keeps the metal untouched. Both are quoted per unit.",
+  },
+  {
+    q: "How long does sampling and production take?",
+    a: "Sampling runs 7–10 working days after artwork approval, which is longer than most categories because the tool is what determines whether the detail survives. Production of 100–1,000 pairs normally takes 12–18 working days including plating and boxing.",
+  },
+];
+
+const hasProcess = manufacturingProcess.length > 0;
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<ProductDetailLayout
+  title="Cufflinks & Tie Clips"
+  description="Custom die-struck cufflinks and silk-tuned tie clips, made as matched pairs. Choose the closing mechanism, plating and gift boxing. MOQ 100 pairs."
+  ogImage={heroGallery[0].image.src}
+  sections={sections}
+>
+  <Fragment slot="structured-data">
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+
+  <!-- ============================================================
+       HERO — 远看与近看
+       ============================================================ -->
+  <section id="hero" class="product-hero">
+    <div class="cl-hero">
+      <div class="cl-hero__copy">
+        <p class="cl-hero__eyebrow">CUSTOM CUFFLINKS &amp; TIE CLIPS</p>
+        <h1 class="cl-hero__title">The third button rule.</h1>
+        <p class="cl-hero__desc">
+          A tie clip belongs between the third and fourth shirt buttons.
+          It is the one rule every man is taught and almost nobody follows.
+          Both of these objects live inside rules like that — small enough that
+          only precision shows, formal enough that precision is the whole point.
+        </p>
+
+        <div class="cl-hero__axis">
+          <span class="cl-hero__axis-rule" aria-hidden="true"></span>
+          <span class="cl-hero__axis-label">16 mm of visible metal</span>
+        </div>
+
+        <p class="cl-hero__note">
+          Everything outside that 16 mm is engineering the wearer never sees
+          but always feels: the spring, the shaft length, the plating on the
+          underside of the face.
+        </p>
+
+        <ul class="cl-hero__facts">
+          {quickFacts.map((fact) => (
+            <li>
+              <strong>{fact.value}</strong>
+              <span>{fact.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div
+        class="cl-gallery"
+        data-cl-gallery
+        data-gallery-data={JSON.stringify(
+          heroGallery.map((item) => ({ label: item.label, note: item.note }))
+        )}
+      >
+        <div class="cl-gallery__stage">
+          {heroGallery.map((item, index) => (
+            <div
+              class:list={["cl-gallery__frame", index === 0 && "is-active"]}
+              data-gallery-stage
+            >
+              <Image
+                src={item.image}
+                alt={item.alt}
+                loading={index === 0 ? "eager" : "lazy"}
+                sizes="(min-width: 1000px) 44vw, 92vw"
+              />
+            </div>
+          ))}
+        </div>
+
+        <div class="cl-gallery__meta">
+          <div class="cl-gallery__caption">
+            <span class="cl-gallery__caption-label" data-caption-label>
+              {heroGallery[0].label}
+            </span>
+            <span class="cl-gallery__caption-note" data-caption-note>
+              {heroGallery[0].note}
+            </span>
+          </div>
+
+          <div class="cl-gallery__rail">
+            {heroGallery.map((item, index) => (
+              <button
+                type="button"
+                class:list={["cl-gallery__thumb", index === 0 && "is-active"]}
+                data-gallery-thumb={String(index)}
+                aria-pressed={index === 0 ? "true" : "false"}
+                aria-label={`Show ${item.label}`}
+              >
+                <span class="cl-gallery__thumb-index">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <Image src={item.image} alt="" loading="lazy" sizes="90px" />
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       I. SPECIFICATIONS
+       ============================================================ -->
+  <section id="specifications" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">I · SPECIFICATIONS</p>
+          <h2 class="product-section__title">Measured in single millimetres.</h2>
+        </div>
+        <p class="product-section__lead">
+          There is no margin for a soft relief or a loose post at this scale.
+          These are the numbers that decide whether the pair reads as jewellery
+          or as a promotional item.
+        </p>
+      </div>
+
+      <div class="specs-layout">
+        <div class="specs-feature">
+          <div class="specs-feature__value">16 mm</div>
+          <div class="specs-feature__label">The Working Face Size</div>
+          <div class="specs-feature__line"></div>
+          <div class="specs-feature__mark">
+            PAIR<br />MATCHED
+          </div>
+        </div>
+
+        <div class="specs-list">
+          {specs.map((spec, index) => (
+            <div class="spec-row">
+              <div class="spec-row__number">
+                {String(index + 1).padStart(2, "0")}
+              </div>
+              <div class="spec-row__label">{spec.label}</div>
+              <div class="spec-row__value">{spec.value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       II. CUFFLINKS & TIE CLIPS
+       ============================================================ -->
+  <section id="pairs" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">II · CUFFLINKS &amp; TIE CLIPS</p>
+          <h2 class="product-section__title">Two objects, two engineering problems.</h2>
+        </div>
+        <p class="product-section__lead">
+          They are sold together because they are worn together, not because
+          they are the same product. One is judged by the eye and the other by
+          the hand, and conflating the two is how matched sets end up
+          mismatched.
+        </p>
+      </div>
+
+      <div class="companion" data-companion>
+        <div class="companion__rail">
+          {companions.map((item, index) => (
+            <button
+              type="button"
+              class:list={["companion-node", index === 0 && "is-active"]}
+              data-companion-node={item.id}
+              aria-pressed={index === 0 ? "true" : "false"}
+            >
+              <span class="companion-node__index">{item.index}</span>
+              <span class="companion-node__body">
+                <strong>{item.name}</strong>
+                <span>{item.role}</span>
+              </span>
+              <span class="companion-node__arrow" aria-hidden="true">→</span>
+            </button>
+          ))}
+        </div>
+
+        <div class="companion__panel">
+          {companions.map((item, index) => (
+            <article
+              class:list={["companion-detail", index === 0 && "is-active"]}
+              data-companion-detail={item.id}
+            >
+              <p class="companion-detail__name">
+                <span>{item.index}</span>
+                {item.name}
+              </p>
+              <p class="companion-detail__text">{item.text}</p>
+
+              <dl class="companion-detail__rows">
+                {item.rows.map((row) => (
+                  <div>
+                    <dt>{row.label}</dt>
+                    <dd>{row.value}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <ul class="companion-detail__facts">
+                {item.facts.map((fact) => (
+                  <li>{fact}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <h3 class="product-section__subhead-title">
+        How the two are combined
+      </h3>
+
+      <div class="pairing-strip">
+        {pairings.map((item, index) => (
+          <article class="pairing-cell">
+            <span class="pairing-cell__index">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <h4>{item.name}</h4>
+            <p>{item.text}</p>
+            <div class="pairing-cell__foot">
+              <span>{item.parts}</span>
+              <span>{item.best}</span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       III. CLOSING & FIT
+       ============================================================ -->
+  <section id="closing" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">III · CLOSING &amp; FIT</p>
+          <h2 class="product-section__title">What the wearer feels every morning.</h2>
+        </div>
+        <p class="product-section__lead">
+          Almost all returns in this category come from the mechanism, not the
+          artwork. Both of these objects are clamped, clipped or locked against
+          fabric twice a day, and the difference only shows after a month.
+        </p>
+      </div>
+
+      <div class="closing-scale">
+        {closings.map((item) => (
+          <article class="closing-card">
+            <div class="closing-card__head">
+              <h4>{item.name}</h4>
+              <span class="closing-card__tag">{item.tag}</span>
+            </div>
+            <p class="closing-card__text">{item.text}</p>
+            <div class="closing-card__foot">
+              <span>Best for</span>
+              <strong>{item.best}</strong>
+            </div>
+            <div class="closing-card__foot">
+              <span>On the cuff</span>
+              <strong>{item.effort}</strong>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <h3 class="product-section__subhead-title">
+        Tie clip position
+      </h3>
+      <p class="product-section__subhead-lead">
+        Four placements, drawn to scale on a shirt front. Only one of them keeps
+        the tie and the shirt moving as a single piece of fabric.
+      </p>
+
+      <div class="shirt-grid">
+        {tieClipPositions.map((item) => (
+          <figure class:list={["shirt-case", `shirt-case--${item.level}`]}>
+            <div class="shirt-case__drawing" aria-hidden="true">
+              <span class="shirt-case__collar"></span>
+              <span class="shirt-case__placket"></span>
+              <span class="shirt-case__tie"></span>
+              <span class="shirt-case__clip"></span>
+              <span class="shirt-case__btn shirt-case__btn--1"></span>
+              <span class="shirt-case__btn shirt-case__btn--2"></span>
+              <span class="shirt-case__btn shirt-case__btn--3"></span>
+              <span class="shirt-case__btn shirt-case__btn--4"></span>
+            </div>
+            <figcaption>
+              <p class="shirt-case__verdict">{item.verdict}</p>
+              <h4>{item.name}</h4>
+              <p>{item.text}</p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <h3 class="product-section__subhead-title">
+        Face size, drawn to scale
+      </h3>
+      <p class="product-section__subhead-lead">
+        The most common artwork problem is a logo approved for a 30 mm patch and
+        then applied to a 14 mm face. These are actual relative sizes.
+      </p>
+
+      <div class="size-scale">
+        {sizes.map((item) => (
+          <div class:list={["size-scale__cell", item.mm === 16 && "is-standard"]}>
+            <div class="size-scale__disc">
+              <span
+                class="size-scale__dot"
+                style={`--d:${(item.mm / 18) * 100}%`}
+                aria-hidden="true"
+              ></span>
+              <span class="size-scale__mm">{item.mm} mm</span>
+            </div>
+            <p>{item.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       IV. CRAFT AT 16 mm
+       ============================================================ -->
+  <section id="craft" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">IV · CRAFT AT 16 MM</p>
+          <h2 class="product-section__title">Two decisions decide the object.</h2>
+        </div>
+        <p class="product-section__lead">
+          How the relief is formed and how it is plated. Everything else —
+          enamel, engraving, finish — sits on top of those two.
+        </p>
+      </div>
+
+      <div class="craft-pair">
+        {craftDetails.map((item) => (
+          <article class:list={["craft-panel", `craft-panel--${item.tone}`]}>
+            <div class="craft-panel__media">
+              <Image
+                src={item.image}
+                alt={item.alt}
+                loading="lazy"
+                sizes="(min-width: 1000px) 46vw, 92vw"
+              />
+              <span class="craft-panel__index">{item.index}</span>
+            </div>
+            <div class="craft-panel__body">
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+              <p class="craft-panel__note">{item.note}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="enamel-choice">
+        <div class="enamel-choice__intro">
+          <h3>Hard or soft enamel</h3>
+          <p>
+            Both use the same die. The difference is whether the colour is left
+            recessed or ground flat and polished back to the metal — which is
+            the difference between a lapel-pin finish and a jewellery finish.
+          </p>
+        </div>
+
+        <div class="enamel-choice__compare">
+          <article class="enamel-option">
+            <div class="enamel-option__swatch enamel-option__swatch--hard" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <h4>Hard enamel</h4>
+            <p>
+              Ground flat and polished. The surface is a single plane, so the
+              metal and the colour catch light together. Slower, dearer, and
+              the only version that feels like a cufflink.
+            </p>
+            <ul>
+              <li>Flush, glass-like surface</li>
+              <li>Resists scratching at the cell edges</li>
+              <li>Two to three extra polishing passes</li>
+            </ul>
+          </article>
+
+          <article class="enamel-option">
+            <div class="enamel-option__swatch enamel-option__swatch--soft" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <h4>Soft enamel</h4>
+            <p>
+              Colour sits proud of the metal in each recess. Cheaper and faster,
+              and the raised metal lines read well on large shapes — but at 16 mm
+              it looks like promotional merchandise.
+            </p>
+            <ul>
+              <li>Undulating, textured surface</li>
+              <li>Faster lead time, lower unit cost</li>
+              <li>Best on 18 mm faces and larger shapes</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+
+      <div class="product-section__note">
+        <strong>Want the technical walkthrough?</strong>
+        Die-striking versus die-casting, plating comparisons, hard versus soft
+        enamel, and how to prepare artwork for a 16 mm face — our craft guides
+        cover each technique with reference photos you can hand to a designer.
+      </div>
+
+      <a href="/resources#craft-guides" class="product-section__link-btn">
+        Explore Craft Guides
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       V. PRESENTATION
+       ============================================================ -->
+  <section id="presentation" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">V · PRESENTATION</p>
+          <h2 class="product-section__title">The pair has to arrive as a pair.</h2>
+        </div>
+        <p class="product-section__lead">
+          In this category the box is not packaging, it is the proof. A foam
+          tray that holds both shafts upright is what tells the recipient the
+          two pieces were considered together.
+        </p>
+      </div>
+
+      <div class="presentation">
+        <div class="presentation__media">
+          <Image
+            src={velvetBox}
+            alt="Rigid presentation box with a die-cut insert for a cufflink pair"
+            loading="lazy"
+            sizes="(min-width: 1000px) 46vw, 92vw"
+          />
+          <p class="presentation__media-note">
+            Foam cut to the actual shaft length, not a stock insert.
+          </p>
+        </div>
+
+        <div class="presentation__list">
+          {presentation.map((item, index) => (
+            <article class="presentation-row">
+              <span class="presentation-row__index">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h4>
+                  {item.name}
+                  <span>{item.tier}</span>
+                </h4>
+                <p>{item.text}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VI. APPLICATIONS
+       ============================================================ -->
+  <section id="applications" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">VI · APPLICATIONS</p>
+          <h2 class="product-section__title">Quiet rooms only.</h2>
+        </div>
+        <p class="product-section__lead">
+          Cufflinks work where a branded giveaway would be an embarrassment.
+          That narrows the occasions and raises the bar on finish.
+        </p>
+      </div>
+
+      <div class="occasion-index">
+        {applications.map((item, index) => (
+          <article class="occasion-row">
+            <span class="occasion-row__number">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <div class="occasion-row__body">
+              <h4>{item.name}</h4>
+              <p>{item.text}</p>
+            </div>
+            <span class="occasion-row__tag">{item.moment}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VII. PRODUCTION & QC
+       ============================================================ -->
+  {hasProcess && (
+    <section id="production" class="product-section">
+      <div class="product-section__inner">
+        <div class="section-heading">
+          <div>
+            <p class="product-eyebrow">VII · PRODUCTION &amp; QC</p>
+            <h2 class="product-section__title">Artwork to boxed pair.</h2>
+          </div>
+          <p class="product-section__lead">
+            Six stages, with the artwork review doing more work than usual —
+            at 16 mm every correction after tooling is exponentially more
+            expensive than a correction on paper.
+          </p>
+        </div>
+
+        <div class="production-strip">
+          {manufacturingProcess.map((step) => (
+            <article class="production-strip__step">
+              <span class="production-strip__dot">{step.step}</span>
+              <div class="production-strip__image">
+                <Image
+                  src={step.image}
+                  alt={step.alt}
+                  loading="lazy"
+                  sizes="(min-width: 900px) 15vw, 45vw"
+                />
+              </div>
+              <div class="production-strip__body">
+                <h3>{step.title}</h3>
+                {step.text && <p>{step.text}</p>}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ============================================================
+       VIII. FAQ
+       ============================================================ -->
+  <section id="faq" class="product-section">
+    <div class="product-section__inner">
+      <p class="product-eyebrow">VIII · FAQ</p>
+
+      <div class="faq-grid">
+        <div class="faq-intro">
+          <h2 class="product-section__title">Frequently asked questions.</h2>
+          <p class="faq-intro__text">
+            Still deciding? Send the mark at actual size and we will tell you
+            which details hold at 16 mm before any tool is cut.
+          </p>
+        </div>
+
+        <div class="faq-list">
+          {faq.map((item) => (
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>{item.q}</span>
+                <span class="faq-plus" aria-hidden="true">+</span>
+              </summary>
+              <div class="faq-answer">
+                <p>{item.a}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</ProductDetailLayout>
+
+<style>
+  /* ============================================================
+     SHARED — 章节标题（与 keychains 页同一套规范）
+     ============================================================ */
+
+  .section-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
+    gap: clamp(24px, 4vw, 50px);
+    align-items: end;
+    margin-bottom: clamp(32px, 4vw, 48px);
+  }
+
+  .product-section__lead {
+    margin: 0;
+  }
+
+  .product-section__subhead-title {
+    margin: clamp(44px, 5vw, 64px) 0 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.4vw, 30px);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+
+  .product-section__subhead-lead {
+    max-width: 640px;
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .product-section__note {
+    max-width: 840px;
+    margin: 44px 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.85;
+  }
+
+  .product-section__note strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+
+  .cl-hero {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: start;
+  }
+
+  .cl-hero__copy {
+    min-width: 0;
+    max-width: 460px;
+  }
+
+  .cl-hero__eyebrow {
+    margin: 0 0 20px;
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .cl-hero__title {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(38px, 5vw, 64px);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+  }
+
+  .cl-hero__desc {
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  /* 16 mm 标尺 — hero 的唯一「技术」元素，一条线说明这个品类有多小 */
+  .cl-hero__axis {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 30px 0 0;
+  }
+
+  .cl-hero__axis-rule {
+    position: relative;
+    display: block;
+    width: 16mm;
+    height: 1px;
+    background: var(--gold);
+    flex: 0 0 auto;
+  }
+
+  .cl-hero__axis-rule::before,
+  .cl-hero__axis-rule::after {
+    content: "";
+    position: absolute;
+    top: -4px;
+    width: 1px;
+    height: 9px;
+    background: var(--gold);
+  }
+
+  .cl-hero__axis-rule::before {
+    left: 0;
+  }
+
+  .cl-hero__axis-rule::after {
+    right: 0;
+  }
+
+  .cl-hero__axis-label {
+    color: var(--muted2);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .cl-hero__note {
+    margin: 18px 0 0;
+    padding-left: 14px;
+    border-left: 2px solid var(--line);
+    color: var(--muted2);
+    font-size: 13px;
+    line-height: 1.75;
+  }
+
+  /* ---- 画廊 ---- */
+
+  .cl-gallery {
+    min-width: 0;
+  }
+
+  .cl-gallery__stage {
+    position: relative;
+    aspect-ratio: 5 / 4;
+    overflow: hidden;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .cl-gallery__frame {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .cl-gallery__frame.is-active {
+    opacity: 1;
+  }
+
+  .cl-gallery__frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cl-gallery__meta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: start;
+    margin-top: 14px;
+  }
+
+  .cl-gallery__caption {
+    display: grid;
+    gap: 5px;
+    padding-left: 14px;
+    border-left: 2px solid var(--gold);
+    min-height: 44px;
+  }
+
+  .cl-gallery__caption-label {
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .cl-gallery__caption-note {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .cl-gallery__rail {
+    display: flex;
+    gap: 8px;
+  }
+
+  .cl-gallery__thumb {
+    position: relative;
+    display: block;
+    width: 62px;
+    height: 62px;
+    padding: 0;
+    overflow: hidden;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .cl-gallery__thumb:hover {
+    border-color: var(--muted2);
+  }
+
+  .cl-gallery__thumb.is-active {
+    border-color: var(--gold);
+    transform: translateY(-3px);
+  }
+
+  .cl-gallery__thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+    transition: opacity 0.2s ease;
+  }
+
+  .cl-gallery__thumb:hover img,
+  .cl-gallery__thumb.is-active img {
+    opacity: 1;
+  }
+
+  .cl-gallery__thumb-index {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    padding: 2px 4px;
+    background: var(--paper2);
+    color: var(--muted2);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  /* ---- hero 底栏 ---- */
+
+  .cl-hero__facts {
+    display: grid;
+    gap: 12px;
+    margin: 28px 0 0;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+  }
+
+  .cl-hero__facts li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cl-hero__facts li:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .cl-hero__facts strong {
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  .cl-hero__facts span {
+    color: var(--muted2);
+    font-size: 10px;
+    letter-spacing: 0.07em;
+    line-height: 1.5;
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  /* ============================================================
+     II. COMPANION — 两件东西对比
+     ============================================================ */
+
+  .companion {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.62fr) minmax(0, 1.38fr);
+    gap: 0;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .companion__rail {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--line);
+  }
+
+  .companion-node {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    padding: 24px 22px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .companion-node:last-child {
+    border-bottom: none;
+  }
+
+  .companion-node::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .companion-node.is-active {
+    background: var(--paper);
+  }
+
+  .companion-node.is-active::before {
+    opacity: 1;
+  }
+
+  .companion-node:hover {
+    background: var(--paper);
+  }
+
+  .companion-node__index {
+    flex: 0 0 auto;
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.6;
+  }
+
+  .companion-node__body {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .companion-node__body strong {
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .companion-node__body span {
+    color: var(--muted2);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .companion-node__arrow {
+    margin-left: auto;
+    color: var(--muted2);
+    font-size: 13px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .companion-node.is-active .companion-node__arrow {
+    opacity: 1;
+    color: var(--gold);
+  }
+
+  .companion__panel {
+    padding: clamp(24px, 3vw, 36px);
+    min-height: 320px;
+  }
+
+  .companion-detail {
+    display: none;
+  }
+
+  .companion-detail.is-active {
+    display: block;
+    animation: clFade 0.3s ease;
+  }
+
+  .companion-detail__name {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0 0 14px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(24px, 2.6vw, 32px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .companion-detail__name span {
+    color: var(--gold);
+    font-size: 13px;
+  }
+
+  .companion-detail__text {
+    margin: 0 0 26px;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .companion-detail__rows {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 28px;
+    margin: 0;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+
+  .companion-detail__rows div {
+    min-width: 0;
+  }
+
+  .companion-detail__rows dt {
+    margin-bottom: 5px;
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .companion-detail__rows dd {
+    margin: 0;
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .companion-detail__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .companion-detail__facts li {
+    padding: 6px 12px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  /* ---- pairing strip ---- */
+
+  .pairing-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin-top: 28px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .pairing-cell {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 22px 20px;
+    border-right: 1px solid var(--line);
+  }
+
+  .pairing-cell:last-child {
+    border-right: none;
+  }
+
+  .pairing-cell__index {
+    color: var(--muted2);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .pairing-cell h4 {
+    margin: 10px 0 10px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .pairing-cell p {
+    flex: 1;
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .pairing-cell__foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    color: var(--muted2);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     III. CLOSING & FIT
+     ============================================================ */
+
+  .closing-scale {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .closing-card {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 22px;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .closing-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-3px);
+  }
+
+  .closing-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .closing-card__head h4 {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .closing-card__tag {
+    flex: 0 0 auto;
+    color: var(--gold);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: right;
+    padding-top: 3px;
+  }
+
+  .closing-card__text {
+    flex: 1;
+    margin: 16px 0 20px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .closing-card__foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+  }
+
+  .closing-card__foot span {
+    color: var(--muted2);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 9px;
+    padding-top: 2px;
+  }
+
+  .closing-card__foot strong {
+    color: var(--ink);
+    font-weight: 600;
+    text-align: right;
+  }
+
+  /* ---- shirt drawings ---- */
+
+  .shirt-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .shirt-case {
+    margin: 0;
+    padding: 0;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .shirt-case__drawing {
+    position: relative;
+    height: 210px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  /* 衣领 */
+  .shirt-case__collar {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    width: 96px;
+    height: 44px;
+    transform: translateX(-50%);
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: 0 0 48px 48px;
+  }
+
+  /* 门襟 */
+  .shirt-case__placket {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 12px;
+    height: 100%;
+    transform: translateX(-50%);
+    background: var(--paper2);
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+  }
+
+  /* 领带 */
+  .shirt-case__tie {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    width: 30px;
+    height: 178px;
+    transform: translateX(-50%) rotate(-1.6deg);
+    transform-origin: top center;
+    background: var(--ink);
+    opacity: 0.86;
+    clip-path: polygon(26% 0, 74% 0, 100% 100%, 0 100%);
+  }
+
+  /* 纽扣 */
+  .shirt-case__btn {
+    position: absolute;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    transform: translateX(-50%);
+    background: var(--paper);
+    border: 1px solid var(--muted2);
+    border-radius: 50%;
+  }
+
+  .shirt-case__btn--1 {
+    top: 46px;
+  }
+
+  .shirt-case__btn--2 {
+    top: 88px;
+  }
+
+  .shirt-case__btn--3 {
+    top: 130px;
+  }
+
+  .shirt-case__btn--4 {
+    top: 172px;
+  }
+
+  /* 领带夹 */
+  .shirt-case__clip {
+    position: absolute;
+    left: 50%;
+    width: 46px;
+    height: 7px;
+    transform: translateX(-50%);
+    background: var(--gold);
+    border-radius: 2px;
+    box-shadow: 0 2px 5px rgba(43, 35, 25, 0.22);
+  }
+
+  .shirt-case--correct .shirt-case__clip {
+    top: 148px;
+  }
+
+  .shirt-case--high .shirt-case__clip {
+    top: 66px;
+  }
+
+  .shirt-case--low .shirt-case__clip {
+    top: 190px;
+  }
+
+  /* 无夹：领带飘离门襟 */
+  .shirt-case--none .shirt-case__tie {
+    transform: translateX(-50%) rotate(-7deg) translateX(-16px);
+    opacity: 0.5;
+  }
+
+  .shirt-case--none .shirt-case__clip {
+    display: none;
+  }
+
+  /* 夹得太高：领带在窄处拱起，只夹住一层 */
+  .shirt-case--high .shirt-case__tie {
+    transform: translateX(-50%) rotate(-3.4deg) translateX(-4px);
+    opacity: 0.72;
+  }
+
+  /* 夹得太低：宽端被拉平，在腹部绷出褶 */
+  .shirt-case--low .shirt-case__tie {
+    transform: translateX(-50%) translateX(2px) scaleX(1.08);
+    opacity: 0.8;
+  }
+
+  .shirt-case figcaption {
+    padding: 18px 20px 22px;
+  }
+
+  .shirt-case__verdict {
+    margin: 0 0 8px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .shirt-case--correct .shirt-case__verdict {
+    color: var(--gold);
+  }
+
+  .shirt-case--high .shirt-case__verdict,
+  .shirt-case--low .shirt-case__verdict {
+    color: var(--muted2);
+  }
+
+  .shirt-case--none .shirt-case__verdict {
+    color: var(--muted);
+  }
+
+  .shirt-case figcaption h4 {
+    margin: 0 0 8px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  .shirt-case figcaption p:last-child {
+    margin: 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  /* ---- size scale ---- */
+
+  .size-scale {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+    padding: 32px 24px;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .size-scale__cell {
+    display: grid;
+    justify-items: center;
+    gap: 38px;
+    text-align: center;
+  }
+
+  .size-scale__disc {
+    display: grid;
+    place-items: center;
+    width: 132px;
+    height: 132px;
+    max-width: 100%;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    position: relative;
+  }
+
+  /* 按真实比例缩放的实心圆 —— 18 mm 为满盘，其余按比例内缩 */
+  .size-scale__dot {
+    position: absolute;
+    width: var(--d);
+    height: var(--d);
+    border-radius: 50%;
+    background: var(--ink);
+    opacity: 0.9;
+  }
+
+  .size-scale__cell.is-standard .size-scale__disc {
+    border-color: var(--gold);
+  }
+
+  .size-scale__cell.is-standard .size-scale__dot {
+    background: var(--gold);
+  }
+
+  /* 标签放在圆外，避免在最小圆上不可读 */
+  .size-scale__mm {
+    position: absolute;
+    bottom: -26px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  .size-scale__cell.is-standard .size-scale__mm {
+    color: var(--gold);
+  }
+
+  .size-scale__cell p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .size-scale__cell.is-standard p {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ============================================================
+     IV. CRAFT
+     ============================================================ */
+
+  .craft-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .craft-panel {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .craft-panel__media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--paper2);
+  }
+
+  .craft-panel__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .craft-panel__index {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 4px 9px;
+    background: var(--paper2);
+    border-radius: var(--radius-pill);
+    color: var(--ink);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .craft-panel__body {
+    flex: 1;
+    padding: 26px 24px 28px;
+  }
+
+  .craft-panel--dark .craft-panel__body {
+    background: var(--dark);
+  }
+
+  .craft-panel--light .craft-panel__body {
+    background: var(--paper2);
+  }
+
+  .craft-panel__body h3 {
+    margin: 0 0 14px;
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2vw, 26px);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+  }
+
+  .craft-panel--light .craft-panel__body h3 {
+    color: var(--ink);
+  }
+
+  .craft-panel--dark .craft-panel__body h3 {
+    color: var(--gold2);
+  }
+
+  .craft-panel__body > p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.78;
+  }
+
+  .craft-panel--light .craft-panel__body > p {
+    color: var(--muted);
+  }
+
+  .craft-panel--dark .craft-panel__body > p {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .craft-panel__note {
+    margin-top: 18px !important;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 12px !important;
+    line-height: 1.7 !important;
+  }
+
+  .craft-panel--dark .craft-panel__note {
+    border-top-color: rgba(216, 194, 157, 0.24);
+    color: var(--gold2) !important;
+  }
+
+  .craft-panel--light .craft-panel__note {
+    color: var(--muted2) !important;
+  }
+
+  /* ---- enamel ---- */
+
+  .enamel-choice {
+    display: grid;
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+    gap: clamp(24px, 4vw, 56px);
+    margin-top: clamp(32px, 4vw, 48px);
+    padding-top: clamp(28px, 3.4vw, 40px);
+    border-top: 1px solid var(--line);
+  }
+
+  .enamel-choice__intro h3 {
+    margin: 0 0 14px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.4vw, 30px);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+
+  .enamel-choice__intro p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.78;
+  }
+
+  .enamel-choice__compare {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .enamel-option {
+    padding: 22px;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .enamel-option__swatch {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    height: 56px;
+    margin-bottom: 18px;
+    padding: 8px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .enamel-option__swatch span {
+    display: block;
+    height: 8px;
+    border-radius: 1px;
+    background: var(--gold);
+  }
+
+  /* 硬珐琅：所有色块顶面对齐，形成同一平面 */
+  .enamel-option__swatch--hard {
+    justify-content: center;
+  }
+
+  .enamel-option__swatch--hard span {
+    background: linear-gradient(
+      180deg,
+      var(--gold2) 0%,
+      var(--gold) 55%,
+      var(--gold) 100%
+    );
+  }
+
+  /* 软珐琅：色块高低不一，中间鼓起 */
+  .enamel-option__swatch--soft {
+    justify-content: center;
+  }
+
+  .enamel-option__swatch--soft span {
+    height: 10px;
+    background: linear-gradient(
+      180deg,
+      var(--ink) 0%,
+      var(--muted) 70%,
+      var(--ink) 100%
+    );
+    border-radius: 4px;
+    opacity: 0.78;
+  }
+
+  .enamel-option__swatch--soft span:nth-child(1) {
+    transform: scaleX(0.94);
+  }
+
+  .enamel-option__swatch--soft span:nth-child(2) {
+    transform: scaleX(1);
+  }
+
+  .enamel-option__swatch--soft span:nth-child(3) {
+    transform: scaleX(0.96);
+  }
+
+  .enamel-option h4 {
+    margin: 0 0 10px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .enamel-option > p {
+    margin: 0 0 14px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .enamel-option ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 7px;
+  }
+
+  .enamel-option li {
+    position: relative;
+    padding-left: 13px;
+    color: var(--muted2);
+    font-size: 11px;
+    line-height: 1.55;
+  }
+
+  .enamel-option li::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 0;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+
+  /* ============================================================
+     V. PRESENTATION
+     ============================================================ */
+
+  .presentation {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(24px, 4vw, 52px);
+    align-items: start;
+  }
+
+  .presentation__media img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: var(--paper2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .presentation__media-note {
+    margin: 14px 0 0;
+    padding-left: 14px;
+    border-left: 2px solid var(--gold);
+    color: var(--muted2);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .presentation__list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+
+  .presentation-row {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .presentation-row__index {
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.9;
+  }
+
+  .presentation-row h4 {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0 0 8px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .presentation-row h4 span {
+    color: var(--muted2);
+    font-family: var(--font-body);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .presentation-row p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* ============================================================
+     VI. APPLICATIONS
+     ============================================================ */
+
+  .occasion-index {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+
+  .occasion-row {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr) auto;
+    gap: clamp(14px, 2.4vw, 32px);
+    align-items: start;
+    padding: clamp(20px, 2.4vw, 28px) 0;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.2s ease;
+  }
+
+  .occasion-row:hover {
+    background: var(--paper2);
+  }
+
+  .occasion-row__number {
+    color: var(--muted2);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.7;
+  }
+
+  .occasion-row__body h4 {
+    margin: 0 0 6px;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(17px, 1.8vw, 21px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  .occasion-row__body p {
+    max-width: 58ch;
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .occasion-row__tag {
+    justify-self: end;
+    padding-top: 4px;
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  /* ============================================================
+     ANIMATION
+     ============================================================ */
+
+  @keyframes clFade {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+
+  @media (max-width: 1180px) {
+    .closing-scale,
+    .shirt-grid,
+    .pairing-strip {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* 2×2 网格：奇数格保留右边框，偶数格去掉；前两格补下边框 */
+    .pairing-cell {
+      border-right: 1px solid var(--line);
+    }
+
+    .pairing-cell:nth-child(2n) {
+      border-right: none;
+    }
+
+    .pairing-cell:nth-child(1),
+    .pairing-cell:nth-child(2) {
+      border-bottom: 1px solid var(--line);
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .section-heading,
+    .cl-hero,
+    .enamel-choice,
+    .presentation,
+    .companion {
+      grid-template-columns: 1fr;
+    }
+
+    .section-heading {
+      gap: 18px;
+      align-items: start;
+    }
+
+    .cl-hero__copy {
+      max-width: none;
+    }
+
+    .companion__rail {
+      flex-direction: row;
+      overflow-x: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .companion-node {
+      flex: 0 0 auto;
+      min-width: 220px;
+      border-bottom: none;
+      border-right: 1px solid var(--line);
+    }
+
+    .companion-node::before {
+      top: auto;
+      bottom: 0;
+      width: 100%;
+      height: 2px;
+    }
+
+    .companion__panel {
+      min-height: 0;
+    }
+
+    .craft-pair {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .size-scale {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .cl-gallery__meta {
+      grid-template-columns: 1fr;
+    }
+
+    .cl-gallery__rail {
+      order: -1;
+    }
+
+    .cl-gallery__thumb {
+      width: 54px;
+      height: 54px;
+    }
+
+    .closing-scale,
+    .shirt-grid,
+    .pairing-strip,
+    .enamel-choice__compare {
+      grid-template-columns: 1fr;
+    }
+
+    .pairing-cell {
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .pairing-cell:last-child {
+      border-bottom: none;
+    }
+
+    .occasion-row {
+      grid-template-columns: 32px minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .occasion-row__tag {
+      grid-column: 2;
+      justify-self: start;
+      text-align: left;
+      padding-top: 0;
+      margin-top: 6px;
+    }
+
+    .companion-detail__rows {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .presentation-row {
+      grid-template-columns: 26px minmax(0, 1fr);
+      gap: 12px;
+    }
+  }
+</style>
+
+<script>
+  /* ============================================================
+     CUFFLINK PAGE INTERACTIONS
+
+     - Hero 画廊（data-cl-gallery）：图 + 随图说明
+     - 袖扣 / 领带夹切换（data-companion）
+     使用独立 data-* 属性与独立 cleanup 键，
+     不与 ProductDetailLayout 的 initProductGallery 冲突。
+     ============================================================ */
+
+  type CufflinkWindow = Window & {
+    __clGalleryCleanup?: () => void;
+    __clCompanionCleanup?: () => void;
+  };
+
+  function initClGallery() {
+    const root = document.querySelector<HTMLElement>("[data-cl-gallery]");
+    if (!root || root.dataset.bound === "true") return;
+    root.dataset.bound = "true";
+
+    const thumbs = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-gallery-thumb]")
+    );
+    const stages = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-gallery-stage]")
+    );
+    const captionLabel = root.querySelector<HTMLElement>("[data-caption-label]");
+    const captionNote = root.querySelector<HTMLElement>("[data-caption-note]");
+
+    let data: { label: string; note: string }[] = [];
+
+    try {
+      data = JSON.parse(root.dataset.galleryData ?? "[]");
+    } catch {
+      return;
+    }
+
+    if (!thumbs.length || !stages.length) return;
+
+    function activate(index: number) {
+      thumbs.forEach((thumb, i) => {
+        const isActive = i === index;
+        thumb.classList.toggle("is-active", isActive);
+        thumb.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+
+      stages.forEach((stage, i) => {
+        stage.classList.toggle("is-active", i === index);
+      });
+
+      const item = data[index];
+      if (!item) return;
+      if (captionLabel) captionLabel.textContent = item.label;
+      if (captionNote) captionNote.textContent = item.note;
+    }
+
+    function onThumbClick(event: Event) {
+      const thumb = event.currentTarget as HTMLButtonElement;
+      const index = Number(thumb.dataset.galleryThumb);
+      if (!Number.isNaN(index)) activate(index);
+    }
+
+    thumbs.forEach((thumb) => thumb.addEventListener("click", onThumbClick));
+
+    const cleanup = () => {
+      thumbs.forEach((thumb) =>
+        thumb.removeEventListener("click", onThumbClick)
+      );
+    };
+
+    const win = window as CufflinkWindow;
+    win.__clGalleryCleanup?.();
+    win.__clGalleryCleanup = cleanup;
+  }
+
+  function initClCompanion() {
+    const root = document.querySelector<HTMLElement>("[data-companion]");
+    if (!root || root.dataset.bound === "true") return;
+    root.dataset.bound = "true";
+
+    const nodes = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-companion-node]")
+    );
+    const details = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-companion-detail]")
+    );
+
+    if (!nodes.length || !details.length) return;
+
+    function activate(id: string) {
+      nodes.forEach((node) => {
+        const isActive = node.dataset.companionNode === id;
+        node.classList.toggle("is-active", isActive);
+        node.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+
+      details.forEach((detail) => {
+        detail.classList.toggle(
+          "is-active",
+          detail.dataset.companionDetail === id
+        );
+      });
+    }
+
+    function onNodeClick(event: Event) {
+      const node = event.currentTarget as HTMLButtonElement;
+      const id = node.dataset.companionNode;
+      if (id) activate(id);
+    }
+
+    nodes.forEach((node) => node.addEventListener("click", onNodeClick));
+
+    const cleanup = () => {
+      nodes.forEach((node) =>
+        node.removeEventListener("click", onNodeClick)
+      );
+    };
+
+    const win = window as CufflinkWindow;
+    win.__clCompanionCleanup?.();
+    win.__clCompanionCleanup = cleanup;
+  }
+
+  initClGallery();
+  initClCompanion();
+
+  document.addEventListener("astro:page-load", initClGallery);
+  document.addEventListener("astro:page-load", initClCompanion);
+</script>

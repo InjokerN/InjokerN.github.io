@@ -1,0 +1,1909 @@
+---
+import { Image } from "astro:assets";
+import ProductDetailLayout from "../../components/ProductDetailLayout.astro";
+
+import { manufacturingProcess } from "../../data/manufacturing-process";
+
+/*
+  ENAMEL PINS — PRODUCT DETAIL PAGE
+
+  设计主线：Color, held in metal.
+  珐琅徽章是 8 个品类里「收藏品属性」最强的——表面工艺、特殊效果、
+  背部配件、零售背卡四个轴共同决定一枚徽章是被随手送掉还是被收藏。
+  全页围绕买家四个问题展开：
+
+  - 我的图能变成徽章吗？→ II 三列截面对比（软 / 硬 / 印刷）
+  - 怎么做得值得收藏？→ III 特殊工艺切换廊（8 项）
+  - 怎么佩戴？→ IV 背部配件对比表
+  - 能直接零售吗？→ V 节目方案 + 背卡
+
+  合规：全部使用全局 Token，无硬编码色值、无自定义 CSS 变量。
+  图片说明：现用 crafts 目录与徽章目录实拍图占位，确认效果后替换。
+*/
+import epinHero from "../../assets/home/cases/enamelpins-hero.jpg";
+
+/* II · 工艺面对比（实拍占位） */
+import softEnamel from "../../assets/crafts/soft-enamel.jpg";
+import hardEnamel from "../../assets/crafts/hard-enamel.jpg";
+import uvPrinting from "../../assets/crafts/uv-printing.jpg";
+
+/* III · 特殊工艺廊（实拍占位） */
+import glitter from "../../assets/crafts/glitter.jpg";
+import glowInTheDark from "../../assets/crafts/glow-in-the-dark.jpg";
+import expoyDome from "../../assets/crafts/exposy.jpg";
+import rhinestone from "../../assets/crafts/rhinestone.jpg";
+import dieStruck from "../../assets/crafts/die-struck.jpg";
+import interactivePin from "../../assets/crafts/interactive-pin.jpg";
+import backCard from "../../assets/crafts/back-card.jpg";
+
+/* IV · 背部配件小图（占位图，待替换为配件实物图） */
+import platingColor from "../../assets/crafts/plating-color.jpg";
+import coinCapsule from "../../assets/crafts/coin-capsule.jpg";
+
+/* ============================================================
+   SECTIONS — TOC 锚点（Overview 无编号，其后从 I 顺延）
+   ============================================================ */
+
+const sections = [
+  { id: "hero", number: "", label: "Overview" },
+  { id: "specifications", number: "I", label: "Specifications" },
+  { id: "enamel", number: "II", label: "Enamel & Surface" },
+  { id: "finishes", number: "III", label: "Special Finishes" },
+  { id: "backs", number: "IV", label: "Back Attachments" },
+  { id: "applications", number: "V", label: "Use Cases" },
+  { id: "production", number: "VI", label: "Production & Quality" },
+  { id: "faq", number: "VII", label: "FAQ" },
+  { id: "inquiry", number: "VIII", label: "Inquiry" },
+];
+
+/* ============================================================
+   ENAMEL PINS — PAGE CONTENT
+   ============================================================ */
+
+const product = {
+  slug: "enamel-pins",
+  title: "Enamel Pins",
+
+  image: epinHero,
+  alt: "Custom enamel pin with detailed colorful finish",
+
+  desc: "Custom enamel pins built around your artwork — soft or hard enamel, special finishes, and the backing that fits how it will be worn and collected. From merch drops to retail-ready sets.",
+
+  heroTitle: "Color, held in metal.",
+
+  heroIntro:
+    "A small surface with room for a full illustration. Build a custom enamel pin around the surface, the finishes, and the backing that fit how it will be worn and collected.",
+
+  statement: [
+    "Art, held in metal.",
+    "Finished to be collected.",
+    "Retail-ready from the box.",
+  ],
+
+  quickFacts: [
+    "MOQ 500 pcs per design",
+    "Sample 5–8 working days",
+    "Soft or hard enamel",
+  ],
+
+  /* II · 三种表面工艺：hero 截面带 + II 实拍对比卡共用数据 */
+  enamelMethods: [
+    {
+      id: "soft",
+      number: "01",
+      name: "Soft Enamel",
+      level: "Recessed surface",
+      title: "Raised metal lines, recessed color.",
+      note: "Color sits below the metal line",
+      image: softEnamel,
+      alt: "Soft enamel surface detail on a custom pin",
+      text: "Soft enamel is filled slightly below the raised metal lines. The color sits in shallow wells, so the metal outline stays visible and the surface has a tactile, slightly uneven feel. Usually the lower-cost method, and a good fit for bold line art and flat color fields.",
+    },
+    {
+      id: "hard",
+      number: "02",
+      name: "Hard Enamel",
+      level: "Flush, polished surface",
+      title: "Sanded flush. Polished smooth.",
+      note: "Color polished flush with the metal line",
+      image: hardEnamel,
+      alt: "Hard enamel polished surface detail on a custom pin",
+      text: "Hard enamel is filled, then sanded and polished until the color is flush with the metal lines. The result is a flat, glass-like surface that is typically more durable and more refined — and reads as premium on collector pieces.",
+    },
+    {
+      id: "print",
+      number: "03",
+      name: "Print & Mixed",
+      level: "UV / screen print",
+      title: "For gradients and fine detail.",
+      note: "A printed layer sits over the metal body",
+      image: uvPrinting,
+      alt: "UV printed detail on a custom pin",
+      text: "When the artwork needs gradients, photographs, or very fine lines, UV or screen printing sits on top of the metal body — with or without enamel fill. Printing and enamel can also be combined on the same pin: a printed gradient inside an enameled field.",
+    },
+  ],
+
+  /* III · 特殊工艺切换廊 */
+  finishes: [
+    {
+      key: "glitter",
+      number: "01",
+      name: "Glitter Enamel",
+      tag: "Enamel effect",
+      image: glitter,
+      alt: "Glitter enamel finish on a custom pin",
+      text: "Glitter mixed into the enamel fill catches light and reads as a limited edition from across a room. Best on larger color fields — fine detail turns muddy.",
+    },
+    {
+      key: "glow",
+      number: "02",
+      name: "Glow-in-the-Dark",
+      tag: "Enamel effect",
+      image: glowInTheDark,
+      alt: "Glow-in-the-dark enamel finish on a custom pin",
+      text: "A luminous fill that charges in daylight and glows after dark. Best for character designs and night-themed drops — a test shot is recommended before the run.",
+    },
+    {
+      key: "epoxy",
+      number: "03",
+      name: "Epoxy Doming",
+      tag: "Additive",
+      image: expoyDome,
+      alt: "Epoxy dome finish on a custom pin",
+      text: "A resin dome over the printed surface — wipe-clean and scratch-resistant. It softens very fine type, so pair it with illustration work rather than copy.",
+    },
+    {
+      key: "rhinestone",
+      number: "04",
+      name: "Rhinestone",
+      tag: "Additive",
+      image: rhinestone,
+      alt: "Rhinestone stones set into a custom pin",
+      text: "Crystal or colored stones set into the metal body. Best for fashion and anniversary pieces; placement and stone size are confirmed at sample stage.",
+    },
+    {
+      key: "cutout",
+      number: "05",
+      name: "Cut-Outs",
+      tag: "Construction",
+      image: dieStruck,
+      alt: "Laser cut-out detail on a custom pin body",
+      text: "Laser-cut openings through the body — for keys, wings, tools, and any shape that needs to read as an outline. Adds process steps and unit cost.",
+    },
+    {
+      key: "spinner",
+      number: "06",
+      name: "Spinners & Movable Parts",
+      tag: "Construction",
+      image: interactivePin,
+      alt: "Spinner pin with a movable element",
+      text: "A rotating or dangling element fixed behind the front plate. The most collectible format in the range — it needs a thicker body and careful balance, so it is quoted separately.",
+    },
+    {
+      key: "double",
+      number: "07",
+      name: "Double-Sided",
+      tag: "Print",
+      image: hardEnamel,
+      alt: "Double-sided custom enamel pin",
+      text: "Enamel front with an enameled, engraved, or printed reverse — designed as one object, not an afterthought. Alignment across both faces is checked at sample stage.",
+    },
+    {
+      key: "card",
+      number: "08",
+      name: "Backing Card Retail",
+      tag: "Packaging",
+      image: backCard,
+      alt: "Custom backing card for retail packaging of enamel pins",
+      text: "Custom backing cards with brand artwork, a barcode or QR code, and a die-cut window — so the pin can go straight onto a retail fixture without repacking.",
+    },
+  ],
+
+  /* IV · 背部配件（开放对比表；小图为占位图，替换为配件实物图） */
+  backs: [
+    {
+      id: "butterfly",
+      name: "Butterfly Clutch",
+      tag: "Standard",
+      image: platingColor,
+      alt: "Butterfly clutch back attachment",
+      holds: "A metal butterfly clutch pressed onto the post — the default for bulk merchandise and the lowest-cost option.",
+      bestFor: "Merch drops, events, high-volume runs",
+    },
+    {
+      id: "rubber",
+      name: "Rubber Clutch",
+      tag: "Stronger grip",
+      image: expoyDome,
+      alt: "Rubber clutch back attachment",
+      holds: "A flexible rubber cap that grips the post by friction — more secure than a butterfly clutch on thick fabric.",
+      bestFor: "Backpacks, uniforms, outdoor events",
+    },
+    {
+      id: "magnetic",
+      name: "Magnetic Back",
+      tag: "No pinholes",
+      image: coinCapsule,
+      alt: "Magnetic back attachment",
+      holds: "A magnet set into the pin reverse, paired with a plate on the other side of the fabric — nothing is pierced.",
+      bestFor: "Blazers, knitwear, corporate apparel",
+    },
+    {
+      id: "safety",
+      name: "Safety Pin",
+      tag: "Classic mechanism",
+      image: dieStruck,
+      alt: "Safety pin back attachment",
+      holds: "A wire pin and catch built into the reverse — secure, familiar, and removable without a separate clutch.",
+      bestFor: "Heritage styles, uniform and hat pins",
+    },
+    {
+      id: "ring",
+      name: "Keychain Ring",
+      tag: "Dual purpose",
+      image: interactivePin,
+      alt: "Keychain ring back attachment",
+      holds: "A split ring or swivel clasp riveted to the reverse — the same pin works as a bag charm or keychain.",
+      bestFor: "Gift sets, event bundles, retail multipacks",
+    },
+  ],
+
+  /* V · 节目方案 */
+  applications: [
+    {
+      number: "01",
+      title: "Brand Merchandise",
+      text: "Turn a logo, mascot, or campaign graphic into a wearable item. Soft enamel suits bold line art; hard enamel suits a smoother, premium look.",
+      chip: "Soft enamel · butterfly clutch",
+    },
+    {
+      number: "02",
+      title: "Events & Conferences",
+      text: "Design a pin around a launch, milestone, or attendee identity. A compact format works well for lanyard distribution, badges, and welcome kits.",
+      chip: "Compact 25–32 mm · rubber clutch",
+    },
+    {
+      number: "03",
+      title: "Causes & Fundraising",
+      text: "Use a clear, readable design to support awareness campaigns and fundraising programs, with quantities that suit a defined audience.",
+      chip: "Bold line art · lowest unit cost",
+    },
+    {
+      number: "04",
+      title: "Collector Editions",
+      text: "Build limited editions, series, and character designs with consistent plating and packaging so a set reads as one collection.",
+      chip: "Hard enamel · numbered backing card",
+    },
+    {
+      number: "05",
+      title: "Retail & Souvenirs",
+      text: "Pair the pin with a custom backing card or retail display so it fits an existing shop, museum, or destination merchandise fixture.",
+      chip: "Custom backing card · retail box",
+    },
+  ],
+
+  specs: [
+    {
+      label: "Typical Pin Size",
+      value: "Around 25–40 mm; custom dimensions available up to 60 mm+",
+    },
+    {
+      label: "Body Thickness",
+      value: "Often around 1.5–3 mm, depending on construction and enamel method",
+    },
+    {
+      label: "Materials",
+      value: "Zinc alloy, brass, iron, stainless steel, and selected combinations",
+    },
+    {
+      label: "MOQ",
+      value: "500 pcs per design; final MOQ confirmed with your quotation",
+    },
+    {
+      label: "Body Construction",
+      value: "Die-cast, stamped, etched, or laser-cut, depending on design",
+    },
+    {
+      label: "Metal Plating",
+      value: "Gold, silver, nickel, black nickel, antique bronze, rose gold, and matte options",
+    },
+    {
+      label: "Enamel Method",
+      value: "Soft enamel, hard enamel, UV print, screen print, engraving, or mixed techniques",
+    },
+    {
+      label: "Special Finishes",
+      value: "Glitter, glow-in-the-dark, epoxy dome, rhinestone, cut-outs, spinners",
+    },
+    {
+      label: "Back Attachments",
+      value: "Butterfly clutch, rubber clutch, magnetic back, safety pin, or keychain conversion",
+    },
+    {
+      label: "Sides",
+      value: "Single-sided, double-sided enamel, or enamel front with engraved or printed reverse",
+    },
+    {
+      label: "Packaging",
+      value: "Poly bag, backing card, velvet pouch, retail box, or gift set",
+    },
+  ],
+
+  qualityChecks: [
+    "Approved outline, metal lines, and colors",
+    "Enamel method and surface level",
+    "Plating, back attachment, and assembly",
+    "Packaging and quantity specification",
+  ],
+
+  faq: [
+    {
+      q: "What is the minimum order quantity?",
+      a: "The current standard planning MOQ is 500 pieces per design. The final MOQ can depend on the pin size, material, plating, enamel method, back attachment, and packaging. Please confirm the applicable quantity with your quotation.",
+    },
+    {
+      q: "What is the difference between soft enamel and hard enamel?",
+      a: "Soft enamel is filled slightly below the raised metal lines, leaving a visible texture and a slightly recessed surface — it is usually the lower-cost option. Hard enamel is sanded and polished until the enamel sits flush with the metal lines, creating a smooth, flat finish that is typically more durable and more refined in appearance.",
+    },
+    {
+      q: "What special finishes are available?",
+      a: "Glitter enamel, glow-in-the-dark fill, epoxy doming, rhinestones, laser cut-outs, and spinners or other movable parts are all available. Each adds process steps and unit cost, and some are suited to particular sizes or designs — availability is confirmed at sample stage.",
+    },
+    {
+      q: "How long do sampling and production take?",
+      a: "A typical sample lead time is around 5–8 working days after artwork and specifications are confirmed. Bulk production timing depends on quantity, plating, enamel method, attachments, packaging, and the production schedule. The confirmed timeline should be agreed before the order proceeds.",
+    },
+    {
+      q: "Can the pin be made double-sided?",
+      a: "Yes. Double-sided enamel, double-sided printing, or an enamel front with an engraved reverse are all common. The available method depends on the design on each side and whether the artwork needs to align across both faces.",
+    },
+    {
+      q: "Can gradients or photographic details be reproduced?",
+      a: "Enamel fill uses solid colors, one per recessed area. For gradients, photographs, or very fine line work, UV printing or screen printing is usually a better fit than enamel fill. Printing and enamel can also be combined on the same pin.",
+    },
+    {
+      q: "Which back attachment should I choose?",
+      a: "Butterfly clutches are the standard for most merchandise and the lowest-cost option. Magnetic backs avoid pinholes and suit uniforms, blazers, and knitwear. Rubber clutches hold more firmly and are harder to remove. Safety pins suit traditional and uniform styles. Keychain conversion adds a second use case.",
+    },
+    {
+      q: "Can the pin be mounted on a backing card?",
+      a: "Custom backing cards can be planned with brand artwork, product information, a barcode or QR code, and a suitable mounting hole. Card material, printing, die-cutting, and mounting should be confirmed for each project.",
+    },
+    {
+      q: "Can the design be reordered for future campaigns?",
+      a: "Repeat production is usually possible when the design, tooling, material, and specifications remain suitable. Confirm tooling retention, storage arrangements, and repeat-order charges with your supplier rather than assuming these are included.",
+    },
+  ],
+};
+
+const hasProcess = manufacturingProcess.length > 0;
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: product.faq.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.a,
+    },
+  })),
+};
+---
+<ProductDetailLayout
+  title={product.title}
+  description={product.desc}
+  ogImage={product.image.src}
+  sections={sections}
+>
+  <Fragment slot="structured-data">
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+
+  <!-- ============================================================
+       HERO — 产品展台（成品 / 釉面细节）
+       ============================================================ -->
+
+  <section id="hero" class="product-hero">
+    <div class="product-hero__grid">
+      <div class="product-hero__copy">
+        <p class="product-hero__eyebrow">
+          CUSTOM {product.title.toUpperCase()}
+        </p>
+
+        <h1 class="product-hero__title">{product.heroTitle}</h1>
+
+        <p class="product-hero__desc">{product.heroIntro}</p>
+
+        {product.statement.length > 0 && (
+          <div class="product-hero__statement">
+            {product.statement.map((line) => (
+              <span>{line}</span>
+            ))}
+          </div>
+        )}
+
+        {product.quickFacts.length > 0 && (
+          <ul class="product-hero__facts">
+            {product.quickFacts.map((fact) => (
+              <li>{fact}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <figure class="epin-hero__shot">
+        <Image
+          src={product.image}
+          alt={product.alt}
+          loading="eager"
+          widths={[640, 960, 1280]}
+          sizes="(min-width: 1000px) 42vw, 92vw"
+        />
+        <figcaption class="epin-hero__shot-label">
+          Soft enamel · antique plating
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- 珐琅工艺互动带：截面示意 + 方法切换 -->
+    <div
+      class="epin-surface"
+      data-epin-surface
+      data-epin-surface-views={JSON.stringify(
+        product.enamelMethods.map(({ id, level, title, text, note }) => ({
+          id,
+          level,
+          title,
+          text,
+          note,
+        })),
+      )}
+    >
+      <div class="epin-surface__head">
+        <span>Enamel Method</span>
+        <span>Select a Surface</span>
+      </div>
+
+      <div class="epin-surface__body">
+        <div class="epin-surface__figure">
+          {product.enamelMethods.map((method, index) => (
+            <div
+              class:list={[
+                "epin-profile",
+                `epin-profile--${method.id}`,
+                { "is-active": index === 0 },
+              ]}
+              data-epin-surface-profile={method.id}
+              aria-hidden="true"
+            >
+              <span class="epin-profile__metal"></span>
+              <span class="epin-profile__fill"></span>
+              <span class="epin-profile__metal"></span>
+            </div>
+          ))}
+
+          <p class="epin-surface__note" data-epin-surface-note>
+            {product.enamelMethods[0]?.note ?? ""}
+          </p>
+        </div>
+
+        <div class="epin-surface__copy">
+          <span class="epin-surface__level" data-epin-surface-level>
+            {product.enamelMethods[0]?.level ?? ""}
+          </span>
+
+          <h2 class="epin-surface__title" data-epin-surface-title>
+            {product.enamelMethods[0]?.title ?? ""}
+          </h2>
+
+          <p class="epin-surface__text" data-epin-surface-text>
+            {product.enamelMethods[0]?.text ?? ""}
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="epin-surface__tabs"
+        role="group"
+        aria-label="Choose an enamel method"
+      >
+        {product.enamelMethods.map((method, index) => (
+          <button
+            type="button"
+            class:list={["epin-surface__tab", { "is-active": index === 0 }]}
+            data-epin-surface-tab={method.id}
+            aria-pressed={index === 0 ? "true" : "false"}
+          >
+            <span class="epin-surface__tab-num">{method.number}</span>
+            <strong>{method.name}</strong>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       I. SPECIFICATIONS — 锁死结构
+       ============================================================ -->
+
+  <section id="specifications" class="product-section">
+    <div class="product-section__inner">
+      <div class="epin-heading">
+        <div>
+          <p class="product-eyebrow">I · SPECIFICATIONS</p>
+
+          <h2 class="product-section__title">Start with the outline.</h2>
+        </div>
+
+        <p class="product-section__lead">
+          The shape carries the idea, and the surface method carries the
+          color. Size, metal line placement, plating, and back attachment
+          set the foundation for everything that follows.
+        </p>
+      </div>
+
+      <div class="specs-layout">
+        <div class="specs-feature">
+          <div class="specs-feature__value">500 pcs</div>
+
+          <div class="specs-feature__label">MOQ per design</div>
+
+          <div class="specs-feature__line"></div>
+
+          <div class="specs-feature__mark">
+            SOFT
+            <br />
+            OR HARD
+          </div>
+        </div>
+
+        <div class="specs-list">
+          {product.specs.map((spec, index) => (
+            <div class="spec-row">
+              <div class="spec-row__number">
+                {String(index + 1).padStart(2, "0")}
+              </div>
+
+              <div class="spec-row__label">{spec.label}</div>
+
+              <div class="spec-row__value">{spec.value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <p class="product-section__note">
+        Dimensions and available processes depend on the design and selected
+        material. Enamel fill uses solid colors per recessed area —
+        gradients, photographs, and fine line work may require a different
+        process. Final specifications should be confirmed against the
+        approved artwork and sample.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       II. ENAMEL & SURFACE — 三列截面对比
+       ============================================================ -->
+
+  <section id="enamel" class="product-section">
+    <div class="product-section__inner">
+      <div class="epin-heading">
+        <div>
+          <p class="product-eyebrow">II · ENAMEL &amp; SURFACE</p>
+
+          <h2 class="product-section__title">
+            Where the color sits decides everything.
+          </h2>
+        </div>
+
+        <p class="product-section__lead">
+          The surface method controls cost, durability, and how fine your
+          artwork can be. Compare the three cross-sections side by side —
+          the difference is a few tenths of a millimetre, and it is visible
+          from across a room.
+        </p>
+      </div>
+
+      <div class="epin-methods">
+        {product.enamelMethods.map((method) => (
+          <article class="epin-method">
+            <div class="epin-method__media">
+              <Image
+                src={method.image}
+                alt={method.alt}
+                loading="lazy"
+                widths={[480, 720, 960]}
+                sizes="(min-width: 1000px) 24vw, 92vw"
+              />
+              <span class="epin-method__level">{method.level}</span>
+            </div>
+
+            <div class="epin-method__body">
+              <span class="epin-method__number">{method.number}</span>
+
+              <div class="epin-method__head">
+                <h3>{method.name}</h3>
+              </div>
+
+              <p class="epin-method__text">{method.text}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       III. SPECIAL FINISHES — 特殊工艺切换廊
+       ============================================================ -->
+
+  <section id="finishes" class="product-section">
+    <div class="product-section__inner">
+      <div class="epin-heading">
+        <div>
+          <p class="product-eyebrow">III · SPECIAL FINISHES</p>
+
+          <h2 class="product-section__title">
+            Make it worth keeping.
+          </h2>
+        </div>
+
+        <p class="product-section__lead">
+          A flat enamel pin is a starting point. These are the finishes that
+          turn a giveaway into something people trade, display, and reorder —
+          each one adds process steps and unit cost, so the right one is the
+          one your collection actually needs.
+        </p>
+      </div>
+
+      <div
+        class="epin-finish"
+        data-epin-finish
+        data-epin-finish-views={JSON.stringify(
+          product.finishes.map(({ key, name, tag, text }) => ({
+            key,
+            name,
+            tag,
+            text,
+          })),
+        )}
+      >
+        <div
+          class="epin-finish__rail"
+          role="group"
+          aria-label="Special finish selector"
+        >
+          {product.finishes.map((finish, index) => (
+            <button
+              type="button"
+              class:list={[
+                "epin-finish__tab",
+                { "is-active": index === 0 },
+              ]}
+              data-epin-finish-tab={finish.key}
+              aria-pressed={index === 0 ? "true" : "false"}
+            >
+              <span class="epin-finish__tab-num">{finish.number}</span>
+              <strong>{finish.name}</strong>
+            </button>
+          ))}
+        </div>
+
+        <div class="epin-finish__detail">
+          <div class="epin-finish__media">
+            {product.finishes.map((finish, index) => (
+              <Image
+                src={finish.image}
+                alt={finish.alt}
+                class:list={[
+                  "epin-finish__image",
+                  { "is-active": index === 0 },
+                ]}
+                data-epin-finish-img={finish.key}
+                loading={index === 0 ? "eager" : "lazy"}
+                widths={[480, 720, 960]}
+                sizes="(min-width: 1000px) 30vw, 92vw"
+              />
+            ))}
+
+            <span class="epin-finish__badge" data-epin-finish-badge>
+              {product.finishes[0]?.tag ?? ""}
+            </span>
+          </div>
+
+          <div class="epin-finish__copy">
+            <p class="epin-finish__copy-head">
+              <strong data-epin-finish-name>
+                {product.finishes[0]?.name ?? ""}
+              </strong>
+              <span data-epin-finish-tag>
+                {product.finishes[0]?.tag ?? ""}
+              </span>
+            </p>
+
+            <p class="epin-finish__copy-text" data-epin-finish-text>
+              {product.finishes[0]?.text ?? ""}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       IV. BACK ATTACHMENTS — 开放对比表
+       ============================================================ -->
+
+  <section id="backs" class="product-section">
+    <div class="product-section__inner">
+      <div class="epin-heading">
+        <div>
+          <p class="product-eyebrow">IV · BACK ATTACHMENTS</p>
+
+          <h2 class="product-section__title">Choose how it holds.</h2>
+        </div>
+
+        <p class="product-section__lead">
+          The backing determines how a pin is worn, removed, and stored.
+          Compare the options by fabric and handling — not by appearance.
+        </p>
+      </div>
+
+        <div class="epin-backs">
+          <div class="epin-backs__head">
+            <span>Attachment</span>
+            <span>How it holds</span>
+            <span>Best for</span>
+          </div>
+
+          {product.backs.map((item) => (
+            <article class="epin-back">
+              <div class="epin-back__id">
+                <span class="epin-back__photo">
+                  <Image
+                    src={item.image}
+                    alt=""
+                    loading="lazy"
+                    widths={[120, 180]}
+                    sizes="56px"
+                  />
+                </span>
+
+                <div class="epin-back__name">
+                  <strong>{item.name}</strong>
+                  <span>{item.tag}</span>
+                </div>
+              </div>
+
+              <p class="epin-back__holds">{item.holds}</p>
+
+              <div class="epin-back__cell">
+                <span class="epin-back__cell-label">Best for</span>
+                <p>{item.bestFor}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       V. USE CASES — 节目方案行
+       ============================================================ -->
+
+  <section id="applications" class="product-section">
+    <div class="product-section__inner">
+      <div class="epin-heading">
+        <div>
+          <p class="product-eyebrow">V · USE CASES</p>
+
+          <h2 class="product-section__title">
+            Where a pin earns its place.
+          </h2>
+        </div>
+
+        <p class="product-section__lead">
+          A pin works when the format matches the moment. Each brief below
+          starts with a proven specification — adjust it, do not build from
+          zero.
+        </p>
+      </div>
+
+      <div class="epin-usecases">
+        {product.applications.map((item) => (
+          <article class="epin-usecase">
+            <span class="epin-usecase__num">{item.number}</span>
+
+            <div class="epin-usecase__body">
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </div>
+
+            <span class="epin-usecase__chip">{item.chip}</span>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VI. PRODUCTION & QUALITY — 共享六步流程条
+       ============================================================ -->
+
+  <section id="production" class="product-section">
+    <div class="product-section__inner">
+      <div class="epin-heading">
+        <div>
+          <p class="product-eyebrow">VI · PRODUCTION &amp; QUALITY</p>
+
+          <h2 class="product-section__title">
+            From artwork to finished pin.
+          </h2>
+        </div>
+
+        <p class="product-section__lead">
+          The surface method and back attachment are confirmed before
+          production. Each stage below is a checkpoint, not just a step —
+          the sample is where a wrong reading is still free to fix.
+        </p>
+      </div>
+
+      {hasProcess && (
+        <div class="production-strip">
+          {manufacturingProcess.map((step) => (
+            <article class="production-strip__step">
+              <span class="production-strip__dot">{step.step}</span>
+
+              <div class="production-strip__image">
+                <Image
+                  src={step.image}
+                  alt={step.alt}
+                  loading="lazy"
+                  widths={[360, 540, 720]}
+                  sizes="(min-width: 900px) 15vw, 45vw"
+                />
+              </div>
+
+              <div class="production-strip__body">
+                <h3>{step.title}</h3>
+                {step.text && <p>{step.text}</p>}
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+
+      <ul class="epin-checks">
+        {product.qualityChecks.map((check) => (
+          <li>
+            <span aria-hidden="true">✓</span>
+            {check}
+          </li>
+        ))}
+      </ul>
+
+      <p class="product-section__note">
+        Inspection scope and testing methods should be agreed before
+        production. Do not assume a specific test or certification is
+        included unless it is confirmed in the order specification.
+      </p>
+
+      <a href="/resources#craft-guides" class="product-section__link-btn">
+        Explore Craft Guides
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VII. FAQ — 锁死结构
+       ============================================================ -->
+
+  <section id="faq" class="product-section">
+    <div class="product-section__inner">
+      <p class="product-eyebrow">VII · FAQ</p>
+
+      <div class="faq-grid">
+        <div class="faq-intro">
+          <h2 class="product-section__title">
+            Frequently asked questions.
+          </h2>
+
+          <p class="faq-intro__text">
+            Still have a question? Send us your artwork and project details
+            and we'll help you work it out.
+          </p>
+        </div>
+
+        <div class="faq-list">
+          {product.faq.map((item) => (
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>{item.q}</span>
+
+                <span class="faq-plus" aria-hidden="true">
+                  +
+                </span>
+              </summary>
+
+              <div class="faq-answer">
+                <p>{item.a}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</ProductDetailLayout>
+<script>
+  type EpinWindow = Window & {
+    __epinSurfaceCleanup?: () => void;
+    __epinFinishCleanup?: () => void;
+  };
+
+  /* ------------------------------------------------------------
+     HERO SURFACE — 珐琅工艺互动带（截面切换）
+     ------------------------------------------------------------ */
+
+  function initEpinSurface() {
+    const root = document.querySelector<HTMLElement>("[data-epin-surface]");
+    if (!root) return;
+
+    const win = window as EpinWindow;
+    win.__epinSurfaceCleanup?.();
+
+    const tabs = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-epin-surface-tab]"),
+    );
+    const profiles = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-epin-surface-profile]"),
+    );
+    const noteEl = root.querySelector<HTMLElement>(
+      "[data-epin-surface-note]",
+    );
+    const levelEl = root.querySelector<HTMLElement>(
+      "[data-epin-surface-level]",
+    );
+    const titleEl = root.querySelector<HTMLElement>(
+      "[data-epin-surface-title]",
+    );
+    const textEl = root.querySelector<HTMLElement>(
+      "[data-epin-surface-text]",
+    );
+
+    if (!tabs.length || !profiles.length) return;
+
+    let methods: {
+      id: string;
+      level: string;
+      title: string;
+      text: string;
+      note: string;
+    }[] = [];
+
+    try {
+      methods = JSON.parse(root.dataset.epinSurfaceViews ?? "[]");
+    } catch {
+      return;
+    }
+
+    if (!Array.isArray(methods) || methods.length === 0) return;
+
+    const listeners: { el: HTMLButtonElement; handler: EventListener }[] = [];
+
+    function activate(id: string) {
+      const method = methods.find((item) => item.id === id);
+      if (!method) return;
+
+      tabs.forEach((tab) => {
+        const active = tab.dataset.epinSurfaceTab === id;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-pressed", String(active));
+      });
+
+      profiles.forEach((profile) => {
+        profile.classList.toggle(
+          "is-active",
+          profile.dataset.epinSurfaceProfile === id,
+        );
+      });
+
+      if (noteEl) noteEl.textContent = method.note;
+      if (levelEl) levelEl.textContent = method.level;
+      if (titleEl) titleEl.textContent = method.title;
+      if (textEl) textEl.textContent = method.text;
+    }
+
+    tabs.forEach((tab) => {
+      const handler: EventListener = () => {
+        const id = tab.dataset.epinSurfaceTab;
+        if (id) activate(id);
+      };
+
+      tab.addEventListener("click", handler);
+      listeners.push({ el: tab, handler });
+    });
+
+    win.__epinSurfaceCleanup = () => {
+      listeners.forEach(({ el, handler }) =>
+        el.removeEventListener("click", handler),
+      );
+      win.__epinSurfaceCleanup = undefined;
+    };
+  }
+
+  /* ------------------------------------------------------------
+     FINISH LIBRARY — 8 项特殊工艺切换
+     ------------------------------------------------------------ */
+
+  function initEpinFinish() {
+    const root = document.querySelector<HTMLElement>("[data-epin-finish]");
+    if (!root) return;
+
+    const win = window as EpinWindow;
+    win.__epinFinishCleanup?.();
+
+    const tabs = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-epin-finish-tab]"),
+    );
+    const images = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-epin-finish-img]"),
+    );
+    const badge = root.querySelector<HTMLElement>("[data-epin-finish-badge]");
+    const nameEl = root.querySelector<HTMLElement>("[data-epin-finish-name]");
+    const tagEl = root.querySelector<HTMLElement>("[data-epin-finish-tag]");
+    const textEl = root.querySelector<HTMLElement>("[data-epin-finish-text]");
+
+    if (!tabs.length || !images.length) return;
+
+    let views: { key: string; name: string; tag: string; text: string }[] = [];
+
+    try {
+      views = JSON.parse(root.dataset.epinFinishViews ?? "[]");
+    } catch {
+      return;
+    }
+
+    if (!Array.isArray(views) || views.length === 0) return;
+
+    const listeners: { el: HTMLButtonElement; handler: EventListener }[] = [];
+
+    function activate(key: string) {
+      const view = views.find((item) => item.key === key);
+      if (!view) return;
+
+      tabs.forEach((tab) => {
+        const active = tab.dataset.epinFinishTab === key;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-pressed", String(active));
+      });
+
+      images.forEach((image) => {
+        image.classList.toggle("is-active", image.dataset.epinFinishImg === key);
+      });
+
+      if (badge) badge.textContent = view.tag;
+      if (nameEl) nameEl.textContent = view.name;
+      if (tagEl) tagEl.textContent = view.tag;
+      if (textEl) textEl.textContent = view.text;
+    }
+
+    tabs.forEach((tab) => {
+      const handler: EventListener = () => {
+        const key = tab.dataset.epinFinishTab;
+        if (key) activate(key);
+      };
+
+      tab.addEventListener("click", handler);
+      listeners.push({ el: tab, handler });
+    });
+
+    win.__epinFinishCleanup = () => {
+      listeners.forEach(({ el, handler }) =>
+        el.removeEventListener("click", handler),
+      );
+      win.__epinFinishCleanup = undefined;
+    };
+  }
+
+  function initEpinPage() {
+    initEpinSurface();
+    initEpinFinish();
+  }
+
+  initEpinPage();
+
+  document.addEventListener("astro:page-load", initEpinPage);
+</script>
+<style>
+  /* ============================================================
+     ENAMEL PINS — 局部样式（全部使用全局 Token，epin- 前缀）
+     ============================================================ */
+
+  /* ------------------------------------------------------------
+     SECTION HEADING — 6:4 双栏
+     ------------------------------------------------------------ */
+
+  .epin-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
+    gap: 50px;
+    align-items: end;
+    margin-bottom: 42px;
+  }
+
+  /* ------------------------------------------------------------
+     HERO SHOT — 实拍图
+     ------------------------------------------------------------ */
+
+  .epin-hero__shot {
+    position: relative;
+    margin: 0;
+    min-width: 0;
+    overflow: hidden;
+    aspect-ratio: 1 / 0.82;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .epin-hero__shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .epin-hero__shot-label {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    z-index: 2;
+    padding: 7px 13px;
+    background: var(--color-paper-2);
+    border: 1px solid rgba(174, 141, 90, 0.35);
+    border-radius: 999px;
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ------------------------------------------------------------
+     HERO SURFACE — 珐琅工艺互动带（截面示意 + 切换）
+     ------------------------------------------------------------ */
+
+  .epin-surface {
+    margin-top: 56px;
+    padding: clamp(20px, 3vw, 36px);
+    border: 1px solid var(--color-line);
+    background: var(--color-paper-2);
+    border-radius: var(--radius-lg);
+  }
+
+  .epin-surface__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .epin-surface__body {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(24px, 4vw, 48px);
+    align-items: center;
+    margin-top: 24px;
+  }
+
+  .epin-surface__figure {
+    min-width: 0;
+  }
+
+  .epin-surface__note {
+    margin: 12px 0 0;
+    color: var(--color-muted-2);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .epin-surface__level {
+    display: inline-block;
+    padding: 6px 11px;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .epin-surface__title {
+    margin: 14px 0 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.6vw, 30px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  .epin-surface__text {
+    max-width: 520px;
+    margin: 12px 0 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  .epin-surface__tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  .epin-surface__tab {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 13px 14px;
+    border: 1px solid var(--color-line);
+    background: transparent;
+    color: var(--color-ink);
+    cursor: pointer;
+    text-align: left;
+    transition:
+      border-color var(--ease-out),
+      background var(--ease-out);
+  }
+
+  .epin-surface__tab:hover,
+  .epin-surface__tab.is-active {
+    border-color: rgba(174, 141, 90, 0.55);
+    background: rgba(174, 141, 90, 0.08);
+  }
+
+  .epin-surface__tab-num {
+    color: var(--color-muted-2);
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .epin-surface__tab strong {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .epin-surface__tab.is-active .epin-surface__tab-num {
+    color: var(--color-gold-dark);
+  }
+
+  /* 截面示意：金属线 + 色膏位置（纯几何 + Token） */
+  .epin-profile {
+    position: relative;
+    height: 150px;
+    overflow: hidden;
+    background: var(--color-surface);
+    border-radius: var(--radius-sm);
+  }
+
+  .epin-profile__metal {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 16%;
+    background: var(--color-ink);
+  }
+
+  .epin-profile__metal:first-of-type {
+    left: 0;
+  }
+
+  .epin-profile__metal:last-of-type {
+    right: 0;
+  }
+
+  .epin-profile__fill {
+    position: absolute;
+    left: 16%;
+    right: 16%;
+    background: var(--color-gold);
+    opacity: 0.5;
+  }
+
+  /* 软珐琅：色膏低于金属线 */
+  .epin-profile--soft .epin-profile__fill {
+    top: 38%;
+    bottom: 0;
+  }
+
+  /* 硬珐琅：色膏齐平打磨 */
+  .epin-profile--hard .epin-profile__fill {
+    top: 5%;
+    bottom: 5%;
+    border-radius: 2px;
+  }
+
+  /* 印刷：金属本体 + 顶部印刷层 */
+  .epin-profile--print .epin-profile__fill {
+    top: 16%;
+    bottom: 0;
+    opacity: 0.28;
+  }
+
+  .epin-profile--print::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 7%;
+    height: 8px;
+    background: var(--color-gold);
+    opacity: 0.5;
+    border-radius: 2px;
+  }
+
+  .epin-surface__figure .epin-profile {
+    display: none;
+  }
+
+  .epin-surface__figure .epin-profile.is-active {
+    display: block;
+  }
+
+  /* ------------------------------------------------------------
+     ENAMEL METHODS — 三列实拍对比
+     ------------------------------------------------------------ */
+
+  .epin-methods {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .epin-method {
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper-2);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color var(--ease-out),
+      box-shadow var(--ease-out);
+  }
+
+  .epin-method:hover {
+    border-color: var(--color-gold);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .epin-method__media {
+    position: relative;
+    aspect-ratio: 4 / 3.2;
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  .epin-method__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+  }
+
+  .epin-method:hover .epin-method__media img {
+    transform: scale(1.04);
+  }
+
+  .epin-method__level {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    z-index: 2;
+    padding: 5px 10px;
+    background: var(--color-paper-2);
+    border: 1px solid rgba(174, 141, 90, 0.35);
+    border-radius: 999px;
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .epin-method__body {
+    padding: 18px 20px 22px;
+  }
+
+  .epin-method__number {
+    color: var(--color-gold);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .epin-method__head {
+    margin-top: 10px;
+  }
+
+  .epin-method__head h3 {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .epin-method__text {
+    margin: 12px 0 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  /* ------------------------------------------------------------
+     FINISH LIBRARY — 左轨道 + 右详情（紧凑切换）
+     ------------------------------------------------------------ */
+
+  .epin-finish {
+    display: grid;
+    grid-template-columns: minmax(200px, 0.42fr) minmax(0, 1fr);
+    gap: clamp(16px, 2.5vw, 28px);
+    align-items: start;
+    margin-top: 40px;
+  }
+
+  .epin-finish__rail {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .epin-finish__tab {
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid var(--color-line);
+    background: transparent;
+    color: var(--color-ink);
+    cursor: pointer;
+    text-align: left;
+    transition:
+      border-color var(--ease-out),
+      background var(--ease-out);
+  }
+
+  .epin-finish__tab:hover,
+  .epin-finish__tab.is-active {
+    border-color: rgba(174, 141, 90, 0.55);
+    background: var(--color-paper-2);
+  }
+
+  .epin-finish__tab-num {
+    color: var(--color-muted-2);
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .epin-finish__tab strong {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .epin-finish__tab.is-active .epin-finish__tab-num {
+    color: var(--color-gold-dark);
+  }
+
+  .epin-finish__detail {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper-2);
+    border-radius: var(--radius-lg);
+  }
+
+  .epin-finish__media {
+    position: relative;
+    aspect-ratio: 2.2 / 1;
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  .epin-finish__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .epin-finish__image.is-active {
+    opacity: 1;
+  }
+
+  .epin-finish__badge {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    z-index: 2;
+    padding: 5px 10px;
+    background: var(--color-paper-2);
+    border: 1px solid rgba(174, 141, 90, 0.35);
+    border-radius: 999px;
+    color: var(--color-gold-dark);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .epin-finish__copy {
+    padding: 18px 20px 20px;
+  }
+
+  .epin-finish__copy-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0 0 8px;
+  }
+
+  .epin-finish__copy-head strong {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .epin-finish__copy-head span {
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .epin-finish__copy-text {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  /* ------------------------------------------------------------
+     BACK ATTACHMENTS — 三列对比表（实物小图）
+     ------------------------------------------------------------ */
+
+  .epin-backs {
+    margin-top: 40px;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper-2);
+  }
+
+  .epin-backs__head {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1.2fr) minmax(0, 1fr);
+    background: var(--color-ink-deep);
+  }
+
+  .epin-backs__head span {
+    padding: 14px 18px;
+    color: var(--color-cream-muted);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .epin-backs__head span + span {
+    border-left: 1px solid var(--color-gold-dark);
+  }
+
+  .epin-back {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1.2fr) minmax(0, 1fr);
+    border-top: 1px solid var(--color-line);
+    transition: background var(--ease-out);
+  }
+
+  .epin-back:hover {
+    background: var(--color-paper);
+  }
+
+  .epin-back__id {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border-right: 1px solid var(--color-line);
+  }
+
+  .epin-back__photo {
+    flex: 0 0 auto;
+    overflow: hidden;
+    width: 56px;
+    height: 56px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+  }
+
+  .epin-back__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .epin-back__name strong {
+    display: block;
+    color: var(--color-ink);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .epin-back__name span {
+    display: block;
+    margin-top: 2px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .epin-back__holds {
+    margin: 0;
+    padding: 16px 18px;
+    border-right: 1px solid var(--color-line);
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .epin-back__cell {
+    padding: 16px 18px;
+  }
+
+  .epin-back__cell-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-gold-dark);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .epin-back__cell p {
+    margin: 0;
+    color: var(--color-ink);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  /* ------------------------------------------------------------
+     USE CASES — 节目方案行
+     ------------------------------------------------------------ */
+
+  .epin-usecases {
+    margin-top: 40px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .epin-usecase {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) 250px;
+    gap: 20px;
+    align-items: center;
+    padding: 20px 4px;
+    border-bottom: 1px solid var(--color-line);
+    transition:
+      background var(--ease-out),
+      padding-left var(--ease-out);
+  }
+
+  .epin-usecase:hover {
+    background: var(--color-paper-2);
+    padding-left: 14px;
+  }
+
+  .epin-usecase__num {
+    color: var(--color-gold);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .epin-usecase__body h3 {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .epin-usecase__body p {
+    margin: 6px 0 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .epin-usecase__chip {
+    justify-self: start;
+    padding: 7px 12px;
+    border: 1px solid rgba(174, 141, 90, 0.4);
+    background: rgba(174, 141, 90, 0.08);
+    border-radius: 999px;
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ------------------------------------------------------------
+     CHECKS
+     ------------------------------------------------------------ */
+
+  .epin-checks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 24px;
+    margin: 40px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .epin-checks li {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 8px;
+    align-items: start;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .epin-checks li span {
+    color: var(--color-gold);
+    font-family: var(--font-display);
+  }
+
+  /* ------------------------------------------------------------
+     FOCUS / MOTION
+     ------------------------------------------------------------ */
+
+  .epin-surface__tab:focus-visible,
+  .epin-finish__tab:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .epin-finish__image,
+    .epin-surface__tab,
+    .epin-finish__tab,
+    .epin-usecase,
+    .epin-back,
+    .epin-method__media img {
+      transition: none;
+    }
+  }
+
+  /* ------------------------------------------------------------
+     RESPONSIVE
+     ------------------------------------------------------------ */
+
+  @media (min-width: 901px) {
+    .epin-back__cell-label {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .epin-methods {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .epin-usecase {
+      grid-template-columns: 48px minmax(0, 1fr) 210px;
+    }
+
+    .epin-surface__body {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .epin-finish {
+      grid-template-columns: 1fr;
+    }
+
+    .epin-finish__rail {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .epin-heading {
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-bottom: 34px;
+    }
+
+    .epin-backs__head {
+      display: none;
+    }
+
+    .epin-back {
+      grid-template-columns: 1fr;
+    }
+
+    .epin-back__id {
+      border-right: 0;
+      border-bottom: 1px solid var(--color-line);
+    }
+
+    .epin-back__holds {
+      border-right: 0;
+    }
+
+    .epin-usecase {
+      grid-template-columns: 40px minmax(0, 1fr);
+    }
+
+    .epin-usecase__chip {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .epin-surface {
+      padding: 16px;
+    }
+
+    .epin-profile {
+      height: 110px;
+    }
+
+    .epin-surface__tabs {
+      grid-template-columns: 1fr;
+    }
+
+    .epin-methods {
+      grid-template-columns: 1fr;
+    }
+
+    .epin-checks {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

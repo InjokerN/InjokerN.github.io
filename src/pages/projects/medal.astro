@@ -1,0 +1,2131 @@
+---
+/*
+  PAGE  : /projects/corporate-milestone
+  FILE  : src/pages/projects/corporate-milestone.astro
+  ROLE  : Project Case Study — City Night Run Finisher Medal
+*/
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+
+import medalsHero from "../../assets/home/cases/medals-hero.jpg";
+import medals01 from "../../assets/home/cases/medals-01.jpg";
+import medals02 from "../../assets/home/cases/medals-02.jpg";
+import medals03 from "../../assets/home/cases/medals-03.jpg";
+import medals04 from "../../assets/home/cases/medals-04.jpg";
+import medals05 from "../../assets/home/cases/medals-05.jpg";
+import medals06 from "../../assets/home/cases/medals-06.jpg";
+
+const project = {
+  title: "City Night Run Finisher Medal",
+  category: "Custom Medal Case Study",
+  description:
+    "A custom finisher medal designed for a city night run, combining event identity, 3D metal relief, a branded ribbon and a commemorative reverse side into one collectible product.",
+};
+
+const projectStats = [
+  { value: "10K", label: "Night Run Event" },
+  { value: "70 mm", label: "Medal Diameter" },
+  { value: "3.5 mm", label: "Main Thickness" },
+  { value: "28 Days", label: "Brief to Delivery" },
+];
+
+const principles = [
+  {
+    number: "01 / IDENTITY",
+    title: "Dedicated Silhouette",
+    body: "A shield-like profile replaces the standard stock circle, so the medal reads as specific to this race instead of a generic template.",
+  },
+  {
+    number: "02 / DETAIL",
+    title: "3D Layering",
+    body: "Skyline shapes, headline type, and background texture sit at different relief depths, creating natural metal shadow that reads clearly in finish-line photography.",
+  },
+  {
+    number: "03 / MEMORY",
+    title: "Reverse Keepsake",
+    body: "The reverse carries the event date and finisher information, giving the piece value as a keepsake beyond race day.",
+  },
+];
+
+const outcomeImages = [
+  {
+    src: medals03,
+    label: "Finished Product",
+    note: "01 · Front / Hero View",
+    alt: "Custom medal finished product hero view",
+  },
+  {
+    src: medals04,
+    label: "Process Detail",
+    note: "02 · 3D Relief / Macro",
+    alt: "Custom medal 3D relief detail",
+  },
+  {
+    src: medals05,
+    label: "Reverse Information",
+    note: "03 · Engraved / Event Detail",
+    alt: "Custom medal reverse-side information detail",
+  },
+  {
+    src: medals06,
+    label: "Packing & Delivery",
+    note: "04 · Final / Presentation View",
+    alt: "Custom medal packing and delivery presentation",
+  },
+];
+
+const specifications = [
+  ["Material", "Zinc Alloy"],
+  ["Finish", "Two-Tone Gold / Antique"],
+  ["Color", "Soft Enamel · 2 Colors"],
+  ["Ribbon", "25 mm Satin · Custom Print"],
+  ["Front", "3D Relief + Raised Text"],
+  ["Back", "Laser Engraving"],
+  ["Size", "70 mm × 3.5 mm"],
+  ["Packaging", "Individual OPP + Carton"],
+];
+
+const processSteps = [
+  [
+    "01",
+    "Brief",
+    "Confirm the event theme, quantity, size, budget and delivery date.",
+  ],
+  [
+    "02",
+    "3D Mockup",
+    "Translate the flat visual into a manufacturable three-dimensional design.",
+  ],
+  [
+    "03",
+    "Sample",
+    "Approve metal finish, colors, reverse information and ribbon before bulk production.",
+  ],
+  [
+    "04",
+    "Mass Production",
+    "Tooling, stamping / die-casting, plating, coloring, finishing and QC.",
+  ],
+  [
+    "05",
+    "Delivery",
+    "Individual packing, carton preparation and logistics coordination around the event date.",
+  ],
+];
+
+const resultMetrics = [
+  ["5,000", "Medals Delivered"],
+  ["100%", "Front Visual Consistency"],
+  ["2", "Approved Sample Rounds"],
+  ["0", "Color-Mismatch Returns"],
+];
+---
+
+<BaseLayout
+  title={`${project.title} — MetalCrafts`}
+  description={project.description}
+>
+  <main class="case-page">
+    <div class="case-wrap">
+      <section class="hero" aria-labelledby="case-title">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow">{project.category}</div>
+
+            <h1 id="case-title">{project.title}</h1>
+
+            <p>
+              A custom finisher medal for a 10K night run. The event's visual
+              identity — skyline silhouette, two-color palette, and after-dark
+              atmosphere — was translated into a 70 mm die-struck medal with a
+              branded ribbon and a personal reverse-side engraving.
+            </p>
+
+            <div class="hero-actions">
+              <a class="btn-case btn-case--ghost" href="#brief">
+                Continue to Project
+              </a>
+            </div>
+
+            <div class="stat-row" aria-label="Project highlights">
+              {projectStats.map((item) => (
+                <div class="stat">
+                  <strong>{item.value}</strong>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="image-slot image-slot--hero">
+              <Image
+                src={medalsHero}
+                alt="City Night Run custom medal hero view"
+                widths={[900, 1200, 1600, 2000]}
+                sizes="(max-width: 900px) 100vw, 50vw"
+                loading="eager"
+                fetchpriority="high"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="brief" class="case-section">
+        <div class="section-head section-head--brief">
+          <div class="section-head__main">
+            <div class="section-kicker">01 · The Brief</div>
+
+            <h2>
+              A city night run needed a medal that carried the event's identity.
+            </h2>
+
+            <p class="lead">
+              The client was a North American road-race organizer preparing a
+              10K night run. They needed a finisher medal that felt specific to
+              their event — not a stock template with a new logo printed on top.
+            </p>
+          </div>
+
+          <aside class="section-head__aside">
+            <div class="card">
+              <h3>Client Background</h3>
+
+              <p>
+                The race itself was the starting point. A 10K night run through
+                city streets, starting at dusk and finishing under lights. The
+                event's visual language already existed: a skyline motif, a
+                two-color palette, and a strong after-dark atmosphere. The medal
+                needed to feel like it belonged to that world.
+              </p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="case-section__body">
+          <div class="card card--centered">
+            <h3>Core Requirements</h3>
+
+            <div class="checklist checklist--grid">
+              <div class="check">
+                <div class="check-dot">✓</div>
+
+                <span>
+                  Avoid a generic circular stock medal and create a
+                  race-specific silhouette.
+                </span>
+              </div>
+
+              <div class="check">
+                <div class="check-dot">✓</div>
+
+                <span>
+                  Keep small text — year, event name, finisher info — legible on
+                  the metal surface.
+                </span>
+              </div>
+
+              <div class="check">
+                <div class="check-dot">✓</div>
+
+                <span>
+                  Make the ribbon part of the event identity, not a secondary
+                  accessory.
+                </span>
+              </div>
+
+              <div class="check">
+                <div class="check-dot">✓</div>
+
+                <span>
+                  Work backward from a fixed race date with clearly defined
+                  sampling and production checkpoints.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="design" class="case-section">
+        <div class="section-head">
+          <div class="section-head__main">
+            <div class="section-kicker">02 · The Design</div>
+
+            <h2>
+              Silhouette, layers, and the reverse — three decisions that shaped
+              the piece.
+            </h2>
+          </div>
+
+          <p class="section-head__lead">
+            We did not start from "pick a good-looking medal." We broke down the
+            event's existing visual assets — color palette, skyline language,
+            and the pacing of a night run — then used those inputs to determine
+            silhouette, surface layers, and the ribbon system.
+          </p>
+        </div>
+
+        <div class="case-section__body">
+          <div class="principles">
+            {principles.map((item) => (
+              <div class="principle">
+                <div class="num">{item.number}</div>
+
+                <h3>{item.title}</h3>
+
+                <p>{item.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <div class="design-pair">
+            <figure class="case-figure">
+              <div class="case-figure__media">
+                <Image
+                  src={medals01}
+                  alt="Original client sketch for the night run medal"
+                  widths={[600, 900, 1200]}
+                  sizes="(max-width: 900px) 100vw, 45vw"
+                  loading="lazy"
+                />
+
+                <div class="case-figure__overlay">
+                  <span>Client Sketch · Original Brief</span>
+                  <span>Reference / 01</span>
+                </div>
+              </div>
+            </figure>
+
+            <figure class="case-figure">
+              <div class="case-figure__media">
+                <Image
+                  src={medals02}
+                  alt="Manufacturable 3D mockup of the night run medal"
+                  widths={[600, 900, 1200]}
+                  sizes="(max-width: 900px) 100vw, 45vw"
+                  loading="lazy"
+                />
+
+                <div class="case-figure__overlay">
+                  <span>3D Mockup · Pre-production Design</span>
+                  <span>Design / 01</span>
+                </div>
+              </div>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section id="build" class="case-section">
+        <div class="section-head">
+          <div class="section-head__main">
+            <div class="section-kicker">03 · The Build</div>
+
+            <h2>
+              Zinc alloy, two-tone plating, and a five-step production timeline.
+            </h2>
+          </div>
+
+          <p class="section-head__lead">
+            The project ran on a fixed race date. Every checkpoint — material,
+            color, sample approval, mass production, packing — was scheduled
+            backward from delivery day, so nothing was left to the last week.
+          </p>
+        </div>
+
+        <div class="case-section__body">
+          <div class="spec-grid">
+            {specifications.map(([label, value]) => (
+              <div class="spec">
+                <span>{label}</span>
+                <strong>{value}</strong>
+              </div>
+            ))}
+          </div>
+
+          <div class="timeline">
+            {processSteps.map(([number, title, body]) => (
+              <div class="step">
+                <div class="circle">{number}</div>
+
+                <h3>{title}</h3>
+
+                <p>{body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="outcome" class="case-section">
+        <div class="section-head">
+          <div class="section-head__main">
+            <div class="section-kicker">04 · The Outcome</div>
+
+            <h2>5,000 medals delivered before the starting gun.</h2>
+          </div>
+
+          <p class="section-head__lead">
+            Every piece was individually inspected before packing. No batch
+            sampling. No shipment missed its race-day window. No front-face
+            color-mismatch returns came back from the client.
+          </p>
+        </div>
+
+        <div class="case-section__body">
+          <div class="gallery" aria-label="Project image gallery">
+            <div class="gallery-main">
+              {outcomeImages.map((image, index) => (
+                <div
+                  class:list={["gallery-panel", { active: index === 0 }]}
+                  id={`gallery-panel-${index}`}
+                  data-gallery-panel={index}
+                  role="tabpanel"
+                  aria-hidden={index === 0 ? "false" : "true"}
+                >
+                  <div class="image-slot image-slot--gallery">
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      widths={[900, 1200, 1600, 2000]}
+                      sizes="(max-width: 900px) 100vw, 760px"
+                      loading={index === 0 ? "eager" : "lazy"}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div
+              class="thumbs"
+              role="tablist"
+              aria-label="Select project image"
+            >
+              {outcomeImages.map((image, index) => (
+                <button
+                  type="button"
+                  class:list={["thumb", { active: index === 0 }]}
+                  data-gallery-trigger={index}
+                  role="tab"
+                  aria-selected={index === 0 ? "true" : "false"}
+                  aria-controls={`gallery-panel-${index}`}
+                >
+                  <span class="image-slot image-slot--thumb">
+                    <Image
+                      src={image.src}
+                      alt=""
+                      widths={[360, 520, 720]}
+                      sizes="(max-width: 900px) 45vw, 340px"
+                      loading="lazy"
+                    />
+
+                    <span class="thumb-overlay"></span>
+
+                    <span class="thumb-copy">
+                      <strong>{image.label}</strong>
+                      <span>{image.note}</span>
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div class="results">
+            <div class="result-big">
+              <strong>28</strong>
+
+              <p>
+                days from design confirmation to full delivery, with production
+                checkpoints scheduled backward from the race date.
+              </p>
+            </div>
+
+            <div class="result-grid">
+              {resultMetrics.map(([value, label]) => (
+                <div class="result-small">
+                  <b>{value}</b>
+                  <span>{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="outcome-quote">
+            <p>
+              "What mattered most was not making the medal unnecessarily
+              complicated, but making it feel like it genuinely belonged to the
+              race. The metal depth and branded ribbon were especially visible
+              in finish-line photography."
+            </p>
+
+            <span>— Event Marketing Lead</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="next-step" class="case-next-step">
+        <div class="cta">
+          <div>
+            <div class="section-kicker">Next Step</div>
+
+            <h2>Your next event can become a case study too.</h2>
+
+            <p>
+              Send us your logo, reference artwork, estimated quantity, size,
+              destination and event date. We can review design and production
+              feasibility together instead of only returning a unit price.
+            </p>
+          </div>
+
+          <div>
+            <a
+              class="btn-case btn-case--primary"
+              href="#contact"
+              data-modal-open
+              data-modal-product={project.title}
+            >
+              Request a Quote
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    function initCaseGallery() {
+      const gallery = document.querySelector<HTMLElement>(".gallery");
+
+      if (!gallery || gallery.dataset.bound === "1") return;
+
+      gallery.dataset.bound = "1";
+
+      const triggers = Array.from(
+        gallery.querySelectorAll<HTMLElement>("[data-gallery-trigger]"),
+      );
+
+      const panels = Array.from(
+        gallery.querySelectorAll<HTMLElement>("[data-gallery-panel]"),
+      );
+
+      function setActive(index: number) {
+        triggers.forEach((trigger, triggerIndex) => {
+          const active = triggerIndex === index;
+
+          trigger.classList.toggle("active", active);
+
+          trigger.setAttribute("aria-selected", String(active));
+        });
+
+        panels.forEach((panel, panelIndex) => {
+          const active = panelIndex === index;
+
+          panel.classList.toggle("active", active);
+
+          panel.setAttribute("aria-hidden", String(!active));
+        });
+      }
+
+      triggers.forEach((trigger, index) => {
+        trigger.addEventListener("click", () => {
+          setActive(index);
+        });
+      });
+
+      setActive(0);
+    }
+
+    initCaseGallery();
+
+    document.addEventListener("astro:page-load", initCaseGallery);
+  </script>
+</BaseLayout>
+
+<style>
+  /* ==========================================================
+     PAGE
+  =========================================================== */
+
+  .case-page {
+    min-height: 100vh;
+
+    overflow: clip;
+
+    background:
+      radial-gradient(
+        circle at 80% -5%,
+        rgba(174, 141, 90, 0.16),
+        transparent 32%
+      ),
+      linear-gradient(
+        180deg,
+        var(--color-cream) 0%,
+        var(--color-cream) 48%,
+        var(--color-paper) 100%
+      );
+
+    color: var(--color-ink);
+  }
+
+  .case-page,
+  .case-page *,
+  .case-page *::before,
+  .case-page *::after {
+    box-sizing: border-box;
+  }
+
+  .case-wrap {
+    width: var(--container-width);
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+
+  /* ==========================================================
+     HERO
+  =========================================================== */
+
+  .hero {
+    padding: 126px 0 72px;
+  }
+
+  .hero-grid {
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1.02fr)
+      minmax(0, 0.98fr);
+
+    gap: clamp(48px, 6vw, 84px);
+
+    align-items: center;
+  }
+
+  .hero-copy {
+    min-width: 0;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: var(--color-gold-dark);
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.16em;
+
+    line-height: 1.5;
+
+    text-transform: uppercase;
+  }
+
+  .eyebrow::before {
+    width: 28px;
+    height: 1px;
+
+    content: "";
+
+    background: var(--color-gold);
+  }
+
+  .hero h1 {
+    max-width: 720px;
+
+    margin: 17px 0 20px;
+
+    color: var(--color-ink);
+
+    font-family: var(--font-display);
+
+    font-size: clamp(42px, 5.7vw, 72px);
+
+    font-weight: 600;
+
+    line-height: 1.02;
+
+    letter-spacing: -0.05em;
+  }
+
+  .hero p {
+    max-width: 650px;
+
+    margin: 0 0 26px;
+
+    color: var(--color-muted);
+
+    font-size: 16px;
+
+    line-height: 1.8;
+  }
+
+  .hero-actions {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+  }
+
+  .btn-case {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    min-height: 44px;
+
+    padding: 13px 18px;
+
+    border: 1px solid transparent;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.11em;
+
+    line-height: 1;
+
+    text-decoration: none;
+
+    text-transform: uppercase;
+
+    transition:
+      background var(--ease-out),
+      border-color var(--ease-out),
+      color var(--ease-out),
+      transform var(--ease-out),
+      box-shadow var(--ease-out);
+  }
+
+  .btn-case--primary {
+    background: var(--color-gold);
+
+    color: var(--color-white);
+
+    box-shadow: 0 8px 24px rgba(174, 141, 90, 0.18);
+  }
+
+  .btn-case--primary:hover {
+    background: var(--color-gold-hover);
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 12px 30px rgba(174, 141, 90, 0.24);
+  }
+
+  .btn-case--ghost {
+    background: rgba(174, 141, 90, 0.1);
+
+    border-color: rgba(174, 141, 90, 0.28);
+
+    color: var(--color-ink);
+  }
+
+  .btn-case--ghost:hover {
+    background: rgba(174, 141, 90, 0.18);
+
+    border-color: var(--color-gold-soft);
+
+    transform: translateY(-2px);
+  }
+
+  /* ==========================================================
+     HERO STATS
+  =========================================================== */
+
+  .stat-row {
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    margin-top: 40px;
+
+    overflow: hidden;
+
+    background: rgba(247, 243, 235, 0.42);
+
+    border: 1px solid rgba(222, 217, 207, 0.82);
+
+    border-radius: var(--radius-md);
+
+    box-shadow: 0 1px 5px rgba(43, 35, 25, 0.025);
+  }
+
+  .stat {
+    min-width: 0;
+
+    padding: 16px 18px;
+
+    background: rgba(247, 243, 235, 0.34);
+  }
+
+  .stat + .stat {
+    border-left: 1px solid var(--color-line);
+  }
+
+  .stat strong {
+    display: block;
+
+    color: var(--color-ink);
+
+    font-family: var(--font-display);
+
+    font-size: 22px;
+
+    font-weight: 600;
+
+    line-height: 1.1;
+  }
+
+  .stat span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--color-muted-2);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+
+    line-height: 1.45;
+
+    text-transform: uppercase;
+  }
+
+  /* ==========================================================
+     IMAGE BASE
+  =========================================================== */
+
+  .hero-visual {
+    position: relative;
+
+    min-width: 0;
+  }
+
+  .image-slot {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    min-width: 0;
+
+    background:
+      radial-gradient(
+        circle at 78% 18%,
+        rgba(174, 141, 90, 0.2),
+        transparent 28%
+      ),
+      linear-gradient(
+        135deg,
+        var(--color-surface) 0%,
+        var(--color-paper-2) 50%,
+        var(--color-surface) 100%
+      );
+
+    border: 1px solid var(--color-line);
+
+    border-radius: var(--radius-lg);
+  }
+
+  .image-slot img {
+    position: relative;
+
+    z-index: 1;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  .image-slot--hero {
+    min-height: 520px;
+
+    box-shadow: var(--shadow-panel);
+  }
+
+  .image-slot--hero img {
+    position: absolute;
+
+    inset: 0;
+
+    object-fit: cover;
+  }
+
+  /* ==========================================================
+     SECTIONS
+  =========================================================== */
+
+  .case-section,
+  .case-next-step {
+    padding: 74px 0;
+
+    border-top: 1px solid var(--color-line);
+
+    scroll-margin-top: 100px;
+  }
+
+  .section-kicker {
+    color: var(--color-gold-dark);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.17em;
+
+    line-height: 1.5;
+
+    text-transform: uppercase;
+  }
+
+  .case-section h2 {
+    max-width: 640px;
+
+    margin: 12px 0 0;
+
+    color: var(--color-ink);
+
+    font-family: var(--font-display);
+
+    font-size: clamp(34px, 4vw, 54px);
+
+    font-weight: 600;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.045em;
+  }
+
+  .case-next-step h2 {
+    max-width: 880px;
+
+    margin: 10px 0 16px;
+
+    color: var(--color-ink);
+
+    font-family: var(--font-display);
+
+    font-size: clamp(32px, 4vw, 52px);
+
+    font-weight: 600;
+
+    line-height: 1.08;
+
+    letter-spacing: -0.04em;
+  }
+
+  .lead {
+    max-width: 740px;
+
+    color: var(--color-muted);
+
+    font-size: 16px;
+
+    line-height: 1.8;
+  }
+
+  /* ==========================================================
+     SECTION HEAD — 6 : 4 两栏
+     想改副标题位置：调 grid-template-columns 或 gap
+  =========================================================== */
+
+  .section-head {
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 6fr)
+      minmax(0, 4fr);
+
+    gap: 50px;
+
+    align-items: center;
+
+    margin-bottom: 42px;
+  }
+
+  .section-head__main {
+    min-width: 0;
+  }
+
+  .section-head__main .lead {
+    max-width: 560px;
+
+    margin: 22px 0 0;
+  }
+
+  .section-head__lead {
+    min-width: 0;
+
+    margin: 0;
+
+    color: var(--color-muted);
+
+    font-size: 16px;
+
+    line-height: 1.8;
+  }
+
+  .section-head__aside {
+    min-width: 0;
+
+    display: flex;
+  }
+
+  .section-head__aside .card {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+  }
+
+  .case-section__body {
+    min-width: 0;
+  }
+
+  /* ==========================================================
+     CARD
+  =========================================================== */
+
+  .card {
+    padding: 28px;
+
+    background: rgba(255, 255, 255, 0.46);
+
+    border: 1px solid var(--color-line);
+
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-sm);
+  }
+
+  .card h3 {
+    margin: 0 0 11px;
+
+    color: var(--color-ink);
+
+    font-family: var(--font-display);
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    line-height: 1.3;
+  }
+
+  .card p {
+    margin: 0;
+
+    color: var(--color-muted);
+
+    font-size: 14px;
+
+    line-height: 1.78;
+  }
+
+  /* ==========================================================
+     Core Requirements 卡片宽度
+     收窄过头就加 max-width，想更窄就减
+  =========================================================== */
+
+  .card--centered {
+    max-width: 1080px;
+
+    margin: 0 auto;
+
+    padding: 32px 40px;
+  }
+
+  .card--centered > h3 {
+    text-align: center;
+
+    margin-bottom: 22px;
+  }
+
+  /* ==========================================================
+     CHECKLIST
+  =========================================================== */
+
+  .checklist {
+    display: grid;
+
+    gap: 12px;
+
+    margin-top: 22px;
+  }
+
+  .checklist--grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 18px 40px;
+
+    margin-top: 0;
+  }
+
+  .check {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+  }
+
+  .check-dot {
+    flex: 0 0 22px;
+
+    width: 22px;
+    height: 22px;
+
+    display: grid;
+
+    place-items: center;
+
+    margin-top: 2px;
+
+    border: 1px solid var(--color-gold-soft);
+
+    border-radius: 50%;
+
+    color: var(--color-gold-dark);
+
+    font-size: 11px;
+  }
+
+  .check span {
+    color: var(--color-ink);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+  }
+
+  /* ==========================================================
+     DESIGN
+  =========================================================== */
+
+  .principles {
+    display: grid;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+
+  .principle {
+    padding: 22px;
+
+    background: rgba(255, 255, 255, 0.32);
+
+    border: 1px solid var(--color-line);
+
+    border-radius: var(--radius-md);
+  }
+
+  .num {
+    color: var(--color-gold-dark);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+  }
+
+  .principle h3 {
+    margin: 10px 0 8px;
+
+    color: var(--color-ink);
+
+    font-family: var(--font-display);
+
+    font-size: 16px;
+
+    font-weight: 600;
+  }
+
+  .principle p {
+    margin: 0;
+
+    color: var(--color-muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+  }
+
+  .design-pair {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 24px;
+
+    margin-top: 40px;
+  }
+
+  .case-figure {
+    margin: 0;
+  }
+
+  .case-figure__media {
+    position: relative;
+
+    overflow: hidden;
+
+    aspect-ratio: 4 / 3;
+
+    border: 1px solid var(--color-line);
+
+    border-radius: var(--radius-lg);
+
+    background: var(--color-surface);
+  }
+
+  .case-figure__media img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  .case-figure__overlay {
+    position: absolute;
+
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+
+    z-index: 2;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 10px 13px;
+
+    background: rgba(251, 250, 247, 0.88);
+
+    border: 1px solid rgba(174, 141, 90, 0.2);
+
+    border-radius: var(--radius-sm);
+
+    backdrop-filter: blur(12px);
+  }
+
+  .case-figure__overlay span:first-child {
+    color: var(--color-ink);
+
+    font-family: var(--font-display);
+
+    font-size: 12px;
+
+    font-weight: 600;
+  }
+
+  .case-figure__overlay span:last-child {
+    color: var(--color-gold-dark);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.11em;
+
+    text-transform: uppercase;
+  }
+
+  /* ==========================================================
+     BUILD
+  =========================================================== */
+
+  .spec-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+
+  .spec {
+    min-width: 0;
+
+    padding: 18px;
+
+    background: rgba(255, 255, 255, 0.38);
+
+    border: 1px solid var(--color-line);
+
+    border-radius: var(--radius-md);
+  }
+
+  .spec span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--color-muted-2);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.11em;
+
+    text-transform: uppercase;
+  }
+
+  .spec strong {
+    color: var(--color-ink);
+
+    font-family: var(--font-display);
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    line-height: 1.35;
+  }
+
+  .timeline {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-top: 42px;
+  }
+
+  .timeline::before {
+    position: absolute;
+
+    top: 27px;
+
+    left: 15px;
+    right: 15px;
+
+    height: 1px;
+
+    content: "";
+
+    background: rgba(174, 141, 90, 0.42);
+  }
+
+  .step {
+    position: relative;
+
+    min-width: 0;
+
+    padding-top: 54px;
+  }
+
+  .step .circle {
+    position: absolute;
+
+    top: 12px;
+
+    left: 0;
+
+    width: 30px;
+    height: 30px;
+
+    display: grid;
+
+    place-items: center;
+
+    background: var(--color-paper-2);
+
+    border: 1px solid var(--color-gold-soft);
+
+    border-radius: 50%;
+
+    color: var(--color-gold-dark);
+
+    font-size: 10px;
+
+    font-weight: 700;
+  }
+
+  .step h3 {
+    margin: 0 0 5px;
+
+    color: var(--color-ink);
+
+    font-family: var(--font-display);
+
+    font-size: 15px;
+
+    font-weight: 600;
+  }
+
+  .step p {
+    margin: 0;
+
+    color: var(--color-muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+  }
+
+  /* ==========================================================
+     OUTCOME — GALLERY
+  =========================================================== */
+
+  .gallery {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1.5fr)
+      minmax(0, 1fr);
+
+    gap: 34px;
+
+    align-items: stretch;
+  }
+
+  .gallery-main {
+    position: relative;
+
+    min-width: 0;
+
+    aspect-ratio: 1.5 / 1;
+  }
+
+  .gallery-panel {
+    display: none;
+
+    width: 100%;
+    height: 100%;
+  }
+
+  .gallery-panel.active {
+    display: block;
+  }
+
+  .gallery-panel .image-slot--gallery {
+    width: 100%;
+    height: 100%;
+  }
+
+  .image-slot--gallery img {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  .thumbs {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+
+    min-width: 0;
+
+    height: 100%;
+  }
+
+  .thumb {
+    position: relative;
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    min-width: 0;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    background: none;
+
+    border: 0;
+
+    border-radius: var(--radius-md);
+
+    text-align: left;
+
+    cursor: pointer;
+  }
+
+  .thumb .image-slot--thumb {
+    width: 100%;
+    height: 100%;
+
+    min-height: 0;
+
+    border-radius: var(--radius-md);
+  }
+
+  .image-slot--thumb img {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  .thumb::after {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 3;
+
+    content: "";
+
+    border: 1px solid transparent;
+
+    border-radius: var(--radius-md);
+
+    pointer-events: none;
+
+    transition:
+      border-color var(--ease-out),
+      box-shadow var(--ease-out);
+  }
+
+  .thumb:hover::after {
+    border-color: var(--color-gold-soft);
+
+    box-shadow: inset 0 0 0 1px var(--color-gold-soft);
+  }
+
+  .thumb.active::after {
+    border-color: var(--color-gold);
+
+    box-shadow: inset 0 0 0 2px var(--color-gold);
+  }
+
+  .thumb.active::before {
+    position: absolute;
+
+    top: 14px;
+    right: 14px;
+
+    z-index: 4;
+
+    width: 10px;
+    height: 10px;
+
+    content: "";
+
+    background: var(--color-gold);
+
+    border-radius: 50%;
+
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9);
+  }
+
+  .thumb-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    background: linear-gradient(
+      180deg,
+      rgba(23, 23, 23, 0.02) 15%,
+      rgba(23, 23, 23, 0.08) 42%,
+      rgba(23, 23, 23, 0.78) 100%
+    );
+
+    transition: background var(--ease-out);
+  }
+
+  .thumb:hover .thumb-overlay,
+  .thumb.active .thumb-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(23, 23, 23, 0.02) 15%,
+      rgba(23, 23, 23, 0.06) 42%,
+      rgba(23, 23, 23, 0.68) 100%
+    );
+  }
+
+  .thumb-copy {
+    position: absolute;
+
+    left: 16px;
+    right: 16px;
+    bottom: 15px;
+
+    z-index: 2;
+
+    display: grid;
+
+    gap: 4px;
+
+    padding: 0;
+
+    text-align: left;
+  }
+
+  .thumb-copy strong {
+    color: var(--color-white);
+
+    font-family: var(--font-display);
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    line-height: 1.15;
+
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .thumb-copy span {
+    color: rgba(255, 255, 255, 0.8);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+
+    line-height: 1.4;
+
+    text-transform: uppercase;
+
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  /* ==========================================================
+     OUTCOME — RESULTS
+  =========================================================== */
+
+  .results {
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+
+    gap: 18px;
+
+    margin-top: 54px;
+  }
+
+  .result-big {
+    padding: 28px;
+
+    background:
+      radial-gradient(
+        circle at 90% 10%,
+        rgba(174, 141, 90, 0.18),
+        transparent 38%
+      ),
+      rgba(255, 255, 255, 0.3);
+
+    border: 1px solid rgba(174, 141, 90, 0.28);
+
+    border-radius: var(--radius-lg);
+  }
+
+  .result-big strong {
+    color: var(--color-ink);
+
+    font-family: var(--font-display);
+
+    font-size: 56px;
+
+    font-weight: 600;
+
+    line-height: 1;
+
+    letter-spacing: -0.05em;
+  }
+
+  .result-big p {
+    max-width: 520px;
+
+    margin: 8px 0 0;
+
+    color: var(--color-muted);
+
+    font-size: 14px;
+
+    line-height: 1.75;
+  }
+
+  .result-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+
+  .result-small {
+    padding: 22px;
+
+    background: rgba(255, 255, 255, 0.28);
+
+    border: 1px solid var(--color-line);
+
+    border-radius: var(--radius-md);
+  }
+
+  .result-small b {
+    color: var(--color-ink);
+
+    font-family: var(--font-display);
+
+    font-size: 24px;
+
+    font-weight: 600;
+  }
+
+  .result-small span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--color-muted-2);
+
+    font-size: 10px;
+
+    line-height: 1.5;
+  }
+
+  /* ==========================================================
+     OUTCOME — QUOTE
+  =========================================================== */
+
+  .outcome-quote {
+    margin-top: 42px;
+
+    padding: 27px 30px;
+
+    background: rgba(255, 255, 255, 0.28);
+
+    border-left: 2px solid var(--color-gold);
+
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .outcome-quote p {
+    max-width: 900px;
+
+    margin: 0 0 12px;
+
+    color: var(--color-ink);
+
+    font-family: var(--font-serif);
+
+    font-size: 20px;
+
+    font-style: italic;
+
+    font-weight: 400;
+
+    line-height: 1.6;
+
+    letter-spacing: -0.005em;
+  }
+
+  .outcome-quote span {
+    color: var(--color-muted-2);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+  }
+
+  /* ==========================================================
+     CTA
+  =========================================================== */
+
+  .case-next-step {
+    border-top: 0;
+  }
+
+  .cta {
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto;
+
+    gap: 28px;
+
+    align-items: center;
+
+    padding: 34px;
+
+    background:
+      radial-gradient(
+        circle at 90% 10%,
+        rgba(174, 141, 90, 0.17),
+        transparent 36%
+      ),
+      rgba(255, 255, 255, 0.4);
+
+    border: 1px solid rgba(174, 141, 90, 0.28);
+
+    border-radius: var(--radius-lg);
+  }
+
+  .cta h2 {
+    margin: 6px 0 10px;
+
+    font-size: 34px;
+  }
+
+  .cta p {
+    max-width: 680px;
+
+    margin: 0;
+
+    color: var(--color-muted);
+
+    font-size: 14px;
+
+    line-height: 1.75;
+  }
+
+  /* ==========================================================
+     RESPONSIVE
+  =========================================================== */
+
+  @media (max-width: 1100px) {
+    .stat-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .spec-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .section-head {
+      gap: 32px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid,
+    .cta {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-grid {
+      gap: 32px;
+    }
+
+    .section-head,
+    .section-head--brief {
+      grid-template-columns: 1fr;
+
+      gap: 24px;
+
+      align-items: start;
+
+      margin-bottom: 36px;
+    }
+
+    .section-head__main .lead {
+      margin-top: 20px;
+    }
+
+    .section-head__aside {
+      display: block;
+    }
+
+    .section-head__aside .card {
+      display: block;
+    }
+
+    .gallery {
+      grid-template-columns: 1fr;
+
+      gap: 18px;
+    }
+
+    .gallery-main {
+      aspect-ratio: 1.5 / 1;
+    }
+
+    .thumbs {
+      height: auto;
+
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+
+      gap: 12px;
+    }
+
+    .thumb {
+      height: auto;
+
+      aspect-ratio: 1.25 / 1;
+    }
+
+    .principles,
+    .timeline,
+    .results {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .timeline::before {
+      display: none;
+    }
+
+    .checklist--grid {
+      grid-template-columns: 1fr;
+
+      gap: 12px;
+    }
+
+    .card--centered {
+      padding: 26px 24px;
+    }
+
+    .case-wrap {
+      width: min(92%, 760px);
+    }
+
+    .hero {
+      padding-top: 112px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .case-wrap {
+      width: calc(100% - 36px);
+    }
+
+    .hero {
+      padding-top: 92px;
+
+      padding-bottom: 48px;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 11vw, 56px);
+    }
+
+    .hero p {
+      font-size: 14px;
+
+      line-height: 1.78;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+
+      align-items: stretch;
+    }
+
+    .btn-case {
+      width: 100%;
+    }
+
+    .image-slot--hero {
+      min-height: 360px;
+    }
+
+    .case-section,
+    .case-next-step {
+      padding: 58px 0;
+    }
+
+    .case-section h2,
+    .case-next-step h2 {
+      font-size: clamp(30px, 8vw, 38px);
+    }
+
+    .lead {
+      font-size: 14px;
+
+      line-height: 1.78;
+    }
+
+    .stat-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+
+      border-radius: var(--radius-md);
+    }
+
+    .stat + .stat {
+      border-left: 0;
+    }
+
+    .stat:nth-child(even) {
+      border-left: 1px solid var(--color-line);
+    }
+
+    .stat:nth-child(n + 3) {
+      border-top: 1px solid var(--color-line);
+    }
+
+    .stat {
+      padding: 14px;
+    }
+
+    .stat strong {
+      font-size: 19px;
+    }
+
+    .design-pair {
+      grid-template-columns: 1fr;
+
+      gap: 24px;
+    }
+
+    .case-figure__overlay {
+      left: 11px;
+      right: 11px;
+      bottom: 11px;
+    }
+
+    .case-figure__overlay span:first-child {
+      font-size: 10px;
+    }
+
+    .case-figure__overlay span:last-child {
+      font-size: 7px;
+    }
+
+    .gallery {
+      gap: 14px;
+    }
+
+    .gallery-main {
+      aspect-ratio: 1.35 / 1;
+    }
+
+    .thumbs {
+      height: auto;
+
+      gap: 10px;
+    }
+
+    .thumb {
+      height: auto;
+
+      aspect-ratio: 1.3 / 1;
+    }
+
+    .thumb-copy {
+      left: 11px;
+      right: 11px;
+      bottom: 10px;
+    }
+
+    .thumb-copy strong {
+      font-size: 12px;
+    }
+
+    .thumb-copy span {
+      font-size: 7px;
+    }
+
+    .thumb.active::before {
+      top: 10px;
+      right: 10px;
+      width: 8px;
+      height: 8px;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
+    }
+
+    .principles,
+    .timeline,
+    .results,
+    .result-grid,
+    .spec-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .timeline {
+      gap: 24px;
+    }
+
+    .step {
+      padding-top: 0;
+
+      padding-left: 44px;
+    }
+
+    .step .circle {
+      top: 0;
+      left: 0;
+    }
+
+    .result-big strong {
+      font-size: 48px;
+    }
+
+    .outcome-quote {
+      padding: 22px 20px;
+    }
+
+    .outcome-quote p {
+      font-size: 18px;
+    }
+
+    .cta {
+      padding: 24px;
+    }
+
+    .cta h2 {
+      font-size: 34px;
+    }
+  }
+</style>

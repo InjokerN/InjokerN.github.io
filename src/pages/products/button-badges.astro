@@ -1,0 +1,1350 @@
+---
+import { Image } from "astro:assets";
+import ProductDetailLayout from "../../components/ProductDetailLayout.astro";
+
+/*
+  BUTTON BADGES — PRODUCT DETAIL PAGE
+
+  设计主线：A flat sheet, wrapped on a curve.
+  按钮徽章是 8 个品类里唯一「印刷在纸面上再卷到金属壳里」的产品 ——
+  没有模具、没有珐琅、没有电镀，交付速度就是产品本身。
+  整页围绕「一张平面稿 → 一个弧面成品」展开：
+
+  - Hero：平面 / 弧面切换器（与挑战币三面展台同一设计语言）
+  - II · DESIGN & PRINT：拼版卡（一版多图）+ 覆膜与配件
+  - III · APPLICATIONS：带交付周期的行业项目索引
+  - IV · PRODUCTION & QUALITY：六阶段时间轴
+*/
+import badgeOg from "../../assets/home/cases/button-badges-hero.JPG";
+import badgeProofType from "../../assets/products/home/home-button-badge-01.jpg";
+import badgeProofPress from "../../assets/crafts/uv-printing.jpg";
+import badgeProofDome from "../../assets/crafts/exposy.jpg";
+
+/* ============================================================
+   SECTIONS — TOC 锚点（Overview 无编号，其后从 I 顺延）
+   ============================================================ */
+
+const sections = [
+  { id: "hero", number: "", label: "Overview" },
+  { id: "specifications", number: "I", label: "Specifications" },
+  { id: "design", number: "II", label: "Print & Artwork" },
+  { id: "applications", number: "III", label: "Applications" },
+  { id: "production", number: "IV", label: "Production & Quality" },
+  { id: "faq", number: "V", label: "FAQ" },
+  { id: "inquiry", number: "VI", label: "Inquiry" },
+];
+
+/* ============================================================
+   BUTTON BADGES — PAGE CONTENT
+   ============================================================ */
+
+const product = {
+  title: "Button Badges",
+
+  desc: "Custom printed button badges in 25–58 mm, from 100 pcs. Up to 16 designs on one sheet, no tooling, 5–7 working days from proof to bulk — flat artwork wrapped onto a curved tinplate shell.",
+
+  heroTitle: "A flat sheet, wrapped on a curve.",
+
+  heroDesc:
+    "Every button badge starts as a printed rectangle and ends as a curved disc of tinplate. Nothing in between is moulded, filled, or fired — which is why the minimum is 100 pieces rather than 500, and why a run can be on a table in under a week.",
+
+  statement: [
+    "Printed full colour.",
+    "Assembled in days.",
+    "Priced for volume.",
+  ],
+
+  quickFacts: [
+    "MOQ 100 pcs per design",
+    "Proof within 48 hours",
+    "Up to 16 designs per sheet",
+  ],
+
+  /* Hero 尺寸导览：真实比例五档直径 */
+  sizes: [
+    { mm: 25, tag: "Small", use: "Name badges and small logos." },
+    { mm: 32, tag: "Standard", use: "The standard — most orders land here." },
+    { mm: 37, tag: "Detailed", use: "Detailed artwork and event sets." },
+    { mm: 44, tag: "Statement", use: "Statement pieces and band merch." },
+    { mm: 58, tag: "Large", use: "Large print and display runs." },
+  ],
+
+  specs: [
+    {
+      label: "Lead Time",
+      value: "5–7 working days after proof; rush subject to capacity",
+    },
+    {
+      label: "MOQ",
+      value: "100 pcs per design; mixed designs share one run",
+    },
+    {
+      label: "Diameter",
+      value: "25 / 32 / 37 / 44 / 58 mm round; square and oval to order",
+    },
+    {
+      label: "Construction",
+      value: "Tinplate shell + steel back, printed paper insert",
+    },
+    {
+      label: "Print",
+      value: "Offset litho or digital; unlimited colours, CMYK + Pantone",
+    },
+    {
+      label: "Cover",
+      value: "Gloss or matte lamination, epoxy dome",
+    },
+    {
+      label: "Backing",
+      value: "Safety pin, magnetic, keyring, lanyard clip",
+    },
+    {
+      label: "Artwork",
+      value: "Vector preferred; 3 mm bleed, 2 mm safe area",
+    },
+    {
+      label: "Packaging",
+      value: "OPP bags, printed back cards, display boxes",
+    },
+  ],
+
+  proofTiles: [
+    {
+      key: "type",
+      label: "Fine type · 25 mm",
+      image: badgeProofType,
+      alt: "Button badge close-up showing printed detail at the smallest standard size",
+      caption:
+        "Small type and hairlines hold at 25 mm. The artwork is printed, never filled — so nothing fills in and there is no colour limit.",
+    },
+    {
+      key: "press",
+      label: "Colour · press check",
+      image: badgeProofPress,
+      alt: "Printed button badge artwork during production",
+      caption:
+        "Registration and colour are checked on the press, not after. CMYK and Pantone matched against the approved proof.",
+    },
+    {
+      key: "wear",
+      label: "Wear · epoxy dome",
+      image: badgeProofDome,
+      alt: "Epoxy dome surface detail on a button badge",
+      caption:
+        "A dome wipes clean and takes the scuffs a jacket gives out — at the price of softening type under 8 pt.",
+    },
+  ],
+
+  handoffSteps: [
+    {
+      title: "Send vector if you have it",
+      text: "AI, EPS or PDF at final size. Bitmap artwork works from 300 dpi up — below that, we check before anything prints.",
+    },
+    {
+      title: "Keep type 2 mm inside the trim",
+      text: "The rim bends the last two millimetres of the face away from the viewer. Anything closer warps during pressing.",
+    },
+    {
+      title: "Add 3 mm of bleed",
+      text: "The insert is cut oversize and the shell rolls over its edge. That roll consumes roughly 3 mm all round — invisibly, once you know it is there.",
+    },
+    {
+      title: "Keep fine lines above 0.3 mm",
+      text: "Hairlines below that fill in during printing. There is no colour limit — line weight is the real constraint.",
+    },
+    {
+      title: "Not sure? Send it anyway",
+      text: "Artwork is checked on Day 0, before the run starts. A problem caught at proof costs nothing; after printing it costs the whole sheet.",
+    },
+  ],
+
+  applications: [
+    {
+      name: "Campaigns & Awareness",
+      text: "Charity drives and awareness days where the date is fixed and the badges have to exist before it.",
+      window: "3–5 days",
+      deadline: "Fixed date",
+    },
+    {
+      name: "Music & Fan Culture",
+      text: "Band merch and gig giveaways that have to be on the table before doors open.",
+      window: "5–7 days",
+      deadline: "Fixed date",
+    },
+    {
+      name: "Political & Membership",
+      text: "Election merchandise and membership drives — the deadline is set by the calendar, not by us.",
+      window: "5–7 days",
+      deadline: "Set by calendar",
+    },
+    {
+      name: "Schools & Student Clubs",
+      text: "Societies, sports days and end-of-term keepsakes, usually ordered weeks ahead.",
+      window: "7–10 days",
+      deadline: "Planned ahead",
+    },
+    {
+      name: "Brands & Creators",
+      text: "Drop merchandise and micro-collections where the launch date was announced before production started.",
+      window: "7–10 days",
+      deadline: "Announced",
+    },
+    {
+      name: "Events & Conventions",
+      text: "Convention giveaways, staff identification and press kits that have to be there on setup day.",
+      window: "5–7 days",
+      deadline: "Setup day",
+    },
+  ],
+
+  beats: [
+    {
+      stage: "Artwork check",
+      days: "Day 0",
+      note: "Resolution, bleed and safe area verified.",
+    },
+    {
+      stage: "Proof",
+      days: "48 h",
+      note: "Printed proof sent before the run starts.",
+    },
+    {
+      stage: "Print",
+      days: "1–2 d",
+      note: "Offset or digital depending on run length.",
+    },
+    {
+      stage: "Cut & press",
+      days: "1 d",
+      note: "Insert cut, shell pressed, rim rolled.",
+    },
+    {
+      stage: "Assemble",
+      days: "1 d",
+      note: "Backing fitted, pin tension checked.",
+    },
+    {
+      stage: "Pack",
+      days: "1 d",
+      note: "Counted, bagged or carded, dispatched.",
+    },
+  ],
+
+  faq: [
+    {
+      q: "What is the minimum order quantity?",
+      a: "100 pieces per design. Because the press runs several designs on one sheet, mixed designs share a single production run — each one still keeps its own 100-piece minimum.",
+    },
+    {
+      q: "How many designs can share one sheet?",
+      a: "Up to 16, with 12 being the usual comfortable maximum for clean assembly. There is no per-design tooling, so adding a design does not add a setup cost — it only takes up space on the sheet.",
+    },
+    {
+      q: "How fast can a badge order ship?",
+      a: "Proofs are normally ready within 48 hours. After approval, bulk production takes 5–7 working days. Stock diameters schedule faster than square, oval or custom shapes, which need a separate cut.",
+    },
+    {
+      q: "Is there a colour limit?",
+      a: "No. Badges are printed, not enamel-filled, so gradients, photographs and small type all reproduce. The practical limit is line weight rather than colour count: keep fine lines above roughly 0.3 mm.",
+    },
+    {
+      q: "How close to the edge can the artwork go?",
+      a: "Keep all type and important detail at least 2 mm inside the trim. The cover wraps around the shell rim, so anything closer gets pulled out of shape when the badge is pressed. Supply 3 mm bleed beyond the trim.",
+    },
+    {
+      q: "What backing options are there?",
+      a: "Safety pin is standard. Magnetic backs suit fabric that cannot be pierced, while keyring and lanyard fittings turn a badge into merch or identification for events.",
+    },
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: product.faq.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.a,
+    },
+  })),
+};
+---
+<ProductDetailLayout
+  title={product.title}
+  description={product.desc}
+  ogImage={badgeOg.src}
+  sections={sections}
+>
+  <Fragment slot="structured-data">
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+
+  <!-- ============================================================
+       HERO — 平面稿 / 弧面成品 切换器
+       ============================================================ -->
+
+  <section id="hero" class="product-hero">
+    <div class="product-hero__grid">
+      <div class="product-hero__copy">
+        <p class="product-hero__eyebrow">
+          CUSTOM {product.title.toUpperCase()}
+        </p>
+
+        <h1 class="product-hero__title">{product.heroTitle}</h1>
+
+        <p class="product-hero__desc">{product.heroDesc}</p>
+
+        {product.statement.length > 0 && (
+          <div class="product-hero__statement">
+            {product.statement.map((line) => (
+              <span>{line}</span>
+            ))}
+          </div>
+        )}
+
+        {product.quickFacts.length > 0 && (
+          <ul class="product-hero__facts">
+            {product.quickFacts.map((fact) => (
+              <li>{fact}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div
+        class="badge-sizes"
+        data-badge-sizes
+        data-badge-sizes-views={JSON.stringify(
+          product.sizes.map(({ mm, tag, use }) => ({ mm, tag, use })),
+        )}
+      >
+        <div class="badge-sizes__head">
+          <span>Size Guide</span>
+          <span>True Scale</span>
+        </div>
+
+        <div class="badge-sizes__stage">
+          {product.sizes.map((size, index) => (
+            <button
+              type="button"
+              class:list={["badge-size", { "is-active": index === 1 }]}
+              data-badge-size={size.mm}
+              aria-pressed={index === 1 ? "true" : "false"}
+              style={`--size: ${size.mm}`}
+            >
+              <span class="badge-size__disc" aria-hidden="true"></span>
+              <span class="badge-size__mm">{size.mm} mm</span>
+            </button>
+          ))}
+        </div>
+
+        <div class="badge-sizes__caption">
+          <p class="badge-sizes__caption-head">
+            <strong data-badge-size-mm>
+              {product.sizes[1]?.mm ?? 32} mm
+            </strong>
+            <span data-badge-size-tag>
+              {product.sizes[1]?.tag ?? ""}
+            </span>
+          </p>
+
+          <p class="badge-sizes__caption-text" data-badge-size-use>
+            {product.sizes[1]?.use ?? ""}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       I. SPECIFICATIONS — 锁死结构
+       ============================================================ -->
+
+  <section id="specifications" class="product-section">
+    <div class="product-section__inner">
+      <div class="badge-heading">
+        <div>
+          <p class="product-eyebrow">I · SPECIFICATIONS</p>
+
+          <h2 class="product-section__title">Lead time comes first.</h2>
+        </div>
+
+        <p class="product-section__lead">
+          Nobody buys button badges for their finish. They buy them because
+          a date is approaching — so speed is the first line in the
+          specification, not a footnote.
+        </p>
+      </div>
+
+      <div class="specs-layout">
+        <div class="specs-feature">
+          <div class="specs-feature__value">5–7 d</div>
+
+          <div class="specs-feature__label">Proof to Bulk</div>
+
+          <div class="specs-feature__line"></div>
+
+          <div class="specs-feature__mark">
+            NO
+            <br />
+            MOULD
+          </div>
+        </div>
+
+        <div class="specs-list">
+          {product.specs.map((spec, index) => (
+            <div class="spec-row">
+              <div class="spec-row__number">
+                {String(index + 1).padStart(2, "0")}
+              </div>
+
+              <div class="spec-row__label">{spec.label}</div>
+
+              <div class="spec-row__value">{spec.value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       II. DESIGN & PRINT — 拼版卡 + 覆膜与配件
+       ============================================================ -->
+
+  <section id="design" class="product-section">
+    <div class="product-section__inner">
+      <div class="badge-heading">
+        <div>
+          <p class="product-eyebrow">II · PRINT &amp; ARTWORK</p>
+
+          <h2 class="product-section__title">
+            Prove the print. Then send the art.
+          </h2>
+        </div>
+
+        <p class="product-section__lead">
+          A badge lives or dies on two things: how the artwork prints at
+          25 mm, and whether your file survives the wrap. First the evidence,
+          then the checklist.
+        </p>
+      </div>
+
+      <div class="badge-proof">
+        {product.proofTiles.map((tile) => (
+          <figure class="badge-proof__tile">
+            <div class="badge-proof__media">
+              <Image
+                src={tile.image}
+                alt={tile.alt}
+                loading="lazy"
+                widths={[480, 720, 960]}
+                sizes="(min-width: 1000px) 24vw, 92vw"
+              />
+              <span class="badge-proof__label">{tile.label}</span>
+            </div>
+
+            <figcaption class="badge-proof__caption">
+              {tile.caption}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <div class="product-section__subhead">
+        <h3>What to send us.</h3>
+        <p>
+          You supply a flat rectangle; the customer receives a curved disc.
+          The gap between the two is where almost all artwork problems come
+          from — and none of them are visible in a flat preview.
+        </p>
+      </div>
+
+      <div class="badge-handoff">
+        <div class="badge-handoff__diagram">
+          <span class="badge-handoff__paper"></span>
+          <span class="badge-handoff__trim"></span>
+          <span class="badge-handoff__safe"></span>
+
+          <ul class="badge-handoff__legend">
+            <li>
+              <span
+                class="badge-handoff__dot badge-handoff__dot--trim"
+                aria-hidden="true"
+              >
+              </span>
+              Trim — the insert is cut to the circle
+            </li>
+            <li>
+              <span
+                class="badge-handoff__dot badge-handoff__dot--safe"
+                aria-hidden="true"
+              >
+              </span>
+              2 mm safe area — keep type inside it
+            </li>
+            <li>
+              <span
+                class="badge-handoff__dot badge-handoff__dot--bleed"
+                aria-hidden="true"
+              >
+              </span>
+              3 mm bleed — consumed by the rolled rim
+            </li>
+          </ul>
+        </div>
+
+        <ol class="badge-handoff__steps">
+          {product.handoffSteps.map((step, index) => (
+            <li class="badge-handoff__step">
+              <span class="badge-handoff__step-index">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+
+              <div class="badge-handoff__step-body">
+                <h4>{step.title}</h4>
+                <p>{step.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="product-section__note">
+        <strong>No tooling, no mould.</strong>
+        Mixed designs share one print run — a twelve-design club order is
+        still one sheet, one cut, one assembly pass. Backing and cover options
+        (pin, magnetic, keyring, lanyard clip; gloss, matte or epoxy) are
+        confirmed with your quote.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       III. APPLICATIONS — 带交付周期的项目索引
+       ============================================================ -->
+
+  <section id="applications" class="product-section">
+    <div class="product-section__inner">
+      <div class="badge-heading">
+        <div>
+          <p class="product-eyebrow">III · APPLICATIONS</p>
+
+          <h2 class="product-section__title">
+            Programs with a date attached.
+          </h2>
+        </div>
+
+        <p class="product-section__lead">
+          Button badges are bought for moments with a deadline — a campaign,
+          a fair, a gig, a launch. The right column is the honest one: how
+          much runway each kind of program actually needs.
+        </p>
+      </div>
+
+      <ol class="badge-windows">
+        {product.applications.map((item, index) => (
+          <li class="badge-window">
+            <span class="badge-window__index">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+
+            <div class="badge-window__body">
+              <h3>{item.name}</h3>
+              <p>{item.text}</p>
+            </div>
+
+            <div class="badge-window__meta">
+              <span class="badge-window__lead">{item.window}</span>
+              <span class="badge-window__flag">{item.deadline}</span>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       IV. PRODUCTION & QUALITY — 六阶段时间轴
+       ============================================================ -->
+
+  <section id="production" class="product-section">
+    <div class="product-section__inner">
+      <div class="badge-heading">
+        <div>
+          <p class="product-eyebrow">IV · PRODUCTION &amp; QUALITY</p>
+
+          <h2 class="product-section__title">Six stages, six days.</h2>
+        </div>
+
+        <p class="product-section__lead">
+          No mould to cut and no enamel to cure. Every stage is short enough
+          to see on a calendar — which is why a date can be promised with
+          confidence.
+        </p>
+      </div>
+
+      <ol class="badge-beats">
+        {product.beats.map((beat, index) => (
+          <li class="badge-beat">
+            <span class="badge-beat__index">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+
+            <div class="badge-beat__body">
+              <h3>{beat.stage}</h3>
+              <p>{beat.note}</p>
+            </div>
+
+            <span class="badge-beat__days">{beat.days}</span>
+          </li>
+        ))}
+
+        <li class="badge-beats__total">
+          <span>Total</span>
+          <strong>5–7 working days</strong>
+        </li>
+      </ol>
+
+      <div class="product-section__note">
+        <strong>Checked before the run starts.</strong>
+        Print registration, rim fit and pin tension are checked per batch,
+        and rush capacity is confirmed per order — we would rather decline
+        a date than miss one. An artwork problem caught at proof costs
+        nothing; the same problem after printing costs the whole sheet.
+      </div>
+
+      <a href="/resources#craft-guides" class="product-section__link-btn">
+        Explore Craft Guides
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       V. FAQ — 锁死结构
+       ============================================================ -->
+
+  <section id="faq" class="product-section">
+    <div class="product-section__inner">
+      <p class="product-eyebrow">V · FAQ</p>
+
+      <div class="faq-grid">
+        <div class="faq-intro">
+          <h2 class="product-section__title">
+            Frequently asked questions.
+          </h2>
+
+          <p class="faq-intro__text">
+            Send the artwork and the date. We will confirm whether the
+            timeline fits before you approve anything.
+          </p>
+        </div>
+
+        <div class="faq-list">
+          {product.faq.map((item) => (
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>{item.q}</span>
+
+                <span class="faq-plus" aria-hidden="true">
+                  +
+                </span>
+              </summary>
+
+              <div class="faq-answer">
+                <p>{item.a}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</ProductDetailLayout>
+<script>
+  type BadgeWindow = Window & {
+    __metalBadgeSizesCleanup?: () => void;
+  };
+
+  /* ------------------------------------------------------------
+     HERO SIZE GUIDE — 真实比例直径选择
+     ------------------------------------------------------------ */
+
+  function initBadgeSizes() {
+    const root = document.querySelector<HTMLElement>("[data-badge-sizes]");
+    if (!root) return;
+
+    const win = window as BadgeWindow;
+    win.__metalBadgeSizesCleanup?.();
+
+    const buttons = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-badge-size]"),
+    );
+
+    if (!buttons.length) return;
+
+    let sizes: { mm: number; tag: string; use: string }[] = [];
+
+    try {
+      sizes = JSON.parse(root.dataset.badgeSizesViews ?? "[]");
+    } catch {
+      return;
+    }
+
+    if (!Array.isArray(sizes) || sizes.length === 0) return;
+
+    const listeners: { el: HTMLButtonElement; handler: EventListener }[] = [];
+
+    function activate(mm: number) {
+      const size = sizes.find((item) => item.mm === mm);
+      if (!size) return;
+
+      buttons.forEach((btn) => {
+        const active = btn.dataset.badgeSize === String(mm);
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-pressed", String(active));
+      });
+
+      root.querySelectorAll<HTMLElement>("[data-badge-size-mm]").forEach((el) => {
+        el.textContent = `${size.mm} mm`;
+      });
+      root
+        .querySelectorAll<HTMLElement>("[data-badge-size-tag]")
+        .forEach((el) => {
+          el.textContent = size.tag;
+        });
+      root
+        .querySelectorAll<HTMLElement>("[data-badge-size-use]")
+        .forEach((el) => {
+          el.textContent = size.use;
+        });
+    }
+
+    buttons.forEach((btn) => {
+      const handler: EventListener = () => {
+        const mm = Number(btn.dataset.badgeSize);
+        if (mm) activate(mm);
+      };
+
+      btn.addEventListener("click", handler);
+      listeners.push({ el: btn, handler });
+    });
+
+    win.__metalBadgeSizesCleanup = () => {
+      listeners.forEach(({ el, handler }) =>
+        el.removeEventListener("click", handler),
+      );
+      win.__metalBadgeSizesCleanup = undefined;
+    };
+  }
+
+  function initBadgePage() {
+    initBadgeSizes();
+  }
+
+  initBadgePage();
+
+  document.addEventListener("astro:page-load", initBadgePage);
+</script>
+<style>
+  /* ============================================================
+     BUTTON BADGES — 局部样式（全部使用全局 Token，badge- 前缀）
+     ============================================================ */
+
+  /* ------------------------------------------------------------
+     SECTION HEADING — 6:4 双栏
+     ------------------------------------------------------------ */
+
+  .badge-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
+    gap: 50px;
+    align-items: end;
+    margin-bottom: 42px;
+  }
+
+  /* ------------------------------------------------------------
+     HERO FOLD — 平面稿 / 弧面成品切换器
+     ------------------------------------------------------------ */
+
+  .badge-sizes {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: clamp(14px, 2vw, 24px);
+    border: 1px solid var(--color-line);
+    background: var(--color-paper-2);
+    border-radius: var(--radius-lg);
+  }
+
+  .badge-sizes__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .badge-sizes__stage {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3%;
+    aspect-ratio: 1 / 0.55;
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--color-surface);
+    border-radius: var(--radius-sm);
+  }
+
+  .badge-size {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    width: calc(86% * var(--size) / 196);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .badge-size__disc {
+    width: 100%;
+    aspect-ratio: 1;
+    border: 1px solid var(--color-line);
+    border-radius: 50%;
+    background: var(--color-paper);
+    transition:
+      border-color var(--ease-out),
+      background var(--ease-out),
+      transform var(--ease-out);
+  }
+
+  .badge-size:hover .badge-size__disc {
+    transform: scale(1.04);
+  }
+
+  .badge-size.is-active .badge-size__disc {
+    border: 2px solid var(--color-gold);
+    background: rgba(174, 141, 90, 0.12);
+  }
+
+  .badge-size__mm {
+    color: var(--color-muted-2);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .badge-size.is-active .badge-size__mm {
+    color: var(--color-gold-dark);
+  }
+
+  .badge-sizes__caption {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .badge-sizes__caption-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0 0 8px;
+  }
+
+  .badge-sizes__caption-head strong {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .badge-sizes__caption-head span {
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .badge-sizes__caption-text {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  /* ------------------------------------------------------------
+     PROOF — 印刷实据（细节 / 上机 / 耐磨）
+     ------------------------------------------------------------ */
+
+  .badge-proof {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .badge-proof__tile {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper-2);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color var(--ease-out),
+      box-shadow var(--ease-out);
+  }
+
+  .badge-proof__tile:hover {
+    border-color: var(--color-gold);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .badge-proof__media {
+    position: relative;
+    aspect-ratio: 4 / 3.4;
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  .badge-proof__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+  }
+
+  .badge-proof__tile:hover .badge-proof__media img {
+    transform: scale(1.04);
+  }
+
+  .badge-proof__label {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    z-index: 2;
+    padding: 5px 10px;
+    background: var(--color-paper-2);
+    border: 1px solid rgba(174, 141, 90, 0.35);
+    border-radius: 999px;
+    color: var(--color-gold-dark);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .badge-proof__caption {
+    padding: 16px 18px 18px;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.75;
+  }
+
+  /* ------------------------------------------------------------
+     HANDOFF — 稿件交接（平面稿 → 弧面成品示意 + 清单）
+     ------------------------------------------------------------ */
+
+  .badge-handoff {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(24px, 4vw, 48px);
+    align-items: start;
+    margin-top: 40px;
+  }
+
+  .badge-handoff__diagram {
+    position: relative;
+    aspect-ratio: 4 / 3.4;
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+  }
+
+  .badge-handoff__paper {
+    position: absolute;
+    inset: 14% 16%;
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+  }
+
+  .badge-handoff__trim {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 44%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border: 1.5px dashed var(--color-muted-2);
+    border-radius: 50%;
+  }
+
+  .badge-handoff__safe {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 34%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border: 1.5px solid var(--color-gold);
+    border-radius: 50%;
+  }
+
+  .badge-handoff__legend {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 12px 14px;
+    list-style: none;
+    background: var(--color-paper-2);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+  }
+
+  .badge-handoff__legend li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-muted);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .badge-handoff__dot {
+    flex: 0 0 auto;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+
+  .badge-handoff__dot--trim {
+    border: 1.5px dashed var(--color-muted-2);
+  }
+
+  .badge-handoff__dot--safe {
+    background: var(--color-gold);
+  }
+
+  .badge-handoff__dot--bleed {
+    background: var(--color-paper);
+    border: 1px solid var(--color-line);
+  }
+
+  .badge-handoff__steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .badge-handoff__step {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .badge-handoff__step:first-child {
+    padding-top: 0;
+  }
+
+  .badge-handoff__step:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .badge-handoff__step-index {
+    color: var(--color-gold);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .badge-handoff__step-body h4 {
+    margin: 0;
+    color: var(--color-ink);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .badge-handoff__step-body p {
+    margin: 6px 0 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.75;
+  }
+
+  /* ------------------------------------------------------------
+     APPLICATIONS — 项目索引（交付周期 + 节点）
+     ------------------------------------------------------------ */
+
+  .badge-windows {
+    margin: 40px 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .badge-window {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) 210px;
+    gap: 20px;
+    align-items: center;
+    padding: 22px 4px;
+    border-bottom: 1px solid var(--color-line);
+    transition:
+      background var(--ease-out),
+      padding-left var(--ease-out);
+  }
+
+  .badge-window:hover {
+    background: var(--color-paper-2);
+    padding-left: 14px;
+  }
+
+  .badge-window__index {
+    color: var(--color-gold);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .badge-window__body h3 {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .badge-window__body p {
+    margin: 6px 0 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .badge-window__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .badge-window__lead {
+    padding: 7px 12px;
+    border: 1px solid rgba(174, 141, 90, 0.4);
+    background: rgba(174, 141, 90, 0.08);
+    border-radius: 999px;
+    color: var(--color-gold-dark);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .badge-window__flag {
+    padding: 7px 12px;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    color: var(--color-muted);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ------------------------------------------------------------
+     PRODUCTION — 六阶段时间轴
+     ------------------------------------------------------------ */
+
+  .badge-beats {
+    position: relative;
+    margin: 40px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .badge-beats::before {
+    content: "";
+    position: absolute;
+    left: 19px;
+    top: 14px;
+    bottom: 14px;
+    width: 1px;
+    background: rgba(174, 141, 90, 0.4);
+  }
+
+  .badge-beat {
+    position: relative;
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) 90px;
+    gap: 18px;
+    align-items: center;
+    padding: 14px 0;
+  }
+
+  .badge-beat__index {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--color-gold);
+    border-radius: 50%;
+    background: var(--color-paper);
+    color: var(--color-gold);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .badge-beat__body h3 {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .badge-beat__body p {
+    margin: 4px 0 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .badge-beat__days {
+    justify-self: end;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .badge-beats__total {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+    margin-top: 14px;
+    padding: 16px 20px;
+    border: 1px solid rgba(174, 141, 90, 0.4);
+    background: rgba(174, 141, 90, 0.08);
+    border-radius: var(--radius-md);
+  }
+
+  .badge-beats__total span {
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .badge-beats__total strong {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  /* ------------------------------------------------------------
+     FOCUS / MOTION
+     ------------------------------------------------------------ */
+
+  .badge-size:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .badge-size__disc,
+    .badge-window,
+    .badge-proof__tile,
+    .badge-handoff__step {
+      transition: none;
+    }
+  }
+
+  /* ------------------------------------------------------------
+     RESPONSIVE
+     ------------------------------------------------------------ */
+
+  @media (max-width: 1100px) {
+    .badge-handoff {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .badge-heading {
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-bottom: 34px;
+    }
+
+    .badge-proof {
+      grid-template-columns: 1fr;
+    }
+
+    .badge-window {
+      grid-template-columns: 40px minmax(0, 1fr);
+    }
+
+    .badge-window__meta {
+      grid-column: 2;
+      justify-content: flex-start;
+    }
+
+    .badge-beats::before {
+      display: none;
+    }
+
+    .badge-beat {
+      grid-template-columns: 40px minmax(0, 1fr);
+    }
+
+    .badge-beat__days {
+      grid-column: 2;
+      justify-self: start;
+      margin-top: 4px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .badge-sizes {
+      padding: 14px;
+    }
+
+    .badge-sizes__stage {
+      aspect-ratio: 1 / 0.66;
+    }
+
+    .badge-handoff__diagram {
+      aspect-ratio: 4 / 3;
+    }
+  }
+</style>

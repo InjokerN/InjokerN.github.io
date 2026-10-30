@@ -1,0 +1,1476 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+
+import keychainsHero from "../../assets/home/cases/keychains-hero.jpg";
+import keychains01 from "../../assets/home/cases/keychains-01.jpg";
+import keychains02 from "../../assets/home/cases/keychains-02.jpg";
+
+const project = {
+  title: "Custom Brand Keychain",
+  category: "Custom Keychain Case Study",
+  description:
+    "A 20,000-piece custom metal keychain run delivered in 18 days, combining metal body, printed backing card and retail packaging into one coordinated brand product.",
+};
+
+const productStats = [
+  { value: "20,000", label: "Pieces Per Batch" },
+  { value: "18 Days", label: "Tooling to Delivery" },
+  { value: "3 Parts", label: "Metal + Card + Pack" },
+  { value: "0", label: "Late Shipments" },
+];
+
+const requirements = [
+  {
+    number: "01",
+    title: "One Batch, 20,000 Pieces",
+    body: "The client needed a single production run of 20,000 keychains — not a split order across multiple months.",
+  },
+  {
+    number: "02",
+    title: "Fixed 18-Day Window",
+    body: "Tooling to delivery had to fit inside 18 days. The launch date behind the order could not move.",
+  },
+  {
+    number: "03",
+    title: "Kit Delivery",
+    body: "Metal body, printed backing card and retail packaging had to arrive as one matched, ready-to-use set.",
+  },
+];
+
+const principles = [
+  {
+    number: "01",
+    label: "Metal Body",
+    title: "Brand stays readable at 55 mm.",
+    body: "Proportions were adjusted before tooling so the logo remains clear once the artwork is translated from screen to metal.",
+  },
+  {
+    number: "02",
+    label: "Hardware",
+    title: "The connector is part of the design.",
+    body: "Ring style and attachment point are planned together, so the keychain balances correctly when carried.",
+  },
+  {
+    number: "03",
+    label: "Finish",
+    title: "Contrast keeps the detail readable.",
+    body: "Polished raised areas and antique recesses separate the layers without adding visual noise.",
+  },
+];
+
+const buildPhases = [
+  {
+    number: "01",
+    title: "Brief & Tooling",
+    days: "3 days",
+    span: 3,
+    body: "Artwork review, hardware confirmation and mold preparation.",
+  },
+  {
+    number: "02",
+    title: "Sample Approval",
+    days: "4 days",
+    span: 4,
+    body: "Physical sample signed off on finish, color and hardware.",
+  },
+  {
+    number: "03",
+    title: "Mass Production",
+    days: "6 days",
+    span: 6,
+    body: "Die-casting, plating and finishing across the full batch.",
+  },
+  {
+    number: "04",
+    title: "Card & Pack",
+    days: "3 days",
+    span: 3,
+    body: "Backing cards printed and keychains mounted in parallel.",
+  },
+  {
+    number: "05",
+    title: "Delivery",
+    days: "2 days",
+    span: 2,
+    body: "Cartons prepared and shipped to the destination.",
+  },
+];
+
+const specifications = [
+  ["Material", "Zinc Alloy"],
+  ["Main Length", "55 mm"],
+  ["Thickness", "2.8 mm"],
+  ["Finish", "Polished + Antique"],
+  ["Attachment", "Split Ring"],
+];
+
+const results = [
+  ["20,000", "Units Shipped"],
+  ["18 Days", "Tooling to Delivery"],
+  ["100%", "Backing Card Match"],
+  ["0", "Late Deliveries"],
+];
+---
+
+<BaseLayout
+  title={`${project.title} — MetalCrafts`}
+  description={project.description}
+>
+  <main class="keychain-page">
+    <div class="keychain-wrap">
+      <section class="keychain-hero" aria-labelledby="keychain-title">
+        <div class="keychain-hero__copy">
+          <div class="eyebrow">{project.category}</div>
+
+          <h1 id="keychain-title">
+            Twenty thousand keychains, delivered in eighteen days.
+          </h1>
+
+          <p>
+            A high-volume brand keychain run built around a fixed launch date.
+            The metal body, backing card and retail packaging all had to arrive
+            as one coordinated set — without splitting the batch or pushing the
+            deadline.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn-case btn-case--ghost" href="#brief">
+              Continue to Project
+            </a>
+          </div>
+
+          <div class="keychain-stats" aria-label="Project highlights">
+            {productStats.map((item) => (
+              <div class="keychain-stat">
+                <strong>{item.value}</strong>
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="keychain-hero__visual">
+          <div class="hero-image-frame">
+            <Image
+              src={keychainsHero}
+              alt="Custom metal keychain hero view"
+              widths={[900, 1200, 1600, 2000]}
+              sizes="(max-width: 900px) 100vw, 58vw"
+              loading="eager"
+              fetchpriority="high"
+            />
+
+            <div class="hero-image-label">
+              <span>Hero Product</span>
+              <strong>20,000 pcs · 18-day run</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="keychain-section" id="brief">
+        <div class="section-topline">
+          <span class="section-kicker">01 · The Brief</span>
+        </div>
+
+        <div class="product-intro">
+          <h2>
+            Not a design brief.
+            <br />A delivery brief.
+          </h2>
+
+          <p>
+            The client already had the brand artwork and a launch date. What
+            they needed was a manufacturer who could take a 20,000-piece run
+            through tooling, production and packaging inside an 18-day window —
+            with every component arriving as one finished set.
+          </p>
+        </div>
+
+        <div class="product-roadmap">
+          {requirements.map((item) => (
+            <article class="roadmap-item">
+              <span class="roadmap-number">{item.number}</span>
+
+              <h3>{item.title}</h3>
+
+              <p>{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="keychain-section artwork-section" id="design">
+        <div class="section-topline">
+          <span class="section-kicker">02 · The Design</span>
+        </div>
+
+        <div class="artwork-layout">
+          <div class="artwork-copy">
+            <h2>
+              Three decisions shaped
+              <br />
+              the metal body.
+            </h2>
+
+            <p class="artwork-lead">
+              Two constraints shaped every decision: an 18-day production
+              window, and 20,000 pieces of daily handling.
+            </p>
+
+            <p>
+              The design had to survive both constraints at once. Proportions,
+              hardware and finish were all resolved before tooling began — so
+              nothing had to be reworked once production was already running.
+            </p>
+          </div>
+
+          <div class="principle-list">
+            {principles.map((item) => (
+              <article class="principle-item">
+                <span class="principle-item__number">{item.number}</span>
+
+                <div>
+                  <span class="micro-label">{item.label}</span>
+
+                  <h3>{item.title}</h3>
+
+                  <p>{item.body}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="keychain-section" id="build">
+        <div class="section-topline">
+          <span class="section-kicker">03 · The Build</span>
+        </div>
+
+        <div class="build-head">
+          <h2>Eighteen days, five checkpoints, one batch.</h2>
+
+          <p>
+            The 18-day window was broken into five scheduled checkpoints. Each
+            one had a fixed date, and each was signed off before the next stage
+            began — so nothing slipped into the final week.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline__head">
+            <span class="timeline__total">18 Days</span>
+            <span class="timeline__label">from tooling start to shipment</span>
+          </div>
+
+          <div class="timeline__bar" aria-hidden="true">
+            {buildPhases.map((phase) => (
+              <div class="timeline__segment">
+                <span class="timeline__days">{phase.days}</span>
+                <span class="timeline__title">{phase.title}</span>
+              </div>
+            ))}
+          </div>
+
+          <div class="timeline__notes">
+            {buildPhases.map((phase) => (
+              <div class="timeline__note">
+                <p>{phase.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="specification-layout">
+          <div class="specification-image">
+            <Image
+              src={keychains01}
+              alt="Custom metal keychain specification detail"
+              widths={[700, 1000, 1400]}
+              sizes="(max-width: 900px) 100vw, 480px"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="specification-copy">
+            <h3>A compact object with a complete production specification.</h3>
+
+            <div class="spec-list">
+              {specifications.map(([label, value]) => (
+                <div class="spec-row">
+                  <span>{label}</span>
+                  <strong>{value}</strong>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div class="kit-block">
+          <div class="kit-block__head">
+            <span class="micro-label">Finished Kit · Three Components</span>
+
+            <h3>
+              Metal body, backing card and retail pack shipped as one unit.
+            </h3>
+          </div>
+
+          <div class="kit-gallery">
+            <figure class="kit-figure">
+              <div class="kit-figure__image">
+                <Image
+                  src={keychains01}
+                  alt="Printed backing card for the custom keychain"
+                  widths={[700, 1000, 1400]}
+                  sizes="(max-width: 900px) 100vw, 50vw"
+                  loading="lazy"
+                />
+
+                <div class="kit-figure__overlay">
+                  <small>Backing Card · Custom Print</small>
+                  <strong>Component / 01</strong>
+                </div>
+              </div>
+            </figure>
+
+            <figure class="kit-figure">
+              <div class="kit-figure__image">
+                <Image
+                  src={keychains02}
+                  alt="Retail packaging for the custom keychain"
+                  widths={[700, 1000, 1400]}
+                  sizes="(max-width: 900px) 100vw, 50vw"
+                  loading="lazy"
+                />
+
+                <div class="kit-figure__overlay">
+                  <small>Retail Pack · Individual OPP</small>
+                  <strong>Component / 02</strong>
+                </div>
+              </div>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="keychain-section outcome-section" id="outcome">
+        <div class="section-topline">
+          <span class="section-kicker">04 · The Outcome</span>
+        </div>
+
+        <div class="outcome-grid">
+          <div class="outcome-copy">
+            <h2>Twenty thousand units delivered before the launch date.</h2>
+
+            <p>
+              The full batch shipped as one coordinated set: metal keychain,
+              printed backing card and retail packaging, all matched and packed
+              to the client's launch schedule. No late shipments. No card
+              mismatches. No split deliveries.
+            </p>
+          </div>
+
+          <div class="outcome-metrics">
+            {results.map(([value, label]) => (
+              <div class="outcome-metric">
+                <strong>{value}</strong>
+                <span>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="outcome-quote">
+          <p>
+            "We had a fixed launch date and no room to split the order. What
+            mattered was that all 20,000 pieces arrived as one set, on one day,
+            with nothing left to assemble on our side."
+          </p>
+
+          <span>— Brand Operations Lead</span>
+        </div>
+      </section>
+
+      <section id="next-step" class="case-next-step">
+        <div class="cta">
+          <div>
+            <div class="section-kicker">Next Step</div>
+
+            <h2>Planning a high-volume keychain run on a fixed date?</h2>
+
+            <p>
+              Send us your artwork, target quantity, launch date and packaging
+              requirements. We can confirm the tooling window, production
+              schedule and delivery plan before you commit to the batch.
+            </p>
+          </div>
+
+          <div>
+            <a
+              class="btn-case btn-case--primary"
+              href="#contact"
+              data-modal-open
+              data-modal-product={project.title}
+            >
+              Request a Quote
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  /* ==========================================================
+     PAGE
+  =========================================================== */
+
+  .keychain-page {
+    min-height: 100vh;
+    overflow: clip;
+
+    background:
+      radial-gradient(
+        circle at 84% -6%,
+        rgba(174, 141, 90, 0.15),
+        transparent 31%
+      ),
+      linear-gradient(
+        180deg,
+        var(--color-cream) 0%,
+        var(--color-cream) 48%,
+        var(--color-paper) 100%
+      );
+
+    color: var(--color-ink);
+  }
+
+  .keychain-page,
+  .keychain-page *,
+  .keychain-page *::before,
+  .keychain-page *::after {
+    box-sizing: border-box;
+  }
+
+  .keychain-wrap {
+    width: var(--container-width);
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+
+  /* ==========================================================
+     SHARED TYPE
+  =========================================================== */
+
+  .section-topline {
+    margin-bottom: 38px;
+  }
+
+  .section-kicker,
+  .eyebrow,
+  .micro-label {
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .micro-label {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.13em;
+  }
+
+  .keychain-section,
+  .case-next-step {
+    padding: 74px 0;
+    border-top: 1px solid var(--color-line);
+    scroll-margin-top: 100px;
+  }
+
+  .keychain-section h2 {
+    max-width: 880px;
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(34px, 4vw, 54px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+  }
+
+  /* ==========================================================
+     BUTTONS
+  =========================================================== */
+
+  .btn-case {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    min-height: 44px;
+    padding: 13px 18px;
+
+    border: 1px solid transparent;
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    transition:
+      background var(--ease-out),
+      border-color var(--ease-out),
+      color var(--ease-out),
+      transform var(--ease-out),
+      box-shadow var(--ease-out);
+  }
+
+  .btn-case--primary {
+    background: var(--color-gold);
+    color: var(--color-white);
+    box-shadow: 0 8px 24px rgba(174, 141, 90, 0.18);
+  }
+
+  .btn-case--primary:hover {
+    background: var(--color-gold-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(174, 141, 90, 0.24);
+  }
+
+  .btn-case--ghost {
+    background: rgba(174, 141, 90, 0.1);
+    border-color: rgba(174, 141, 90, 0.28);
+    color: var(--color-ink);
+  }
+
+  .btn-case--ghost:hover {
+    background: rgba(174, 141, 90, 0.18);
+    border-color: var(--color-gold-soft);
+    transform: translateY(-2px);
+  }
+
+  /* ==========================================================
+     HERO
+  =========================================================== */
+
+  .keychain-hero {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+    gap: clamp(48px, 6vw, 84px);
+    align-items: center;
+    padding: 126px 0 72px;
+  }
+
+  .keychain-hero__copy {
+    min-width: 0;
+  }
+
+  .keychain-hero__visual {
+    min-width: 0;
+  }
+
+  .hero-image-frame {
+    position: relative;
+    overflow: hidden;
+    min-height: 620px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .hero-image-frame::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(23, 23, 23, 0.02),
+      transparent 55%,
+      rgba(23, 23, 23, 0.14)
+    );
+  }
+
+  .hero-image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-image-label {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+
+    padding: 11px 14px;
+
+    background: rgba(251, 250, 247, 0.86);
+    border: 1px solid rgba(174, 141, 90, 0.22);
+    border-radius: var(--radius-sm);
+
+    backdrop-filter: blur(12px);
+  }
+
+  .hero-image-label span {
+    color: var(--color-gold-dark);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .hero-image-label strong {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .keychain-hero .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .keychain-hero .eyebrow::before {
+    width: 28px;
+    height: 1px;
+    content: "";
+    background: var(--color-gold);
+  }
+
+  .keychain-hero h1 {
+    max-width: 620px;
+    margin: 17px 0 21px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(44px, 5vw, 66px);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.055em;
+  }
+
+  .keychain-hero__copy > p {
+    max-width: 540px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.82;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .keychain-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin-top: 40px;
+    overflow: hidden;
+    background: rgba(222, 217, 207, 0.8);
+    border: 1px solid rgba(222, 217, 207, 0.8);
+    border-radius: var(--radius-md);
+  }
+
+  .keychain-stat {
+    min-width: 0;
+    padding: 15px 16px;
+    background: rgba(247, 243, 235, 0.38);
+  }
+
+  .keychain-stat strong {
+    display: block;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.05;
+  }
+
+  .keychain-stat span {
+    display: block;
+    margin-top: 4px;
+    color: var(--color-muted-2);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  /* ==========================================================
+     01 · BRIEF
+  =========================================================== */
+
+  .product-intro {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1.08fr)
+      minmax(300px, 0.72fr);
+    gap: 72px;
+    align-items: end;
+  }
+
+  .product-intro p {
+    max-width: 560px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.82;
+  }
+
+  .product-roadmap {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 44px;
+  }
+
+  .roadmap-item {
+    min-width: 0;
+    padding: 24px 22px 26px;
+    background: rgba(255, 255, 255, 0.34);
+    border: 1px solid var(--color-line);
+    border-top: 2px solid var(--color-gold);
+    border-radius: var(--radius-md);
+  }
+
+  .roadmap-number {
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .roadmap-item h3 {
+    margin: 12px 0 8px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .roadmap-item p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.72;
+  }
+
+  /* ==========================================================
+     02 · DESIGN
+  =========================================================== */
+
+  .artwork-section {
+    padding-top: 82px;
+  }
+
+  .artwork-layout {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1.08fr)
+      minmax(300px, 0.72fr);
+    gap: 72px;
+    align-items: center;
+  }
+
+  .artwork-copy {
+    min-width: 0;
+  }
+
+  .artwork-copy > p {
+    max-width: 560px;
+    margin: 24px 0 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.82;
+  }
+
+  .artwork-lead {
+    max-width: 600px;
+    margin: 28px 0 0 !important;
+    color: var(--color-ink) !important;
+    font-family: var(--font-serif);
+    font-size: clamp(20px, 2vw, 26px);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.45;
+    letter-spacing: -0.015em;
+  }
+
+  .principle-list {
+    display: grid;
+    min-width: 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .principle-item {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 15px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .principle-item__number {
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .principle-item h3 {
+    margin: 6px 0 5px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .principle-item p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* ==========================================================
+     03 · BUILD
+  =========================================================== */
+
+  .build-head {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1.08fr)
+      minmax(300px, 0.72fr);
+    gap: 72px;
+    align-items: end;
+    margin-bottom: 44px;
+  }
+
+  .build-head p {
+    max-width: 560px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.82;
+  }
+
+  /* ---------- Timeline with proportional days ---------- */
+
+  .timeline {
+    margin-bottom: 64px;
+  }
+
+  .timeline__head {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+
+  .timeline__total {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(38px, 4.4vw, 56px);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+
+  .timeline__label {
+    color: var(--color-muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .timeline__bar {
+    display: grid;
+    grid-template-columns: 3fr 4fr 6fr 3fr 2fr;
+    gap: 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .timeline__segment {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 22px 20px 22px 0;
+    border-left: 1px solid var(--color-line);
+  }
+
+  .timeline__segment:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .timeline__segment:not(:first-child) {
+    padding-left: 20px;
+  }
+
+  .timeline__days {
+    color: var(--color-gold-dark);
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.2vw, 30px);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .timeline__title {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  .timeline__notes {
+    display: grid;
+    grid-template-columns: 3fr 4fr 6fr 3fr 2fr;
+    gap: 0;
+    border-top: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .timeline__note {
+    min-width: 0;
+    padding: 18px 20px 22px 0;
+    border-left: 1px solid var(--color-line);
+  }
+
+  .timeline__note:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .timeline__note:not(:first-child) {
+    padding-left: 20px;
+  }
+
+  .timeline__note p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  /* ---------- Specification with image ---------- */
+
+  .specification-layout {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 0.9fr)
+      minmax(0, 1.1fr);
+    gap: 56px;
+    align-items: center;
+    margin-bottom: 56px;
+  }
+
+  .specification-image {
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .specification-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .specification-copy h3 {
+    max-width: 480px;
+    margin: 0 0 28px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.4vw, 32px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  .spec-list {
+    display: grid;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .spec-row {
+    display: grid;
+    grid-template-columns:
+      minmax(105px, 0.5fr)
+      minmax(0, 1fr);
+    gap: 20px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .spec-row span {
+    color: var(--color-muted-2);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .spec-row strong {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* ---------- Finished kit ---------- */
+
+  .kit-block {
+    display: grid;
+    gap: 34px;
+  }
+
+  .kit-block__head {
+    max-width: 720px;
+  }
+
+  .kit-block__head h3 {
+    max-width: 720px;
+    margin: 12px 0 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(24px, 2.8vw, 34px);
+    font-weight: 600;
+    line-height: 1.06;
+    letter-spacing: -0.04em;
+  }
+
+  .kit-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .kit-figure {
+    margin: 0;
+  }
+
+  .kit-figure__image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .kit-figure__image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .kit-figure__overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+
+    display: grid;
+    gap: 4px;
+
+    padding: 16px 20px 15px;
+
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.72) 45%,
+      rgba(255, 255, 255, 0.92) 100%
+    );
+  }
+
+  .kit-figure__overlay small {
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .kit-figure__overlay strong {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  /* ==========================================================
+     04 · OUTCOME
+  =========================================================== */
+
+  .outcome-grid {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1.08fr)
+      minmax(300px, 0.72fr);
+    gap: 72px;
+    align-items: end;
+  }
+
+  .outcome-copy > p {
+    max-width: 560px;
+    margin: 24px 0 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.82;
+  }
+
+  .outcome-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .outcome-metric {
+    min-width: 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.32);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+  }
+
+  .outcome-metric strong {
+    display: block;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .outcome-metric span {
+    display: block;
+    margin-top: 5px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    line-height: 1.5;
+  }
+
+  .outcome-quote {
+    margin-top: 42px;
+    padding: 27px 30px;
+    background: rgba(255, 255, 255, 0.28);
+    border-left: 2px solid var(--color-gold);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+
+  .outcome-quote p {
+    max-width: 900px;
+    margin: 0 0 12px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.005em;
+  }
+
+  .outcome-quote span {
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ==========================================================
+     CTA
+  =========================================================== */
+
+  .case-next-step {
+    border-top: 0;
+  }
+
+  .cta {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto;
+    gap: 28px;
+    align-items: center;
+    padding: 34px;
+    background:
+      radial-gradient(
+        circle at 90% 10%,
+        rgba(174, 141, 90, 0.17),
+        transparent 36%
+      ),
+      rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(174, 141, 90, 0.28);
+    border-radius: var(--radius-lg);
+  }
+
+  .cta h2 {
+    margin: 6px 0 10px;
+    font-size: 34px;
+  }
+
+  .cta p {
+    max-width: 680px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  /* ==========================================================
+     RESPONSIVE
+  =========================================================== */
+
+  @media (max-width: 1100px) {
+    .keychain-hero {
+      grid-template-columns: 1fr;
+    }
+
+    .keychain-hero__visual {
+      max-width: 900px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .keychain-wrap {
+      width: min(92%, 760px);
+    }
+
+    .keychain-hero {
+      padding-top: 112px;
+    }
+
+    .product-intro,
+    .artwork-layout,
+    .build-head,
+    .specification-layout,
+    .outcome-grid,
+    .cta {
+      grid-template-columns: 1fr;
+    }
+
+    .product-intro,
+    .artwork-layout,
+    .build-head,
+    .specification-layout,
+    .outcome-grid {
+      gap: 34px;
+    }
+
+    .product-roadmap {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .hero-image-frame {
+      min-height: 560px;
+    }
+
+    .specification-layout {
+      gap: 30px;
+    }
+
+    .kit-gallery {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    /* Timeline: switch to stacked rows on tablet */
+
+    .timeline__bar,
+    .timeline__notes {
+      grid-template-columns: 1fr;
+      border-top: 0;
+    }
+
+    .timeline__segment {
+      padding: 18px 0;
+      border-top: 1px solid var(--color-line);
+      border-left: 0;
+    }
+
+    .timeline__segment:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .timeline__segment:not(:first-child) {
+      padding-left: 0;
+    }
+
+    .timeline__note {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .keychain-wrap {
+      width: calc(100% - 36px);
+    }
+
+    .keychain-hero {
+      padding-top: 92px;
+      padding-bottom: 54px;
+    }
+
+    .keychain-hero h1 {
+      font-size: clamp(36px, 10vw, 50px);
+    }
+
+    .keychain-hero__copy > p {
+      font-size: 14px;
+      line-height: 1.78;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .btn-case {
+      width: 100%;
+    }
+
+    .hero-image-frame {
+      min-height: 390px;
+    }
+
+    .hero-image-label {
+      left: 11px;
+      right: 11px;
+      bottom: 11px;
+    }
+
+    .hero-image-label strong {
+      font-size: 10px;
+    }
+
+    .hero-image-label span {
+      font-size: 7px;
+    }
+
+    .keychain-section,
+    .case-next-step {
+      padding: 58px 0;
+    }
+
+    .keychain-section h2 {
+      font-size: clamp(30px, 8vw, 38px);
+    }
+
+    .keychain-stats {
+      margin-top: 30px;
+    }
+
+    .keychain-stat {
+      padding: 14px;
+    }
+
+    .keychain-stat strong {
+      font-size: 18px;
+    }
+
+    .product-roadmap {
+      grid-template-columns: 1fr;
+      margin-top: 30px;
+    }
+
+    .artwork-lead {
+      font-size: 20px;
+    }
+
+    .timeline {
+      margin-bottom: 46px;
+    }
+
+    .timeline__total {
+      font-size: 36px;
+    }
+
+    .timeline__days {
+      font-size: 22px;
+    }
+
+    .specification-layout {
+      margin-bottom: 42px;
+    }
+
+    .specification-copy h3 {
+      margin-bottom: 20px;
+    }
+
+    .spec-row {
+      grid-template-columns: 90px minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .kit-block__head h3 {
+      font-size: 22px;
+    }
+
+    .kit-figure__overlay {
+      padding: 12px 14px 11px;
+    }
+
+    .kit-figure__overlay strong {
+      font-size: 12px;
+    }
+
+    .outcome-metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .outcome-quote {
+      padding: 22px 20px;
+    }
+
+    .outcome-quote p {
+      font-size: 17px;
+    }
+
+    .cta {
+      padding: 24px;
+    }
+
+    .cta h2 {
+      font-size: 32px;
+    }
+  }
+</style>

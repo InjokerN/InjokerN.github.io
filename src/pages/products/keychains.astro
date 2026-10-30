@@ -1,0 +1,1323 @@
+---
+import { Image } from "astro:assets";
+import ProductDetailLayout from "../../components/ProductDetailLayout.astro";
+
+/*
+ * KEYCHAINS — PRODUCT DETAIL PAGE
+ */
+
+import keychainHero from "../../assets/products/medals/medal-hero.jpg";
+import keychainBody from "../../assets/products/medals/medal-case-02.jpg";
+import keychainGallery01 from "../../assets/products/medals/medal-gallery-01.jpg";
+
+import keychainUseCorporate from "../../assets/products/medals/medal-use-corporate.jpg";
+import keychainUseEvents from "../../assets/products/medals/medal-use-sports.jpg";
+import keychainUseRetail from "../../assets/products/medals/medal-use-collectors.jpg";
+import keychainUseClubs from "../../assets/products/medals/medal-use-education.jpg";
+import keychainUseTravel from "../../assets/products/medals/medal-use-community.jpg";
+
+import hardEnamel from "../../assets/crafts/hard-enamel.jpg";
+
+import hwSplitRing from "../../assets/home/cases/keychains-01.jpg";
+import hwSwivelClasp from "../../assets/home/cases/keychains-02.jpg";
+import hwFlatChain from "../../assets/home/cases/keychains-03.jpg";
+import hwBallChain from "../../assets/products/home/home-keychain-01.jpg";
+import hwLeatherLoop from "../../assets/products/medals/medal-case-04.jpg";
+
+import processDesign from "../../assets/manufacturing/medal-process-01-design.jpg";
+import processMold from "../../assets/manufacturing/medal-process-02-mold.jpg";
+import processForming from "../../assets/manufacturing/medal-process-03-forming.jpg";
+import processFinishing from "../../assets/manufacturing/medal-process-05-finishing.jpg";
+import processPacking from "../../assets/manufacturing/medal-process-06-packing.jpg";
+
+const sections = [
+  { id: "hero", number: "", label: "Overview" },
+  { id: "specifications", number: "I", label: "Specifications" },
+  { id: "hardware", number: "II", label: "Hardware Options" },
+  { id: "applications", number: "III", label: "Applications" },
+  { id: "production", number: "IV", label: "Production & Quality" },
+  { id: "faq", number: "V", label: "FAQ" },
+  { id: "inquiry", number: "VI", label: "Inquiry" },
+];
+
+const product = {
+  slug: "keychains",
+  title: "Keychains",
+  image: keychainHero,
+  alt: "Custom metal keychain with a detailed decorative finish",
+
+  description:
+    "Custom metal keychains designed for everyday carry, brand merchandise, retail displays, and promotional programs. Customize the shape, finish, attachment, and packaging to suit your product.",
+
+  heroTitle: "Your brand, in everyday hands.",
+
+  heroIntro:
+    "Small enough to carry every day. Flexible enough to make your own. Build a custom keychain around the design, finish, and attachment that fit your brand.",
+
+  quickFacts: [
+    { value: "500 pcs", label: "Typical starting MOQ" },
+    { value: "5–8 days", label: "Typical sample lead time" },
+    { value: "Custom", label: "Hardware & packaging" },
+  ],
+
+  assembly: [
+    {
+      id: "body",
+      step: "01",
+      name: "Metal Body",
+      spec: "Shape · Size · Thickness",
+      text:
+        "Define the silhouette, proportions, and relief of the keychain. The selected shape and dimensions influence the level of detail, weight, and overall feel.",
+      image: keychainBody,
+      alt: "Custom metal keychain body and shaped metal detail",
+    },
+    {
+      id: "finish",
+      step: "02",
+      name: "Surface Finish",
+      spec: "Plating · Enamel · Print",
+      text:
+        "Choose a surface treatment that suits your artwork. Plating, enamel colors, printing, and engraving can be combined where the design and production method allow.",
+      image: hardEnamel,
+      alt: "Decorative enamel finish on a custom metal product",
+    },
+    {
+      id: "hardware",
+      step: "03",
+      name: "Attachment",
+      spec: "Ring · Clasp · Chain · Loop",
+      text:
+        "The attachment changes how the keychain is carried and used. Select a fitting based on the intended use, handling requirements, appearance, and target budget.",
+      image: keychainGallery01,
+      alt: "Metal attachment hardware options for custom keychains",
+    },
+  ],
+
+  specs: [
+    { label: "Typical Body Size", value: "Around 40–55 mm; custom dimensions available" },
+    { label: "Body Thickness", value: "Often around 2–3 mm, depending on design and construction" },
+    { label: "Materials", value: "Zinc alloy, brass, iron, stainless steel, and selected combinations" },
+    { label: "Body Construction", value: "Die-cast, stamped, laser-cut, or other suitable methods" },
+    { label: "Surface Finish", value: "Gold, silver, bronze, antique finishes, black nickel, and matte options" },
+    { label: "Color & Artwork", value: "Soft enamel, hard enamel, UV print, engraving, or mixed techniques" },
+    { label: "Attachments", value: "Split ring, swivel clasp, chain, ball chain, leather loop, or selected alternatives" },
+    { label: "Reverse", value: "Blank, engraved text, secondary logo, or a custom reverse design" },
+    { label: "Packaging", value: "Backing card, retail box, hang-tag, or protective bag" },
+  ],
+
+  hardware: [
+    { id: "split-ring", number: "01", name: "Split Ring", tag: "Everyday carry", image: hwSplitRing, alt: "Attachment hardware reference", summary: "A familiar choice for keychains that attach directly to keys.", build: "A split metal ring that opens at the overlapping ends so keys can be threaded onto it.", strengths: "A widely used format with a straightforward appearance and many size options.", tradeoff: "Can be fiddly to open, and the overall feel depends on ring diameter, wire gauge, and material.", suitable: "Everyday keyrings, retail souvenirs, corporate merchandise, and general promotional items." },
+    { id: "swivel-clasp", number: "02", name: "Swivel Clasp", tag: "Easy attachment", image: hwSwivelClasp, alt: "Attachment hardware reference", summary: "A practical option for moving a keychain between different attachment points.", build: "A clasp mechanism combined with a swivel joint, depending on the selected fitting.", strengths: "Convenient to attach to compatible loops, bags, and accessories.", tradeoff: "The mechanism adds components and can affect unit cost, size, and assembly requirements.", suitable: "Bag charms, backpack accessories, lanyard attachments, and gift sets." },
+    { id: "flat-chain", number: "03", name: "Flat Chain", tag: "Decorative movement", image: hwFlatChain, alt: "Attachment hardware reference", summary: "Adds a short connecting section between the body and the ring.", build: "A series of connected metal links selected to complement the size and style of the body.", strengths: "Creates movement and visual separation between the decorative body and attachment.", tradeoff: "Link size and construction should be matched to the intended use and handling requirements.", suitable: "Souvenirs, character merchandise, decorative keychains, and gift products." },
+    { id: "ball-chain", number: "04", name: "Ball Chain", tag: "Lightweight style", image: hwBallChain, alt: "Attachment hardware reference", summary: "A simple beaded chain for lightweight products and decorative applications.", build: "A chain made from connected metal beads and a compatible connector.", strengths: "Lightweight appearance and a distinctive look that suits certain promotional designs.", tradeoff: "The connector and chain specification should be reviewed for the intended load and frequency of use.", suitable: "Lightweight tags, decorative merchandise, event giveaways, and selected promotional items." },
+    { id: "leather-loop", number: "05", name: "Leather Loop", tag: "Premium feel", image: hwLeatherLoop, alt: "Attachment hardware reference", summary: "Introduces a softer material and a different tactile experience.", build: "A leather or leather-like loop paired with compatible metal fittings.", strengths: "Creates a warmer, more refined look that can complement premium gift products.", tradeoff: "Material, stitching, moisture exposure, and storage conditions can affect long-term appearance.", suitable: "Executive gifts, anniversary merchandise, premium retail, and curated gift sets." },
+  ],
+
+  applications: [
+    { number: "01", title: "Retail & Souvenirs", text: "Create place-inspired shapes, mascots, or collectible designs. A custom backing card can help the product fit an existing retail display.", image: keychainUseRetail, alt: "Custom souvenir-style product for retail merchandise" },
+    { number: "02", title: "Corporate Gifting", text: "Use brand marks, campaign graphics, or a secondary engraved message for onboarding gifts, client gifts, and employee merchandise.", image: keychainUseCorporate, alt: "Custom product for corporate gifting" },
+    { number: "03", title: "Events & Promotions", text: "Build a compact merchandise item around a launch, event identity, or campaign theme, with attachment and packaging selected for distribution.", image: keychainUseEvents, alt: "Custom product for events and promotional merchandise" },
+    { number: "04", title: "Clubs & Membership", text: "Use team colors, membership identifiers, or season-specific designs for clubs, communities, and member programs.", image: keychainUseClubs, alt: "Custom product for club and membership merchandise" },
+    { number: "05", title: "Travel & Tourism", text: "Turn local landmarks, destinations, and mascots into compact keepsakes designed for gift shops and destination merchandise.", image: keychainUseTravel, alt: "Custom product for travel and tourism merchandise" },
+  ],
+
+  productionSteps: [
+    { number: "01", title: "Artwork & Specification", text: "Confirm the artwork, dimensions, material, finish, attachment, reverse design, and packaging requirements.", image: processDesign, alt: "Artwork and specification review" },
+    { number: "02", title: "Sample Review", text: "Review the sample for appearance, color, proportions, and fit. Confirm any revisions before bulk production.", image: processMold, alt: "Tooling prepared for a sample" },
+    { number: "03", title: "Body & Surface Finish", text: "Produce the metal body and apply the agreed surface treatment, color fill, printing, or engraving.", image: processForming, alt: "Metal body forming" },
+    { number: "04", title: "Hardware Assembly", text: "Fit the selected attachment and check the connection, orientation, and overall appearance.", image: processFinishing, alt: "Finishing and assembly checks" },
+    { number: "05", title: "Packaging & Inspection", text: "Complete the specified packaging and inspect the agreed product and packing requirements before shipment.", image: processPacking, alt: "Finished products packed for shipment" },
+  ],
+
+  faq: [
+    { q: "What is the minimum order quantity?", a: "The current standard planning MOQ is 500 pieces per design. The final MOQ can depend on the shape, material, finish, attachment, and packaging. Please confirm the applicable quantity with your quotation." },
+    { q: "How long do sampling and production take?", a: "A typical sample lead time is around 5–8 working days after artwork and specifications are confirmed. Bulk production timing depends on quantity, finish, assembly, packaging, and the production schedule. The confirmed timeline should be agreed before the order proceeds." },
+    { q: "Can I choose different hardware for the same design?", a: "Different hardware options can be quoted for the same body. If you want to split an order across fittings, mention the quantity required for each option so the assembly plan and pricing can be checked." },
+    { q: "Can the keychain be customized on both sides?", a: "Two-sided customization may include a second logo, engraved text, or another suitable design. The available methods depend on the body construction, material, artwork, and selected finish." },
+    { q: "Can you provide a custom backing card?", a: "Custom backing cards can be planned with brand artwork, product information, a barcode or QR code, and a suitable hanging hole. Card material, printing, die-cutting, and mounting requirements should be confirmed for each project." },
+    { q: "Will the keychains arrive assembled and packed?", a: "The assembly and packing arrangement should be specified in the quotation. If the order requires the keychains to be mounted on backing cards or individually packed, include those requirements when requesting a quote." },
+    { q: "Which finish should I choose?", a: "The best option depends on the artwork and the appearance you want. Soft enamel creates visible raised metal lines; hard enamel offers a smoother polished appearance; printing can suit certain fine details and gradients; engraving is useful for suitable metal surfaces and text." },
+    { q: "Can the design be reordered for future campaigns?", a: "Repeat production may be possible when the design, tooling, material, and specifications remain suitable. Confirm tooling retention, any storage arrangements, and repeat-order charges with your supplier rather than assuming these are included." },
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: product.faq.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: { "@type": "Answer", text: item.a },
+  })),
+};
+---
+
+<ProductDetailLayout
+  title={product.title}
+  description={product.description}
+  ogImage={product.image.src}
+  sections={sections}
+>
+  <Fragment slot="structured-data">
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+
+  <!-- HERO (已删除多余的按钮) -->
+  <section id="hero" class="product-hero keychain-hero">
+    <div class="keychain-hero__grid">
+      <div class="keychain-hero__copy">
+        <p class="product-hero__eyebrow">CUSTOM KEYCHAINS</p>
+        <h1 class="product-hero__title">{product.heroTitle}</h1>
+        <p class="product-hero__desc">{product.heroIntro}</p>
+      </div>
+
+      <div
+        class="keychain-assembly"
+        data-keychain-assembly
+        data-assembly-data={JSON.stringify(
+          product.assembly.map((part) => ({
+            id: part.id, step: part.step, name: part.name, spec: part.spec, text: part.text,
+          }))
+        )}
+      >
+        <div class="keychain-assembly__head">
+          <span>PRODUCT ANATOMY</span>
+          <span>SELECT A PART</span>
+        </div>
+
+        <ol class="keychain-assembly__axis">
+          {product.assembly.map((part, index) => (
+            <li>
+              <button
+                type="button"
+                class:list={["assembly-node", index === 0 && "is-active"]}
+                data-assembly-node={part.id}
+                aria-pressed={index === 0 ? "true" : "false"}
+              >
+                <span class="assembly-node__step">{part.step}</span>
+                <span class="assembly-node__body">
+                  <strong>{part.name}</strong>
+                  <span>{part.spec}</span>
+                </span>
+                <span class="assembly-node__arrow" aria-hidden="true">↗</span>
+              </button>
+            </li>
+          ))}
+        </ol>
+
+        <div class="keychain-assembly__viewer">
+          <div class="assembly-viewer__stage">
+            {product.assembly.map((part, index) => (
+              <Image
+                src={part.image}
+                alt={part.alt}
+                class:list={["assembly-viewer__image", index === 0 && "is-active"]}
+                data-assembly-stage={part.id}
+                loading={index === 0 ? "eager" : "lazy"}
+                sizes="(min-width: 1000px) 36vw, 92vw"
+              />
+            ))}
+            <span class="assembly-viewer__index" aria-hidden="true">
+              CUSTOM <strong>01—03</strong>
+            </span>
+          </div>
+
+          <div class="assembly-viewer__caption" data-assembly-caption>
+            <p class="assembly-caption__eyebrow">PART {product.assembly[0].step}</p>
+            <h2 class="assembly-caption__title">{product.assembly[0].name}</h2>
+            <p class="assembly-caption__spec">{product.assembly[0].spec}</p>
+            <p class="assembly-caption__text">{product.assembly[0].text}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="keychain-hero__foot">
+      <ul class="keychain-hero__facts">
+        {product.quickFacts.map((fact) => (
+          <li>
+            <strong>{fact.value}</strong>
+            <span>{fact.label}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="keychain-hero__closing">
+        Designed to carry. <span aria-hidden="true"> / </span> Made to represent.
+      </p>
+    </div>
+  </section>
+
+  <!-- SPECIFICATIONS -->
+  <section id="specifications" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">I · SPECIFICATIONS</p>
+          <h2 class="product-section__title">Start with the right proportions.</h2>
+        </div>
+        <p class="product-section__lead">
+          Define the body first. Size, material, construction, and reverse details create the foundation for the finish and hardware that follow.
+        </p>
+      </div>
+
+      <div class="specs-layout">
+        <div class="specs-feature">
+          <div class="specs-feature__value">40–55 mm</div>
+          <div class="specs-feature__label">Typical Body Size</div>
+          <div class="specs-feature__line"></div>
+          <div class="specs-feature__mark">CUSTOM<br />MADE</div>
+        </div>
+
+        <div class="specs-list">
+          {product.specs.map((spec, index) => (
+            <div class="spec-row">
+              <div class="spec-row__number">{String(index + 1).padStart(2, "0")}</div>
+              <div class="spec-row__label">{spec.label}</div>
+              <div class="spec-row__value">{spec.value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <p class="product-section__note">
+        Dimensions and available processes depend on the design and selected material. Final specifications should be confirmed against the approved artwork and sample.
+      </p>
+    </div>
+  </section>
+
+  <!-- HARDWARE -->
+  <section id="hardware" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">II · HARDWARE OPTIONS</p>
+          <h2 class="product-section__title">Choose how it connects.</h2>
+        </div>
+        <p class="product-section__lead">
+          The attachment affects how a keychain is carried, handled, and presented. Compare the options by use case rather than choosing on appearance alone.
+        </p>
+      </div>
+
+      <div class="hardware-layout" data-hw-compare>
+        <div class="hardware-rail" role="group" aria-label="Choose a hardware option">
+          {product.hardware.map((item, index) => (
+            <button
+              type="button"
+              class:list={["hardware-rail__item", index === 0 && "is-active"]}
+              data-hw-node={item.id}
+              aria-pressed={index === 0 ? "true" : "false"}
+            >
+              <span class="hardware-rail__thumb">
+                <Image src={item.image} alt="" loading="lazy" sizes="(min-width: 900px) 60px, 46px" />
+                <span class="hardware-rail__number">{item.number}</span>
+              </span>
+              <span class="hardware-rail__copy">
+                <strong>{item.name}</strong>
+                <span>{item.tag}</span>
+              </span>
+              <span class="hardware-rail__arrow" aria-hidden="true">↗</span>
+            </button>
+          ))}
+        </div>
+
+        <div class="hardware-detail-list">
+          {product.hardware.map((item, index) => (
+            <article
+              class:list={["hardware-detail", index === 0 && "is-active"]}
+              data-hw-detail={item.id}
+              aria-hidden={index === 0 ? "false" : "true"}
+            >
+              <div class="hardware-detail__media">
+                <Image src={item.image} alt={item.alt} loading="lazy" sizes="(min-width: 900px) 40vw, 92vw" />
+                <span class="hardware-detail__media-index">{item.number} / 05</span>
+              </div>
+
+              <div class="hardware-detail__top">
+                <p class="hardware-detail__eyebrow">ATTACHMENT {item.number}</p>
+                <span class="hardware-detail__tag">{item.tag}</span>
+              </div>
+
+              <h3>{item.name}</h3>
+              <p class="hardware-detail__summary">{item.summary}</p>
+
+              <dl class="hardware-detail__facts">
+                <div><dt>Construction</dt><dd>{item.build}</dd></div>
+                <div><dt>Why choose it</dt><dd>{item.strengths}</dd></div>
+                <div><dt>Considerations</dt><dd>{item.tradeoff}</dd></div>
+                <div><dt>Common applications</dt><dd>{item.suitable}</dd></div>
+              </dl>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div class="hardware-note">
+        <span class="hardware-note__mark" aria-hidden="true">i</span>
+        <p>
+          <strong>Need a specific performance level?</strong>
+          Tell us how the keychain will be used and handled. Hardware dimensions, material, construction, and any required testing should be confirmed for the intended application.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPLICATIONS -->
+  <section id="applications" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">III · APPLICATIONS</p>
+          <h2 class="product-section__title">One format. Many brand worlds.</h2>
+        </div>
+        <p class="product-section__lead">
+          From retail souvenirs to company merchandise, the strongest application starts with a clear audience and a reason to keep the product close at hand.
+        </p>
+      </div>
+
+      <div class="application-grid">
+        {product.applications.map((item) => (
+          <article class="application-card">
+            <div class="application-card__image">
+              <Image src={item.image} alt={item.alt} loading="lazy" sizes="(min-width: 900px) 30vw, 90vw" />
+              <span class="application-card__number">{item.number}</span>
+            </div>
+            <div class="application-card__body">
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTION -->
+  <section id="production" class="product-section">
+    <div class="product-section__inner">
+      <div class="section-heading">
+        <div>
+          <p class="product-eyebrow">IV · PRODUCTION & QUALITY</p>
+          <h2 class="product-section__title">From approved artwork to finished order.</h2>
+        </div>
+        <p class="product-section__lead">
+          A keychain combines a decorative body with an attachment and, sometimes, retail packaging. Confirming each part before production helps align the finished product with the brief.
+        </p>
+      </div>
+
+      <ol class="production-timeline">
+        {product.productionSteps.map((step) => (
+          <li class="production-step">
+            <span class="production-step__figure">
+              <Image src={step.image} alt={step.alt} loading="lazy" sizes="(min-width: 900px) 190px, 120px" />
+              <span class="production-step__figure-number">{step.number}</span>
+            </span>
+            <div class="production-step__body">
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <div class="quality-panel">
+        <div class="quality-panel__heading">
+          <p class="product-eyebrow">BEFORE DISPATCH</p>
+          <h3>Confirm the details that matter.</h3>
+        </div>
+        <ul class="quality-checks">
+          <li><span aria-hidden="true">✓</span> Approved design and finish</li>
+          <li><span aria-hidden="true">✓</span> Attachment and assembly requirements</li>
+          <li><span aria-hidden="true">✓</span> Packaging and quantity specification</li>
+          <li><span aria-hidden="true">✓</span> Applicable inspection or testing criteria</li>
+        </ul>
+      </div>
+
+      <p class="product-section__note">
+        Inspection scope and testing methods should be agreed before production. Do not assume a specific test or certification is included unless it is confirmed in the order specification.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="product-section">
+    <div class="product-section__inner">
+      <p class="product-eyebrow">V · FAQ</p>
+
+      <div class="faq-grid">
+        <div class="faq-intro">
+          <h2 class="product-section__title">Frequently asked questions.</h2>
+          <p class="faq-intro__text">
+            Still have a question? Send us your artwork and project details and we'll help you work it out.
+          </p>
+        </div>
+
+        <div class="faq-list">
+          {product.faq.map((item) => (
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>{item.q}</span>
+                <span class="faq-plus" aria-hidden="true">+</span>
+              </summary>
+              <div class="faq-answer">
+                <p>{item.a}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</ProductDetailLayout>
+
+<script>
+  type KeychainWindow = Window & {
+    __metalKeychainAssemblyCleanup?: () => void;
+    __metalKeychainHardwareCleanup?: () => void;
+  };
+
+  function initKeychainAssembly() {
+    const root = document.querySelector<HTMLElement>("[data-keychain-assembly]");
+    if (!root) return;
+    const win = window as KeychainWindow;
+    win.__metalKeychainAssemblyCleanup?.();
+
+    const nodes = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-assembly-node]"));
+    const stages = Array.from(root.querySelectorAll<HTMLElement>("[data-assembly-stage]"));
+    const caption = root.querySelector<HTMLElement>("[data-assembly-caption]");
+    if (!nodes.length || !stages.length || !caption) return;
+
+    let parts: any[] = [];
+    try { parts = JSON.parse(root.dataset.assemblyData ?? "[]"); } catch { return; }
+    if (!parts.length) return;
+
+    const eyebrow = caption.querySelector<HTMLElement>(".assembly-caption__eyebrow");
+    const title = caption.querySelector<HTMLElement>(".assembly-caption__title");
+    const spec = caption.querySelector<HTMLElement>(".assembly-caption__spec");
+    const text = caption.querySelector<HTMLElement>(".assembly-caption__text");
+
+    function activate(id: string) {
+      const part = parts.find((item) => item.id === id);
+      if (!part) return;
+      nodes.forEach((node) => {
+        const active = node.dataset.assemblyNode === id;
+        node.classList.toggle("is-active", active);
+        node.setAttribute("aria-pressed", String(active));
+      });
+      stages.forEach((stage) => {
+        stage.classList.toggle("is-active", stage.dataset.assemblyStage === id);
+      });
+      if (eyebrow) eyebrow.textContent = `PART ${part.step}`;
+      if (title) title.textContent = part.name;
+      if (spec) spec.textContent = part.spec;
+      if (text) text.textContent = part.text;
+    }
+
+    const listeners: Array<{ node: HTMLButtonElement; handler: EventListener }> = [];
+    nodes.forEach((node) => {
+      const handler: EventListener = () => {
+        const id = node.dataset.assemblyNode;
+        if (id) activate(id);
+      };
+      node.addEventListener("click", handler);
+      listeners.push({ node, handler });
+    });
+
+    win.__metalKeychainAssemblyCleanup = () => {
+      listeners.forEach(({ node, handler }) => node.removeEventListener("click", handler));
+      win.__metalKeychainAssemblyCleanup = undefined;
+    };
+  }
+
+  function initHardwareCompare() {
+    const root = document.querySelector<HTMLElement>("[data-hw-compare]");
+    if (!root) return;
+    const win = window as KeychainWindow;
+    win.__metalKeychainHardwareCleanup?.();
+
+    const nodes = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-hw-node]"));
+    const details = Array.from(root.querySelectorAll<HTMLElement>("[data-hw-detail]"));
+    if (!nodes.length || !details.length) return;
+
+    function activate(id: string) {
+      nodes.forEach((node) => {
+        const active = node.dataset.hwNode === id;
+        node.classList.toggle("is-active", active);
+        node.setAttribute("aria-pressed", String(active));
+      });
+      details.forEach((detail) => {
+        const active = detail.dataset.hwDetail === id;
+        detail.classList.toggle("is-active", active);
+        detail.setAttribute("aria-hidden", String(!active));
+      });
+    }
+
+    const listeners: Array<{ node: HTMLButtonElement; handler: EventListener }> = [];
+    nodes.forEach((node) => {
+      const handler: EventListener = () => {
+        const id = node.dataset.hwNode;
+        if (id) activate(id);
+      };
+      node.addEventListener("click", handler);
+      listeners.push({ node, handler });
+    });
+
+    win.__metalKeychainHardwareCleanup = () => {
+      listeners.forEach(({ node, handler }) => node.removeEventListener("click", handler));
+      win.__metalKeychainHardwareCleanup = undefined;
+    };
+  }
+
+  function initKeychainPage() {
+    initKeychainAssembly();
+    initHardwareCompare();
+  }
+
+  initKeychainPage();
+  document.addEventListener("astro:page-load", initKeychainPage);
+</script>
+
+<style>
+  /* =========================================================
+     HERO & LOCAL OVERRIDES (严格对齐全站规范)
+     ========================================================= */
+
+  .keychain-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.1fr);
+    gap: 60px;
+    align-items: start;
+  }
+
+  .keychain-hero__copy {
+    display: flex;
+    flex-direction: column;
+    max-width: 480px;
+    min-width: 0;
+  }
+
+  .keychain-hero__foot {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 60px;
+    align-items: center;
+    margin-top: clamp(24px, 3vw, 40px);
+    padding-top: clamp(20px, 2.4vw, 32px);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .keychain-hero__facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px 22px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .keychain-hero__facts li {
+    display: grid;
+    gap: 5px;
+    align-content: start;
+  }
+
+  .keychain-hero__facts strong {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .keychain-hero__facts span {
+    color: var(--color-muted);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .keychain-hero__closing {
+    margin: 0;
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: clamp(16px, 1.4vw, 20px);
+    font-style: italic;
+    text-align: right;
+  }
+
+  .keychain-hero__closing span {
+    color: var(--color-gold);
+  }
+
+  .keychain-assembly {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: clamp(16px, 2vw, 28px);
+    border: 1px solid var(--color-line);
+    background: rgba(255, 255, 255, 0.38);
+  }
+
+  .keychain-assembly__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-muted);
+    font-size: 9px;
+    letter-spacing: 0.13em;
+  }
+
+  .keychain-assembly__axis {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0;
+    padding: 14px 0;
+    list-style: none;
+  }
+
+  .assembly-node {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 7px;
+    align-items: start;
+    width: 100%;
+    min-height: 75px;
+    padding: 11px 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--color-ink);
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 180ms ease, background 180ms ease;
+  }
+
+  .assembly-node:hover,
+  .assembly-node.is-active {
+    border-color: rgba(174, 141, 90, 0.55);
+    background: rgba(174, 141, 90, 0.08);
+  }
+
+  .assembly-node__step {
+    padding-top: 2px;
+    color: var(--color-gold);
+    font-size: 9px;
+  }
+
+  .assembly-node__body {
+    display: grid;
+    gap: 5px;
+  }
+
+  .assembly-node__body strong {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .assembly-node__body > span {
+    color: var(--color-muted);
+    font-size: 9px;
+    line-height: 1.5;
+  }
+
+  .assembly-node__arrow {
+    display: none;
+  }
+
+  .keychain-assembly__viewer {
+    display: grid;
+    flex: 1;
+    grid-template-columns: minmax(0, 1.1fr) minmax(180px, 0.9fr);
+    gap: clamp(16px, 2vw, 28px);
+    align-items: center;
+    padding-top: 10px;
+  }
+
+  .assembly-viewer__stage {
+    position: relative;
+    display: grid;
+    height: 100%;
+    min-height: 290px;
+    place-items: center;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 45%, rgba(255,255,255,0.95), transparent 58%), var(--color-surface);
+  }
+
+  .assembly-viewer__image {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+    animation: keychain-image-in 240ms ease both;
+  }
+
+  .assembly-viewer__image.is-active {
+    display: block;
+  }
+
+  .assembly-viewer__index {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    display: grid;
+    gap: 3px;
+    color: var(--color-muted-2);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-align: right;
+  }
+
+  .assembly-viewer__index strong {
+    color: var(--color-gold);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .assembly-viewer__caption {
+    padding: 12px 0;
+  }
+
+  .assembly-caption__eyebrow {
+    margin: 0 0 10px;
+    color: var(--color-gold);
+    font-size: 9px;
+    letter-spacing: 0.13em;
+  }
+
+  .assembly-caption__title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(25px, 2.6vw, 38px);
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+
+  .assembly-caption__spec {
+    margin: 12px 0 0;
+    color: var(--color-muted);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  .assembly-caption__text {
+    margin: 14px 0 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  @keyframes keychain-image-in {
+    from { opacity: 0.3; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Section Headings 规范化 */
+  .section-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
+    gap: 50px;
+    align-items: end;
+    margin-bottom: 42px;
+  }
+
+  .product-section__title {
+    margin-top: 12px;
+    font-size: clamp(34px, 4.2vw, 54px);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+  }
+
+  .product-section__lead {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  .product-section__note {
+    max-width: 840px;
+    margin: 30px 0 0;
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.85;
+  }
+
+  /* Hardware */
+  .hardware-layout {
+    display: grid;
+    grid-template-columns: minmax(230px, 0.7fr) minmax(0, 1.3fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: start;
+  }
+
+  .hardware-rail {
+    display: grid;
+    gap: 8px;
+  }
+
+  .hardware-rail__item {
+    display: grid;
+    grid-template-columns: 60px minmax(0, 1fr) 18px;
+    gap: 14px;
+    align-items: center;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-line);
+    background: transparent;
+    color: var(--color-ink);
+    cursor: pointer;
+    text-align: left;
+    transition: background 180ms ease, border-color 180ms ease;
+  }
+
+  .hardware-rail__thumb {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background: var(--color-surface);
+  }
+
+  .hardware-rail__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.25);
+    transition: filter 180ms ease, transform 220ms ease;
+  }
+
+  .hardware-rail__item:hover,
+  .hardware-rail__item.is-active {
+    border-color: rgba(174, 141, 90, 0.6);
+    background: rgba(255, 255, 255, 0.55);
+  }
+
+  .hardware-rail__item:hover .hardware-rail__thumb img,
+  .hardware-rail__item.is-active .hardware-rail__thumb img {
+    filter: grayscale(0);
+    transform: scale(1.04);
+  }
+
+  .hardware-rail__number {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 2px 5px;
+    background: rgba(23, 23, 23, 0.72);
+    color: var(--color-cream);
+    font-size: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .hardware-rail__copy {
+    display: grid;
+    gap: 5px;
+  }
+
+  .hardware-rail__copy strong {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .hardware-rail__copy span {
+    color: var(--color-muted);
+    font-size: 10px;
+  }
+
+  .hardware-rail__arrow {
+    color: var(--color-gold);
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 180ms ease;
+  }
+
+  .hardware-rail__item.is-active .hardware-rail__arrow,
+  .hardware-rail__item:hover .hardware-rail__arrow {
+    opacity: 1;
+  }
+
+  .hardware-detail-list {
+    min-width: 0;
+  }
+
+  .hardware-detail {
+    display: none;
+    padding: clamp(20px, 3vw, 32px);
+    border: 1px solid var(--color-line);
+    background: rgba(255, 255, 255, 0.55);
+    animation: keychain-image-in 200ms ease both;
+  }
+
+  .hardware-detail.is-active {
+    display: block;
+  }
+
+  .hardware-detail__media {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: clamp(20px, 3vw, 30px);
+    aspect-ratio: 16 / 10;
+    background: var(--color-surface);
+  }
+
+  .hardware-detail__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hardware-detail__media-index {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 5px 10px;
+    background: rgba(23, 23, 23, 0.74);
+    color: var(--color-cream);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+
+  .hardware-detail__top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .hardware-detail__eyebrow {
+    margin: 0;
+    color: var(--color-gold);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+  }
+
+  .hardware-detail__tag {
+    padding: 6px 9px;
+    border: 1px solid var(--color-line);
+    color: var(--color-muted);
+    font-size: 9px;
+  }
+
+  .hardware-detail h3 {
+    margin: 24px 0 0;
+    font-family: var(--font-serif);
+    font-size: clamp(34px, 4vw, 48px);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+  }
+
+  .hardware-detail__summary {
+    max-width: 520px;
+    margin: 12px 0 28px;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  .hardware-detail__facts {
+    margin: 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .hardware-detail__facts > div {
+    display: grid;
+    grid-template-columns: minmax(110px, 0.45fr) minmax(0, 1fr);
+    gap: 18px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .hardware-detail__facts dt {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  .hardware-detail__facts dd {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.8;
+  }
+
+  .hardware-note {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+    max-width: 900px;
+    margin-top: 34px;
+    padding: 20px 22px;
+    border: 1px solid var(--color-line);
+  }
+
+  .hardware-note__mark {
+    display: grid;
+    width: 25px;
+    height: 25px;
+    place-items: center;
+    border: 1px solid var(--color-gold);
+    border-radius: 50%;
+    color: var(--color-gold);
+    font-family: var(--font-serif);
+    font-size: 14px;
+  }
+
+  .hardware-note p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.85;
+  }
+
+  .hardware-note strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--color-ink);
+  }
+
+  /* Applications */
+  .application-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  .application-card {
+    grid-column: span 2;
+    min-width: 0;
+    border: 1px solid var(--color-line);
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  .application-card:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+
+  .application-card__image {
+    position: relative;
+    aspect-ratio: 1.2 / 1;
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  .application-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: multiply;
+    transition: transform 350ms ease;
+  }
+
+  .application-card:hover .application-card__image img {
+    transform: scale(1.04);
+  }
+
+  .application-card__number {
+    position: absolute;
+    top: 13px;
+    left: 13px;
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    background: var(--color-paper);
+    color: var(--color-gold);
+    font-size: 10px;
+  }
+
+  .application-card__body {
+    padding: 22px;
+  }
+
+  .application-card__body h3 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  .application-card__body p {
+    margin: 11px 0 0;
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.85;
+  }
+
+  /* Production */
+  .production-timeline {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--color-line);
+    list-style: none;
+  }
+
+  .production-step {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 26px;
+    align-items: start;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .production-step__figure {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--color-surface);
+  }
+
+  .production-step__figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .production-step__figure-number {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 3px 8px;
+    background: rgba(23, 23, 23, 0.74);
+    color: var(--color-cream);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .production-step__body h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .production-step__body p {
+    max-width: 720px;
+    margin: 9px 0 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.85;
+  }
+
+  .quality-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+    gap: 36px;
+    margin-top: 42px;
+    padding: clamp(24px, 4vw, 42px);
+    border: 1px solid var(--color-line);
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  .quality-panel__heading h3 {
+    margin: 10px 0 0;
+    font-family: var(--font-serif);
+    font-size: clamp(25px, 3vw, 36px);
+    font-weight: 400;
+    line-height: 1.12;
+  }
+
+  .quality-checks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px 20px;
+    align-content: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .quality-checks li {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 8px;
+    align-items: start;
+    color: var(--color-muted);
+    font-size: 11px;
+    line-height: 1.7;
+  }
+
+  .quality-checks li span {
+    color: var(--color-gold);
+    font-size: 15px;
+  }
+
+  /* Focus states */
+  .assembly-node:focus-visible,
+  .hardware-rail__item:focus-visible,
+  .faq-question:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 4px;
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .keychain-hero__grid { grid-template-columns: minmax(230px, 0.72fr) minmax(0, 1.28fr); gap: 28px; }
+    .keychain-assembly__viewer { grid-template-columns: 1fr; }
+    .assembly-viewer__stage { min-height: 260px; }
+    .assembly-viewer__caption { padding: 6px 0 0; }
+  }
+
+  @media (max-width: 760px) {
+    .keychain-hero__grid, .section-heading, .hardware-layout { grid-template-columns: 1fr; }
+    .keychain-hero__grid { gap: 28px; }
+    .keychain-hero__copy { max-width: none; padding: 4px 0 0; }
+    .keychain-hero__foot { grid-template-columns: 1fr; gap: 18px; }
+    .keychain-hero__closing { text-align: left; }
+    .keychain-assembly { padding: 14px; }
+    .keychain-assembly__axis { gap: 3px; }
+    .assembly-node { grid-template-columns: 1fr; gap: 6px; min-height: 82px; padding: 9px 6px; }
+    .assembly-node__body strong { font-size: 10px; }
+    .assembly-node__body > span { font-size: 8px; }
+    .assembly-viewer__stage { min-height: 250px; }
+    .section-heading { gap: 18px; margin-bottom: 34px; }
+    .product-section__title { font-size: clamp(34px, 9vw, 48px); }
+    .hardware-layout { gap: 24px; }
+    .hardware-rail { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .hardware-rail__item { grid-template-columns: 46px minmax(0, 1fr); gap: 10px; min-height: 0; padding: 10px; }
+    .hardware-rail__arrow { display: none; }
+    .hardware-rail__copy strong { font-size: 11px; }
+    .hardware-detail { padding: 22px 18px; }
+    .hardware-detail__facts > div { grid-template-columns: 1fr; gap: 5px; }
+    .hardware-note { padding: 16px; }
+    .application-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .application-card, .application-card:nth-child(4) { grid-column: auto; }
+    .application-card:last-child { grid-column: 1 / -1; }
+    .application-card__body { padding: 16px; }
+    .application-card__body h3 { font-size: 21px; }
+    .production-step { grid-template-columns: 120px minmax(0, 1fr); gap: 14px; padding: 22px 0; }
+    .quality-panel { grid-template-columns: 1fr; gap: 24px; padding: 22px; }
+    .quality-checks { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .product-hero__title { font-size: 43px; }
+    .keychain-assembly__head { font-size: 8px; }
+    .keychain-assembly__axis { grid-template-columns: 1fr; gap: 5px; }
+    .assembly-node { grid-template-columns: 25px minmax(0, 1fr); min-height: auto; padding: 10px; }
+    .assembly-node__body { gap: 3px; }
+    .assembly-viewer__stage { min-height: 220px; }
+    .application-grid { grid-template-columns: 1fr; }
+    .application-card:last-child { grid-column: auto; }
+    .application-card__image { aspect-ratio: 1.25 / 1; }
+    .hardware-rail { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(html) { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>

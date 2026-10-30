@@ -1,0 +1,1256 @@
+---
+/*
+  PAGE  : /news/dota2-ti-2026
+  FILE  : src/pages/news/dota2-ti-2026.astro
+  ROLE  : 新闻详情页 — The International 2026 社区周边定制响应
+*/
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import {
+  getRelatedNews,
+  formatNewsDate,
+  toNewsISO,
+  newsList,
+} from "../../data/news-list";
+
+import tiPhoto from "../../assets/news/metal-craft-guide-cover.jpg";
+
+/* 从列表数据取当前文章元数据 */
+const meta = newsList.find((item) => item.slug === "dota2-ti-2026")!;
+
+const relatedNews = getRelatedNews("dota2-ti-2026", 2);
+
+/* TOC 与正文共用同一份章节定义，避免手写错位 */
+const tocItems = [
+  { id: "the-message-that-started-it", text: "The message that started it" },
+  { id: "what-the-community-asked-for", text: "What the community asked for" },
+  { id: "a-color-problem", text: "It was really a color problem" },
+  { id: "the-battle-pass-rush", text: "Those last four days" },
+  { id: "after-the-aegis", text: "After the Aegis" },
+];
+---
+
+<BaseLayout
+  title={`${meta.title} — MetalCrafts`}
+  description={meta.excerpt}
+  ogImage={meta.cover.src}
+>
+  <main class="news-detail">
+
+    <!-- Hero -->
+    <section class="news-detail__hero">
+      <div class="news-detail__container">
+        <div class="news-detail__hero-grid">
+
+          <div class="news-detail__hero-copy">
+            <p class="news-detail__hero-kicker">NEWS / PRODUCTION STORY</p>
+
+            <h1 class="news-detail__title">{meta.title}</h1>
+
+            <p class="news-detail__excerpt">{meta.excerpt}</p>
+
+            <div class="news-detail__meta">
+              <time datetime={toNewsISO(meta.date)}>
+                {formatNewsDate(meta.date)}
+              </time>
+
+              <span aria-hidden="true">/</span>
+
+              <span>CM CRAFTS</span>
+            </div>
+          </div>
+
+          <div class="news-detail__hero-media">
+            <Image
+              src={meta.cover}
+              alt={meta.alt}
+              loading="eager"
+              widths={[900, 1200, 1600, 2000]}
+              sizes="(max-width: 900px) 100vw, 55vw"
+            />
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Article -->
+    <section class="news-detail__body">
+      <div class="news-detail__container">
+
+        <div class="news-detail__reading-layout">
+
+          <!-- TOC 侧栏 -->
+          <aside class="article-toc" aria-label="Article contents">
+            <div class="article-toc__inner">
+
+              <div class="article-toc__label">IN THIS STORY</div>
+
+              <nav class="article-toc__nav">
+                {tocItems.map((item, index) => (
+                  <a
+                    href={`#${item.id}`}
+                    class="article-toc__link"
+                    data-toc-link={item.id}
+                  >
+                    <span class="article-toc__number">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span class="article-toc__text">{item.text}</span>
+                  </a>
+                ))}
+              </nav>
+
+            </div>
+          </aside>
+
+
+          <!-- 正文 -->
+          <article class="news-detail__content">
+
+            <!-- Lead -->
+            <p class="article-lead">
+              For three weeks in October, Dota 2 belonged to the world again —
+              and for three weeks, our inbox belonged to the Dota 2 community.
+            </p>
+
+            <p>
+              The International is unlike any other tournament we work with.
+              There is no single organiser handing out one master order. Instead
+              there are <strong>hundreds of small communities</strong> — Discord
+              groups, university guilds, fan artists, in-game teams, local
+              viewing parties — each of them wanting something to hold during
+              the final, and wanting it <strong>before the next match
+              started</strong>.
+            </p>
+
+
+            <!-- 客户原声 -->
+            <blockquote class="article-quote">
+              "Our guild has 120 players and we want individual enamel badges
+              with our Steam names on the back. Can you do numbered pieces?"
+            </blockquote>
+
+            <blockquote class="article-quote">
+              "I drew our own hero mascot. I only need 60 pins — is that even
+              possible before the grand final?"
+            </blockquote>
+
+            <blockquote class="article-quote">
+              "We run a bar that screens TI. We need 500 PVC keychains with our
+              logo and side art for the watch parties. The colors have to match
+              our team skin."
+            </blockquote>
+
+
+            <!-- 01 -->
+            <section
+              id="the-message-that-started-it"
+              class="article-section"
+              data-article-section="the-message-that-started-it"
+            >
+              <h2>The message that started it</h2>
+
+              <p>
+                The first inquiry arrived two days after the group stage
+                opener. It was from a moderator of a 4,000-member fan community,
+                and it was honest about the problem: they wanted a commemorative
+                pin for their anniversary meetup, they had a sketch on a tablet,
+                and they had <strong>eleven days</strong>.
+              </p>
+
+              <p>
+                Normally that conversation ends with "too late for tooling."
+                We ran the numbers on the artwork instead: a single front face,
+                three color fills, no back engraving, one standard size. That
+                was a pin we could sample in five working days and still ship
+                inside their window. So we said yes — and asked one question we
+                would end up asking a hundred more times that month:
+                <strong>which deadline actually matters to you?</strong>
+              </p>
+            </section>
+
+
+            <!-- Panorama image -->
+            <figure class="article-panorama">
+              <Image
+                src={tiPhoto}
+                alt="Custom player badges, team pins and hero enamel pieces made for the Dota 2 community"
+                widths={[1200, 1600, 2000]}
+                sizes="(max-width: 900px) 100vw, 900px"
+              />
+
+              <figcaption>
+                October 2026 · Community pieces in production
+              </figcaption>
+            </figure>
+
+
+            <!-- 02 -->
+            <section
+              id="what-the-community-asked-for"
+              class="article-section"
+              data-article-section="what-the-community-asked-for"
+            >
+              <h2>What the community asked for</h2>
+
+              <p>
+                By the end of the tournament our queue looked less like a
+                catalogue and more like a fandom census. Four product families
+                came up again and again:
+              </p>
+
+              <p>
+                <strong>Player and guild badges</strong> — enamel pins and
+                bottle-opener badges with a member name, roster number, or Steam
+                handle engraved on the back. Small runs, high emotional value.
+              </p>
+
+              <p>
+                <strong>Team pins</strong> — club-coloured hard enamel with
+                sharp linework, often matched to a specific in-game logo so the
+                pin reads instantly from across a table.
+              </p>
+
+              <p>
+                <strong>Hero collectibles</strong> — die-cast pieces with 3D
+                relief of a hero pose or a spell icon, aimed squarely at the
+                collector shelf rather than the jacket.
+              </p>
+
+              <p>
+                <strong>Watch-party merch</strong> — soft PVC keychains,
+                bottle openers and button badges for bars, university clubs, and
+                LAN cafés that needed volume, durability, and a fast turnover.
+              </p>
+
+              <p>
+                All of it shared one constraint: the community is global, and the
+                tournament is a clock. Nobody wanted a beautiful pin that arrived
+                a week after the final.
+              </p>
+            </section>
+
+
+            <!-- 03 -->
+            <section
+              id="a-color-problem"
+              class="article-section"
+              data-article-section="a-color-problem"
+            >
+              <h2>It was really a color problem</h2>
+
+              <p>
+                Gamers notice color. That is the whole point of a hero skin, a
+                team kit, or a skill effect: a specific palette is what makes it
+                recognisable in a third of a second. So the hardest part of the
+                whole month was never the metal — it was matching the colors.
+              </p>
+
+              <p>
+                A community's "radiant green" is not a Pantone number. It is a
+                screenshot. We ended up asking almost every client for one
+                thing beyond their artwork: <strong>a reference image and a
+                Pantone code</strong>, or at minimum the exact hex values used
+                in their own design file. Where people only had a screenshot, our
+                art team matched it under a calibrated light booth first, then
+                sent a digital proof before any enamel was mixed.
+              </p>
+
+              <p>
+                The other recurring request was <strong>glow-in-the-dark</strong>
+                fill for night matches, and <strong>glitter</strong> for the
+                anniversary pieces. Both are small upgrades that change how a pin
+                feels in a dim room, and both have to be decided before the
+                mold is cut — not after.
+              </p>
+            </section>
+
+
+            <!-- 04 -->
+            <section
+              id="the-battle-pass-rush"
+              class="article-section"
+              data-article-section="the-battle-pass-rush"
+            >
+              <h2>Those last four days</h2>
+
+              <p>
+                Something predictable happens when the bracket narrows: every
+                community that was still "thinking about it" suddenly needs
+                pieces now. In the final four days we took more small orders
+                than in the preceding two weeks combined.
+              </p>
+
+              <p>
+                We could not stretch a mold schedule, so we split the rush along
+                what was actually achievable. Orders that needed new tooling were
+                quoted honestly with the real lead time and a clear ship date.
+                Orders that could use existing bodies — button badges, PVC
+                keychains, standard-size pins — were fast-tracked, printed,
+                inspected, and packed in parallel.
+              </p>
+
+              <p>
+                Every finished piece was still checked one by one before packing:
+                color fill, plating, clutch tension, and the engraving on the
+                back — because a misspelled Steam name is a far worse outcome
+                than a late delivery.
+              </p>
+            </section>
+
+
+            <!-- 05 -->
+            <section
+              id="after-the-aegis"
+              class="article-section"
+              data-article-section="after-the-aegis"
+            >
+              <h2>After the Aegis</h2>
+
+              <p>
+                The trophy has been lifted, the streams have gone quiet, and our
+                benches are clear again. What is left is a pile of tooling we are
+                keeping for next season — molds that communities can reuse for a
+                new roster, a new anniversary, or a new tournament with no new
+                setup fee.
+              </p>
+
+              <p>
+                If you represent a guild, a student club, a bar, or a fan-art
+                collective, you do not need a finished design to talk to us. A
+                rough sketch, a screenshot of your palette, and an honest date
+                are enough for us to tell you what is possible.
+              </p>
+
+              <p>
+                Write to
+                <a href="mailto:daniel.imaginef@gmail.com">
+                  daniel.imaginef@gmail.com
+                </a>
+                with your quantity and your deadline. We will reply within 24
+                hours with factory pricing and straight answers about timing —
+                including when the answer is "not this time, but here is how to
+                be ready for the next one."
+              </p>
+
+              <p>
+                You can also
+                <a
+                  href="/download/metalcrafts-catalog.pptx"
+                  download
+                  class="article-download"
+                >download</a>
+                our latest catalog to see every product family, material, and
+                finish before you send anything over.
+              </p>
+
+              <p class="article-ending">
+                Next season, the first pin on the table might be yours.
+              </p>
+            </section>
+
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Related -->
+    {relatedNews.length > 0 && (
+      <section class="news-detail__related">
+        <div class="news-detail__container">
+
+          <div class="news-detail__related-header">
+            <p class="news-detail__related-eyebrow">MORE FROM METALCRAFTS</p>
+
+            <a href="/news" class="news-detail__related-all">
+              All News <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+
+          <div class="news-detail__related-list">
+            {relatedNews.map((item, index) => (
+              <a
+                href={`/news/${item.slug}`}
+                class="news-detail__related-item"
+              >
+                <span class="news-detail__related-index" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+
+                <div class="news-detail__related-media">
+                  <Image
+                    src={item.cover}
+                    alt={item.alt}
+                    loading="lazy"
+                    widths={[300, 450, 600]}
+                    sizes="180px"
+                  />
+                </div>
+
+                <div class="news-detail__related-body">
+                  <div class="news-detail__related-meta">
+                    <time datetime={toNewsISO(item.date)}>
+                      {formatNewsDate(item.date)}
+                    </time>
+
+                    <span aria-hidden="true">/</span>
+
+                    <span>CM CRAFTS</span>
+                  </div>
+
+                  <h2 class="news-detail__related-title">{item.title}</h2>
+                </div>
+
+                <span class="news-detail__related-arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+            ))}
+          </div>
+
+        </div>
+      </section>
+    )}
+
+  </main>
+</BaseLayout>
+
+
+<!-- TOC 交互 -->
+<script>
+  type NewsWindow = Window & {
+    __metalNewsDetailCleanup?: () => void;
+  };
+
+  function initNewsDetail() {
+    const root = document.querySelector<HTMLElement>(".news-detail");
+    const nav = document.querySelector<HTMLElement>(".nav");
+    const toc = document.querySelector<HTMLElement>(".article-toc");
+
+    const tocLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]")
+    );
+
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-article-section]")
+    );
+
+    if (!root || !nav || !toc || !tocLinks.length || !sections.length) return;
+
+    const win = window as NewsWindow;
+    win.__metalNewsDetailCleanup?.();
+
+    const syncNavHeight = () => {
+      root.style.setProperty(
+        "--nav-height",
+        `${nav.getBoundingClientRect().height}px`
+      );
+    };
+
+    const setActive = (id: string) => {
+      tocLinks.forEach((link) => {
+        const isActive = link.dataset.tocLink === id;
+        link.classList.toggle("is-active", isActive);
+
+        if (isActive) {
+          link.setAttribute("aria-current", "location");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+
+    const handleLinkClick = (event: MouseEvent) => {
+      const link = event.currentTarget as HTMLAnchorElement;
+      const id = link.dataset.tocLink;
+      if (!id) return;
+
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      event.preventDefault();
+
+      const navHeight = nav.getBoundingClientRect().height;
+      const targetTop =
+        target.getBoundingClientRect().top + window.scrollY - navHeight - 28;
+
+      window.scrollTo({ top: targetTop, behavior: "smooth" });
+
+      history.replaceState(null, "", `#${id}`);
+      setActive(id);
+    };
+
+    tocLinks.forEach((link) => {
+      link.addEventListener("click", handleLinkClick);
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top
+          );
+
+        if (!visible.length) return;
+
+        const activeId = (visible[0].target as HTMLElement).dataset
+          .articleSection;
+
+        if (activeId) setActive(activeId);
+      },
+      {
+        root: null,
+        rootMargin: `-${nav.getBoundingClientRect().height + 48}px 0px -62% 0px`,
+        threshold: 0,
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    syncNavHeight();
+
+    const resizeObserver = new ResizeObserver(() => syncNavHeight());
+    resizeObserver.observe(nav);
+
+    const handleResize = () => syncNavHeight();
+    window.addEventListener("resize", handleResize);
+
+    const hash = window.location.hash.replace("#", "");
+    if (hash && sections.some((section) => section.id === hash)) {
+      setActive(hash);
+    } else {
+      setActive(sections[0]?.id ?? "");
+    }
+
+    win.__metalNewsDetailCleanup = () => {
+      tocLinks.forEach((link) => {
+        link.removeEventListener("click", handleLinkClick);
+      });
+      observer.disconnect();
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", handleResize);
+      win.__metalNewsDetailCleanup = undefined;
+    };
+  }
+
+  initNewsDetail();
+  document.addEventListener("astro:page-load", initNewsDetail);
+</script>
+
+
+<style>
+/* ============================================================
+   FONT — 试装阶段，确定后改自托管
+   ============================================================ */
+@import url(
+  "https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,400italic;8..60,500;8..60,500italic;8..60,600;8..60,700&display=swap"
+);
+
+
+/* ============================================================
+   PAGE TOKENS
+   ============================================================ */
+.news-detail {
+  --paper: #f6f3ec;
+  --paper-soft: #fbfaf7;
+
+  --ink: #1b1a18;
+  --ink-strong: #0d0c0b;
+  --muted: #706b63;
+  --muted-soft: #8b8479;
+
+  --line: #ded9cf;
+  --line-soft: #e8e3da;
+
+  --gold: #ae8d5a;
+
+  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.news-detail *,
+.news-detail *::before,
+.news-detail *::after {
+  box-sizing: border-box;
+}
+
+.news-detail__container {
+  width: min(1380px, 94vw);
+  margin: 0 auto;
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.news-detail__hero {
+  padding: calc(var(--nav-height, 72px) + 76px) 0 96px;
+}
+
+.news-detail__hero-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1fr);
+  gap: clamp(56px, 6vw, 82px);
+  align-items: center;
+  width: min(1240px, 100%);
+  margin: 0 auto;
+}
+
+.news-detail__hero-copy {
+  max-width: 670px;
+}
+
+.news-detail__hero-kicker {
+  margin: 0 0 22px;
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.news-detail__title {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: clamp(40px, 4.6vw, 66px);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.news-detail__excerpt {
+  max-width: 610px;
+  margin: 28px 0 0;
+  color: var(--muted);
+  font-family: var(--font-serif);
+  font-size: 19px;
+  line-height: 1.62;
+}
+
+.news-detail__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+  color: var(--muted-soft);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.news-detail__hero-media {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  background: var(--paper-soft);
+}
+
+.news-detail__hero-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.news-detail__hero-media:hover img {
+  transform: scale(1.012);
+}
+
+
+/* ============================================================
+   ARTICLE LAYOUT — TOC 弹性宽 200~260 + 900 正文，整体居中
+   ============================================================ */
+.news-detail__body {
+  padding: 76px 0 112px;
+}
+
+.news-detail__reading-layout {
+  display: grid;
+  grid-template-columns: minmax(200px, 260px) 900px;
+  justify-content: center;
+  gap: clamp(56px, 6vw, 82px);
+  width: min(1240px, 100%);
+  margin: 0 auto;
+  align-items: start;
+}
+
+
+/* ============================================================
+   TOC
+   ============================================================ */
+.article-toc {
+  position: sticky;
+  top: calc(var(--nav-height, 72px) + 36px);
+  align-self: start;
+  padding-top: 4px;
+}
+
+.article-toc__label {
+  margin-bottom: 22px;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.article-toc__nav {
+  position: relative;
+  display: grid;
+  gap: 1px;
+}
+
+.article-toc__nav::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: var(--line-soft);
+}
+
+.article-toc__link {
+  position: relative;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 0 12px 18px;
+  color: var(--muted);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.45;
+  text-decoration: none;
+  transition: color 0.25s ease, padding-left 0.25s ease;
+}
+
+.article-toc__number {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+.article-toc__text {
+  min-width: 0;
+}
+
+.article-toc__link:hover {
+  color: var(--ink);
+  padding-left: 18px;
+}
+
+.article-toc__link.is-active {
+  color: var(--ink);
+  padding-left: 18px;
+}
+
+.article-toc__link.is-active::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background: var(--gold);
+}
+
+.article-toc__link.is-active .article-toc__number {
+  color: var(--gold);
+  opacity: 1;
+}
+
+
+/* ============================================================
+   CONTENT — 正文
+   ============================================================ */
+.news-detail__content {
+  min-width: 0;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 19px;
+  line-height: 1.72;
+  font-weight: 400;
+}
+
+.news-detail__content p {
+  margin: 0 0 26px;
+}
+
+.news-detail__content h2 {
+  scroll-margin-top: calc(var(--nav-height, 72px) + 32px);
+}
+
+
+/* Lead */
+.article-lead {
+  margin-bottom: 30px !important;
+  color: var(--ink);
+  font-size: 25px;
+  font-style: italic;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+}
+
+
+/* Quotes */
+.article-quote {
+  margin: 40px 0;
+  padding: 0 0 0 24px;
+  border-left: 1px solid var(--gold);
+  color: var(--muted);
+  font-size: 18px;
+  font-style: italic;
+  line-height: 1.65;
+}
+
+.article-quote + .article-quote {
+  margin-top: 30px;
+}
+
+
+/* Sections */
+.article-section {
+  scroll-margin-top: calc(var(--nav-height, 72px) + 34px);
+}
+
+.article-section + .article-section {
+  margin-top: 76px;
+}
+
+.article-section h2 {
+  margin: 0 0 25px;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.022em;
+}
+
+.article-section h2::after {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 1px;
+  margin-top: 18px;
+  background: var(--gold);
+}
+
+
+/* Panorama */
+.article-panorama {
+  width: 100%;
+  max-width: 900px;
+  margin: 68px 0 76px;
+}
+
+.article-panorama img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.article-panorama figcaption {
+  margin-top: 12px;
+  color: var(--muted-soft);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+/* Inline */
+.news-detail__content strong {
+  color: var(--ink-strong);
+  font-weight: 700;
+}
+
+.news-detail__content a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.news-detail__content a:hover {
+  color: var(--ink);
+}
+
+
+/* Download link — 圆角胶囊按钮，与正文基线对齐 */
+.article-download {
+  display: inline-block;
+  padding: 2px 11px 3px;
+  margin: 0 4px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  color: var(--gold) !important;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  white-space: nowrap;
+  vertical-align: 0.15em;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.article-download::after {
+  content: "↓";
+  font-size: 13px;
+  line-height: 1;
+}
+
+.article-download:hover {
+  background: var(--gold);
+  color: var(--paper) !important;
+}
+
+
+/* Ending */
+.article-ending {
+  margin-top: 48px !important;
+  padding-top: 30px;
+  border-top: 1px solid var(--line);
+  font-size: 22px;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+
+/* ============================================================
+   RELATED
+   ============================================================ */
+.news-detail__related {
+  padding: 70px 0 88px;
+  border-top: 1px solid var(--line);
+}
+
+.news-detail__related-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 26px;
+  width: min(1240px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.news-detail__related-eyebrow {
+  margin: 0;
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.news-detail__related-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.25s ease, gap 0.25s ease;
+}
+
+.news-detail__related-all:hover {
+  gap: 14px;
+  color: var(--gold);
+}
+
+.news-detail__related-all span {
+  color: var(--gold);
+  font-size: 15px;
+}
+
+.news-detail__related-list {
+  width: min(1240px, 100%);
+  margin: 0 auto;
+  border-top: 1px solid var(--line);
+}
+
+.news-detail__related-item {
+  display: grid;
+  grid-template-columns: 42px 180px minmax(0, 1fr) 32px;
+  gap: 24px;
+  align-items: center;
+  min-height: 154px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+  transition: padding 0.25s ease;
+}
+
+.news-detail__related-item:hover {
+  padding-left: 8px;
+}
+
+.news-detail__related-index {
+  align-self: start;
+  padding-top: 5px;
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.news-detail__related-media {
+  position: relative;
+  overflow: hidden;
+  width: 180px;
+  height: 116px;
+  background: var(--paper-soft);
+}
+
+.news-detail__related-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s ease;
+}
+
+.news-detail__related-item:hover .news-detail__related-media img {
+  transform: scale(1.025);
+}
+
+.news-detail__related-body {
+  min-width: 0;
+}
+
+.news-detail__related-meta {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.news-detail__related-title {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: clamp(19px, 1.8vw, 24px);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+}
+
+.news-detail__related-arrow {
+  justify-self: end;
+  color: var(--gold);
+  font-size: 20px;
+  transition: transform 0.25s ease;
+}
+
+.news-detail__related-item:hover .news-detail__related-arrow {
+  transform: translate(3px, -3px);
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+@media (max-width: 1180px) {
+  .news-detail__reading-layout {
+    grid-template-columns: minmax(160px, 220px) minmax(0, 720px);
+    gap: 42px;
+  }
+}
+
+
+/* ============================================================
+   SMALL TABLET
+   ============================================================ */
+@media (max-width: 900px) {
+  .news-detail__hero {
+    padding: calc(var(--nav-height, 72px) + 50px) 0 70px;
+  }
+
+  .news-detail__hero-grid {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+
+  .news-detail__hero-copy {
+    max-width: 780px;
+  }
+
+  .news-detail__hero-media {
+    aspect-ratio: 16 / 10;
+  }
+
+  .news-detail__reading-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .article-toc {
+    display: none;
+  }
+
+  .news-detail__content {
+    width: min(720px, 100%);
+    margin: 0 auto;
+    font-size: 18px;
+  }
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+@media (max-width: 640px) {
+  .news-detail__container {
+    width: calc(100% - 36px);
+  }
+
+  .news-detail__hero {
+    padding: calc(var(--nav-height, 72px) + 38px) 0 56px;
+  }
+
+  .news-detail__hero-kicker {
+    margin-bottom: 18px;
+    font-size: 9px;
+  }
+
+  .news-detail__title {
+    font-size: clamp(32px, 9vw, 44px);
+    line-height: 1.06;
+  }
+
+  .news-detail__excerpt {
+    margin-top: 22px;
+    font-size: 17px;
+    line-height: 1.68;
+  }
+
+  .news-detail__meta {
+    margin-top: 22px;
+    font-size: 9px;
+  }
+
+  .news-detail__hero-media {
+    aspect-ratio: 1.18 / 1;
+  }
+
+  .news-detail__body {
+    padding: 58px 0 74px;
+  }
+
+  .news-detail__content {
+    font-size: 17px;
+    line-height: 1.74;
+  }
+
+  .article-lead {
+    font-size: 21px;
+    line-height: 1.52;
+  }
+
+  .article-quote {
+    margin: 34px 0;
+    padding-left: 17px;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .article-section + .article-section {
+    margin-top: 62px;
+  }
+
+  .article-section h2 {
+    margin-bottom: 22px;
+    font-size: 27px;
+  }
+
+  .article-section h2::after {
+    margin-top: 15px;
+  }
+
+  .article-panorama {
+    margin: 52px 0 60px;
+  }
+
+  .article-panorama figcaption {
+    font-size: 10px;
+  }
+
+  .article-ending {
+    margin-top: 40px !important;
+    padding-top: 25px;
+    font-size: 20px;
+  }
+
+  .news-detail__related {
+    padding: 56px 0 68px;
+  }
+
+  .news-detail__related-header {
+    margin-bottom: 20px;
+  }
+
+  .news-detail__related-item {
+    grid-template-columns: 28px 108px minmax(0, 1fr);
+    gap: 14px;
+    min-height: 118px;
+  }
+
+  .news-detail__related-index {
+    padding-top: 3px;
+    font-size: 9px;
+  }
+
+  .news-detail__related-media {
+    width: 108px;
+    height: 78px;
+  }
+
+  .news-detail__related-meta {
+    gap: 6px;
+    margin-bottom: 7px;
+    font-size: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .news-detail__related-title {
+    font-size: 18px;
+  }
+
+  .news-detail__related-arrow {
+    display: none;
+  }
+}
+</style>

@@ -1,0 +1,2322 @@
+---
+/*
+  PAGE: /resources/metal-craft-guide/attachments-packaging
+  FILE: src/pages/resources/metal-craft-guide/attachments-packaging.astro
+  ROLE: Deep dive 05 — Attachments and packaging across product families
+*/
+
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { formatNewsDate, toNewsISO } from "../../../data/news-list";
+
+import heroShot from "../../../assets/resources/guide/back-card.jpg";
+
+const attachmentImages = import.meta.glob<{ default: ImageMetadata }>(
+  "../../../assets/resources/guide/attachments/*.{jpg,jpeg,png,webp}",
+  { eager: true }
+);
+
+function findImage(file: string): ImageMetadata | undefined {
+  const key = Object.keys(attachmentImages).find((k) => k.endsWith(`/${file}`));
+  return key ? attachmentImages[key]!.default : undefined;
+}
+
+function withImage<T extends { file: string }>(items: T[]) {
+  return items.map((item) => ({ ...item, src: findImage(item.file) }));
+}
+
+const meta = {
+  date: "2026-10-21",
+  title: "Pin Attachments & Packaging",
+  subtitle: "Clutches, magnets, rings, boxes — matched to fabric, use and handover",
+  excerpt:
+    "The attachment decides whether a piece stays on; the packaging decides what it is worth when it changes hands. A reference for every product family we make.",
+  ogImage: heroShot.src,
+};
+
+const sections = [
+  { id: "decision", number: "01", title: "The attachment is a wear decision" },
+  { id: "clutches", number: "02", title: "Pins: the four clutches" },
+  { id: "no-clutch", number: "03", title: "Pins: when there is no clutch" },
+  { id: "magnets", number: "04", title: "Fridge magnets" },
+  { id: "keychains", number: "05", title: "Keychains" },
+  { id: "cufflinks", number: "06", title: "Cufflinks and tie hardware" },
+  { id: "pack-working", number: "07", title: "Packaging: the working tiers" },
+  { id: "pack-premium", number: "08", title: "Packaging: the presentation tier" },
+  { id: "pack-detail", number: "09", title: "Details that decide quality" },
+  { id: "compliance", number: "10", title: "Nickel, lead, and what to ask for" },
+];
+
+const variables = [
+  {
+    label: "Fabric",
+    text: "A knit snags and a woven fabric does not. A bag strap needs a hold that a shirt does not.",
+  },
+  {
+    label: "Frequency",
+    text: "A piece worn once at an event and a piece worn daily are not the same problem, even at the same price.",
+  },
+  {
+    label: "Piercing",
+    text: "Uniforms, schools and borrowed garments may not allow a hole. That single constraint removes every clutch.",
+  },
+];
+
+const clutches = withImage([
+  {
+    name: "Butterfly clutch",
+    zh: "蝴蝶扣",
+    file: "butterfly-clutch.jpg",
+    note: "Two sprung wings grip the stem. Cheap, secure, removable without a tool.",
+    best: "Most pins, most fabrics",
+  },
+  {
+    name: "Rubber clutch",
+    zh: "橡胶扣",
+    file: "rubber-clutch.jpg",
+    note: "A rubber barrel grips by friction alone. The cheapest option, and it loosens with use.",
+    best: "Giveaways, one-off events",
+  },
+  {
+    name: "Flat locking clutch",
+    zh: "平锁扣",
+    file: "flat-locking-clutch.jpg",
+    note: "A collar locks into the stem groove. The firmest hold, and the hardest to pull off by accident.",
+    best: "Bags, thick fabric, daily wear",
+  },
+  {
+    name: "Magnetic clutch",
+    zh: "磁吸扣",
+    file: "magnetic-clutch.jpg",
+    note: "Two magnets clamp the fabric, so no hole is made. Weak on heavy material.",
+    best: "Knits, uniforms, no-piercing rules",
+  },
+]);
+
+const noClutch = withImage([
+  {
+    name: "Safety pin",
+    zh: "安全别针",
+    file: "safety-pin.jpg",
+    note: "A bar and a pin, no stem. The cheapest way to mount a badge; the pin can open.",
+    best: "Low-cost badges, temporary use",
+  },
+  {
+    name: "Stick pin",
+    zh: "领针",
+    file: "stick-pin.jpg",
+    note: "A short stem with a cap. Sits on a lapel; the cap is the part that wears out.",
+    best: "Suit lapels, formal sets",
+  },
+  {
+    name: "Brooch bar",
+    zh: "胸针托",
+    file: "brooch-bar.jpg",
+    note: "A long bar with two points spreads the load across a heavy piece.",
+    best: "Large or heavy designs",
+  },
+  {
+    name: "Punched hole",
+    zh: "打孔",
+    file: "punched-hole.jpg",
+    note: "No hardware at all — the hole is the attachment, and takes a ring or a cord.",
+    best: "Charms, tags, multi-use parts",
+  },
+]);
+
+const magnets = withImage([
+  {
+    name: "Full magnetic sheet",
+    zh: "整片磁贴",
+    file: "magnet-sheet.jpg",
+    note: "A flexible magnet die-cut to the shape. Thin, cheap, and the weakest hold.",
+    best: "Light, large-area pieces",
+  },
+  {
+    name: "Magnet + steel plate",
+    zh: "磁铁 + 铁片",
+    file: "magnet-steel-plate.jpg",
+    note: "A disc magnet bonded to a steel plate. The most common build, and the most stable.",
+    best: "Standard fridge magnets",
+  },
+  {
+    name: "Neodymium disc",
+    zh: "钕磁",
+    file: "neodymium-disc.jpg",
+    note: "A small, strong magnet. Holds a heavy piece with little surface; the coating can chip.",
+    best: "Small, heavy pieces",
+  },
+  {
+    name: "Magnetic strip",
+    zh: "磁条",
+    file: "magnetic-strip.jpg",
+    note: "A cut strip for shapes a die-cut sheet cannot follow.",
+    best: "Irregular or thin pieces",
+  },
+]);
+
+const keychains = withImage([
+  {
+    name: "Split ring",
+    zh: "开口圈",
+    file: "split-ring.jpg",
+    note: "The standard ring. Cheap and strong; needs a fingernail or a tool to open.",
+    best: "Most keychains",
+  },
+  {
+    name: "Lobster claw",
+    zh: "龙虾扣",
+    file: "lobster-claw.jpg",
+    note: "A spring gate that clips on and off, which retail buyers prefer.",
+    best: "Detachable, retail",
+  },
+  {
+    name: "Ball chain",
+    zh: "珠链",
+    file: "ball-chain.jpg",
+    note: "Light and cheap, and easy to replace when it fails.",
+    best: "Light charms, promotion",
+  },
+  {
+    name: "Swivel snap hook",
+    zh: "旋转钩",
+    file: "swivel-hook.jpg",
+    note: "A rotating hook that takes load without twisting the chain.",
+    best: "Bag charms, heavy use",
+  },
+  {
+    name: "Leather strap",
+    zh: "皮绳",
+    file: "leather-strap.jpg",
+    note: "A stitched strap that reads as a gift; the fold is where it wears through.",
+    best: "Premium, gift sets",
+  },
+  {
+    name: "Carabiner",
+    zh: "登山扣",
+    file: "carabiner.jpg",
+    note: "A functional clip that signals outdoor use rather than dress.",
+    best: "Outdoor, utility",
+  },
+]);
+
+const cufflinks = withImage([
+  {
+    name: "Bullet back",
+    zh: "转轴扣",
+    file: "bullet-back.jpg",
+    note: "A post that rotates to lock. The standard cufflink mechanism.",
+    best: "Standard cufflinks",
+  },
+  {
+    name: "Fixed post",
+    zh: "固定柱",
+    file: "fixed-post.jpg",
+    note: "A plain post with a fixed toggle. Simpler to make, and cheaper.",
+    best: "Entry-price sets",
+  },
+  {
+    name: "Chain link",
+    zh: "链式",
+    file: "chain-cufflink.jpg",
+    note: "Two faces joined by a short chain: more movement, and a more traditional look.",
+    best: "Classic formal",
+  },
+  {
+    name: "Tie bar",
+    zh: "领带夹",
+    file: "tie-bar.jpg",
+    note: "A spring clip. Its length has to stay shorter than the tie is wide.",
+    best: "Tie accessories",
+  },
+  {
+    name: "Shirt stud",
+    zh: "衬衫扣",
+    file: "shirt-stud.jpg",
+    note: "For dress shirts that have stud holes instead of buttons.",
+    best: "Black tie sets",
+  },
+]);
+
+const packWorking = withImage([
+  {
+    name: "OPP bag",
+    zh: "透明袋",
+    file: "pack-opp-bag.jpg",
+    note: "Protection only. The lowest-cost way to keep a part clean in transit.",
+    best: "Bulk, samples",
+  },
+  {
+    name: "Header card",
+    zh: "头卡",
+    file: "pack-header-card.jpg",
+    note: "A printed header stapled over a bag, with a hang hole at the top.",
+    best: "Pegboard retail, low cost",
+  },
+  {
+    name: "Backing card",
+    zh: "背卡",
+    file: "pack-backing-card.jpg",
+    note: "The pin standard: a printed card, a hole for the stem, a hang tab.",
+    best: "Pins, retail",
+  },
+  {
+    name: "Tuck-top box",
+    zh: "插口纸盒",
+    file: "pack-tuck-box.jpg",
+    note: "A folded box that protects the piece and carries print on every face.",
+    best: "Retail, gifting",
+  },
+]);
+
+const packPremium = withImage([
+  {
+    name: "Drawer box",
+    zh: "抽屉盒",
+    file: "pack-drawer-box.jpg",
+    note: "A sliding drawer. The opening is part of the gift, not just the container.",
+    best: "Premium retail",
+  },
+  {
+    name: "Velvet box",
+    zh: "绒盒",
+    file: "pack-velvet-box.jpg",
+    note: "A soft-lined box that reads as jewellery rather than merchandise.",
+    best: "Cufflinks, jewellery",
+  },
+  {
+    name: "Tin box",
+    zh: "铁盒",
+    file: "pack-tin-box.jpg",
+    note: "Rigid and keepable — often kept after the product is gone.",
+    best: "Collector, commemorative",
+  },
+  {
+    name: "Wooden box",
+    zh: "木盒",
+    file: "pack-wooden-box.jpg",
+    note: "The heaviest signal, and the heaviest thing to ship.",
+    best: "Awards, high-value gifts",
+  },
+  {
+    name: "Gift set",
+    zh: "套装",
+    file: "pack-gift-set.jpg",
+    note: "Box, insert, sleeve and card assembled and packed as one unit.",
+    best: "Launch, PR, corporate",
+  },
+]);
+
+const packDetails = [
+  {
+    label: "Card stock",
+    text: "Around 300–400 gsm for a backing card. Lighter stock curls once the pin is mounted, and a curled card does not stand on a peg.",
+  },
+  {
+    label: "Hole diameter",
+    text: "The stem plus a fraction of a millimetre. A generous hole lets the pin rotate on the card, so the face is never straight on the shelf — and no amount of printing fixes that.",
+  },
+  {
+    label: "Insert",
+    text: "Cut to the part, not to a generic cavity. A loose fit lets the piece move in transit, which is where most scratches happen.",
+  },
+  {
+    label: "Carton ratio",
+    text: "How many inner boxes fit a master carton. An odd ratio leaves air in the carton and raises freight per unit — invisible on the quote, visible on the invoice.",
+  },
+  {
+    label: "Print placement",
+    text: "Barcodes and QR codes go on a flat area, away from the hole and away from any fold. A code across a crease does not scan.",
+  },
+];
+
+const compliance = [
+  {
+    label: "Nickel release",
+    market: "European Union",
+    test: "REACH Annex XVII; EN 1811 screening, EN 12472 for wear before test",
+    ask: "A report on the specific part, because the attachment is what touches skin.",
+  },
+  {
+    label: "Lead and cadmium",
+    market: "United States, European Union",
+    test: "CPSIA limits for children's products; REACH restrictions for jewellery",
+    ask: "Which part was tested — the plated surface, the solder, or the base metal.",
+  },
+  {
+    label: "Packaging metals",
+    market: "European Union",
+    test: "Packaging directive limits on lead, cadmium, mercury and chromium VI",
+    ask: "Whether the printed card and the ink were included in the test scope.",
+  },
+];
+---
+
+<BaseLayout
+  title={`${meta.title} — ${meta.subtitle} | MetalCrafts`}
+  description={meta.excerpt}
+  ogImage={meta.ogImage}
+>
+  <main class="attach-page">
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+    <header class="attach-hero">
+      <div class="attach-shell">
+        <div class="attach-hero__grid">
+          <div class="attach-hero__copy">
+            <p class="attach-hero__overline">
+              Deep dive 05 · Fixation &amp; delivery
+            </p>
+
+            <h1 class="attach-hero__title">
+              Attachments
+              <span>&amp; Packaging</span>
+            </h1>
+
+            <p class="attach-hero__desc">{meta.excerpt}</p>
+
+            <div class="attach-hero__meta">
+              <time datetime={toNewsISO(meta.date)}>
+                {formatNewsDate(meta.date)}
+              </time>
+              <span class="attach-hero__dot"></span>
+              <span>METALCRAFTS</span>
+              <span class="attach-hero__dot"></span>
+              <span>Deep dive · 05 of 06</span>
+            </div>
+          </div>
+
+          <figure class="attach-hero__visual">
+            <div class="attach-hero__frame">
+              <Image
+                src={heroShot}
+                alt="Packaging and attachment reference"
+                loading="eager"
+                widths={[720, 1080, 1440]}
+                sizes="(max-width: 820px) 100vw, 52vw"
+              />
+            </div>
+            <figcaption>
+              <span>Fixation &amp; packaging</span>
+              <span>Reference</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </header>
+
+    <!-- =====================================================
+         ARTICLE
+    ====================================================== -->
+    <section class="attach-article">
+      <div class="attach-shell">
+        <div class="attach-reading">
+          <!-- Desktop contents -->
+          <aside class="attach-sidebar" aria-label="Article contents">
+            <div class="attach-sidebar__sticky">
+              <p class="attach-sidebar__heading">In this deep dive</p>
+
+              <nav class="attach-toc">
+                {sections.map((item) => (
+                  <a
+                    href={`#${item.id}`}
+                    class="attach-toc__link"
+                    data-toc-link={item.id}
+                  >
+                    <span class="attach-toc__number">{item.number}</span>
+                    <span class="attach-toc__text">{item.title}</span>
+                  </a>
+                ))}
+              </nav>
+
+              <div class="attach-sidebar__note">
+                <span class="attach-sidebar__mark">MC</span>
+                <div class="attach-sidebar__note-body">
+                  <p>
+                    Part of the manufacturing guide. Hardware images are being
+                    photographed — a dash means the slot is reserved.
+                  </p>
+
+                  <a
+                    href="/resources/metal-craft-guide"
+                    class="attach-sidebar__back"
+                  >
+                    <span aria-hidden="true">←</span>
+                    Back to the full guide
+                  </a>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Body -->
+          <article class="attach-content">
+            <!-- Mobile contents -->
+            <details class="attach-mobile-toc">
+              <summary>
+                <span>In this deep dive</span>
+                <span class="attach-mobile-toc__icon" aria-hidden="true">+</span>
+              </summary>
+              <nav aria-label="Mobile article contents">
+                {sections.map((item) => (
+                  <a href={`#${item.id}`}>
+                    <span>{item.number}</span>
+                    {item.title}
+                  </a>
+                ))}
+              </nav>
+            </details>
+
+            <!-- ---------- THESIS ---------- -->
+            <section class="attach-thesis" aria-label="The short answer">
+              <span class="attach-thesis__label">The short answer</span>
+              <p>
+                The attachment decides whether a piece stays on; the packaging
+                decides what it is worth when it changes hands. Neither is a
+                style choice. Both are decided by three facts that have nothing
+                to do with taste: what it is worn on, how often, and where it is
+                going to be opened.
+              </p>
+            </section>
+
+            <!-- ---------- 01 ---------- -->
+            <section
+              id="decision"
+              class="attach-section"
+              data-article-section="decision"
+            >
+              <header class="attach-section__header">
+                <span class="attach-section__index">01</span>
+                <div>
+                  <p class="attach-section__eyebrow">Selection</p>
+                  <h2>The attachment is a wear decision</h2>
+                </div>
+              </header>
+
+              <p>
+                Every attachment in this guide answers the same question in a
+                different way: how does this piece hold on to something that is
+                not part of it? The answer is fixed by three variables, and they
+                are all known before a design exists.
+              </p>
+
+              <div class="attach-vars">
+                {variables.map((item) => (
+                  <div class="attach-vars__item">
+                    <span class="attach-vars__label">{item.label}</span>
+                    <p>{item.text}</p>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                There is a fourth, quieter variable: what the attachment touches.
+                A clutch sits against skin, a keyring against a pocket, a magnet
+                against a fridge door. That contact is where compliance starts,
+                which is why the last section of this page is not an
+                afterthought.
+              </p>
+            </section>
+
+            <!-- ---------- 02 ---------- -->
+            <section
+              id="clutches"
+              class="attach-section"
+              data-article-section="clutches"
+            >
+              <header class="attach-section__header">
+                <span class="attach-section__index">02</span>
+                <div>
+                  <p class="attach-section__eyebrow">Pins</p>
+                  <h2>The four clutches</h2>
+                </div>
+              </header>
+
+              <p>
+                All four do the same job — hold a stem — and differ in how they
+                hold, how they release, and how they age. The price difference
+                between them is small; the experience difference is not.
+              </p>
+
+              <div class="attach-grid">
+                {clutches.map((item) => (
+                  <div class="attach-item">
+                    <div class="attach-item__media">
+                      {item.src ? (
+                        <Image
+                          src={item.src}
+                          alt={item.name}
+                          width={192}
+                          height={192}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span class="attach-item__empty" aria-hidden="true">
+                          {item.name
+                            .split(" ")
+                            .map((word) => word[0])
+                            .filter((char) => /[A-Za-z]/.test(char))
+                            .join("")
+                            .slice(0, 2)}
+                        </span>
+                      )}
+                    </div>
+                    <div class="attach-item__body">
+                      <h3>{item.name}</h3>
+                      <p class="attach-item__zh">{item.zh}</p>
+                      <p class="attach-item__note">{item.note}</p>
+                      <p class="attach-item__best">{item.best}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <!-- ---------- 03 ---------- -->
+            <section
+              id="no-clutch"
+              class="attach-section"
+              data-article-section="no-clutch"
+            >
+              <header class="attach-section__header">
+                <span class="attach-section__index">03</span>
+                <div>
+                  <p class="attach-section__eyebrow">Pins</p>
+                  <h2>When there is no clutch</h2>
+                </div>
+              </header>
+
+              <p>
+                Four ways to mount a piece without a stem and a clutch. They are
+                not inferior — they solve cases the clutch cannot, usually where
+                weight or garment matters more than unit cost.
+              </p>
+
+              <div class="attach-grid">
+                {noClutch.map((item) => (
+                  <div class="attach-item">
+                    <div class="attach-item__media">
+                      {item.src ? (
+                        <Image
+                          src={item.src}
+                          alt={item.name}
+                          width={192}
+                          height={192}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span class="attach-item__empty" aria-hidden="true">
+                          {item.name
+                            .split(" ")
+                            .map((word) => word[0])
+                            .filter((char) => /[A-Za-z]/.test(char))
+                            .join("")
+                            .slice(0, 2)}
+                        </span>
+                      )}
+                    </div>
+                    <div class="attach-item__body">
+                      <h3>{item.name}</h3>
+                      <p class="attach-item__zh">{item.zh}</p>
+                      <p class="attach-item__note">{item.note}</p>
+                      <p class="attach-item__best">{item.best}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <!-- ---------- 04 ---------- -->
+            <section
+              id="magnets"
+              class="attach-section"
+              data-article-section="magnets"
+            >
+              <header class="attach-section__header">
+                <span class="attach-section__index">04</span>
+                <div>
+                  <p class="attach-section__eyebrow">Fridge magnets</p>
+                  <h2>Four ways to hold a magnet</h2>
+                </div>
+              </header>
+
+              <p>
+                On a fridge magnet the magnet is the attachment. The choice is
+                governed by weight and by shape: a large flat piece tolerates a
+                thin sheet, a small heavy piece does not. A magnet that is too
+                weak does not fall off — it slides, which looks worse.
+              </p>
+
+              <div class="attach-grid">
+                {magnets.map((item) => (
+                  <div class="attach-item">
+                    <div class="attach-item__media">
+                      {item.src ? (
+                        <Image
+                          src={item.src}
+                          alt={item.name}
+                          width={192}
+                          height={192}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span class="attach-item__empty" aria-hidden="true">
+                          {item.name
+                            .split(" ")
+                            .map((word) => word[0])
+                            .filter((char) => /[A-Za-z]/.test(char))
+                            .join("")
+                            .slice(0, 2)}
+                        </span>
+                      )}
+                    </div>
+                    <div class="attach-item__body">
+                      <h3>{item.name}</h3>
+                      <p class="attach-item__zh">{item.zh}</p>
+                      <p class="attach-item__note">{item.note}</p>
+                      <p class="attach-item__best">{item.best}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <!-- ---------- 05 ---------- -->
+            <section
+              id="keychains"
+              class="attach-section"
+              data-article-section="keychains"
+            >
+              <header class="attach-section__header">
+                <span class="attach-section__index">05</span>
+                <div>
+                  <p class="attach-section__eyebrow">Keychains</p>
+                  <h2>Rings, hooks and chains</h2>
+                </div>
+              </header>
+
+              <p>
+                The charm is the visible part and the ring is the part that gets
+                used. Two rules cover most of it: the ring gauge has to match the
+                hole, and the fitting has to match what the piece will hang from.
+              </p>
+
+              <div class="attach-grid">
+                {keychains.map((item) => (
+                  <div class="attach-item">
+                    <div class="attach-item__media">
+                      {item.src ? (
+                        <Image
+                          src={item.src}
+                          alt={item.name}
+                          width={192}
+                          height={192}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span class="attach-item__empty" aria-hidden="true">
+                          {item.name
+                            .split(" ")
+                            .map((word) => word[0])
+                            .filter((char) => /[A-Za-z]/.test(char))
+                            .join("")
+                            .slice(0, 2)}
+                        </span>
+                      )}
+                    </div>
+                    <div class="attach-item__body">
+                      <h3>{item.name}</h3>
+                      <p class="attach-item__zh">{item.zh}</p>
+                      <p class="attach-item__note">{item.note}</p>
+                      <p class="attach-item__best">{item.best}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                A thin ring on a heavy charm deforms before it breaks, and a
+                deformed ring no longer opens cleanly. That failure is almost
+                always a specification error, not a wear issue.
+              </p>
+            </section>
+
+            <!-- ---------- 06 ---------- -->
+            <section
+              id="cufflinks"
+              class="attach-section"
+              data-article-section="cufflinks"
+            >
+              <header class="attach-section__header">
+                <span class="attach-section__index">06</span>
+                <div>
+                  <p class="attach-section__eyebrow">Cufflinks</p>
+                  <h2>Cufflinks and tie hardware</h2>
+                </div>
+              </header>
+
+              <p>
+                Cufflink hardware is judged by one thing the buyer does every
+                time: putting it on. A mechanism that needs two hands and a
+                mirror will be left in the drawer, whatever the face looks like.
+              </p>
+
+              <div class="attach-grid">
+                {cufflinks.map((item) => (
+                  <div class="attach-item">
+                    <div class="attach-item__media">
+                      {item.src ? (
+                        <Image
+                          src={item.src}
+                          alt={item.name}
+                          width={192}
+                          height={192}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span class="attach-item__empty" aria-hidden="true">
+                          {item.name
+                            .split(" ")
+                            .map((word) => word[0])
+                            .filter((char) => /[A-Za-z]/.test(char))
+                            .join("")
+                            .slice(0, 2)}
+                        </span>
+                      )}
+                    </div>
+                    <div class="attach-item__body">
+                      <h3>{item.name}</h3>
+                      <p class="attach-item__zh">{item.zh}</p>
+                      <p class="attach-item__note">{item.note}</p>
+                      <p class="attach-item__best">{item.best}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <!-- ---------- 07 ---------- -->
+            <section
+              id="pack-working"
+              class="attach-section"
+              data-article-section="pack-working"
+            >
+              <header class="attach-section__header">
+                <span class="attach-section__index">07</span>
+                <div>
+                  <p class="attach-section__eyebrow">Packaging</p>
+                  <h2>The working tiers</h2>
+                </div>
+              </header>
+
+              <p>
+                Packaging is usually discussed as a cost. It is really a
+                sequence: each tier buys a different thing, and none of them is
+                “better” without knowing what the piece has to survive between
+                the factory and the hand.
+              </p>
+
+              <div class="attach-grid">
+                {packWorking.map((item) => (
+                  <div class="attach-item">
+                    <div class="attach-item__media">
+                      {item.src ? (
+                        <Image
+                          src={item.src}
+                          alt={item.name}
+                          width={192}
+                          height={192}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span class="attach-item__empty" aria-hidden="true">
+                          {item.name
+                            .split(" ")
+                            .map((word) => word[0])
+                            .filter((char) => /[A-Za-z]/.test(char))
+                            .join("")
+                            .slice(0, 2)}
+                        </span>
+                      )}
+                    </div>
+                    <div class="attach-item__body">
+                      <h3>{item.name}</h3>
+                      <p class="attach-item__zh">{item.zh}</p>
+                      <p class="attach-item__note">{item.note}</p>
+                      <p class="attach-item__best">{item.best}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                Read as a ladder: the bag buys protection, the header card buys
+                a peg, the backing card buys a shelf presence, and the box buys
+                an opening. Each step up costs more in material, in assembly
+                time, and in the volume it takes on a pallet.
+              </p>
+            </section>
+
+            <!-- ---------- 08 ---------- -->
+            <section
+              id="pack-premium"
+              class="attach-section"
+              data-article-section="pack-premium"
+            >
+              <header class="attach-section__header">
+                <span class="attach-section__index">08</span>
+                <div>
+                  <p class="attach-section__eyebrow">Packaging</p>
+                  <h2>The presentation tier</h2>
+                </div>
+              </header>
+
+              <p>
+                Above the working tiers, packaging starts doing something else:
+                it sets the price the piece can carry, and it becomes part of
+                what the buyer keeps. That is a different budget, and it should
+                be decided separately.
+              </p>
+
+              <div class="attach-grid">
+                {packPremium.map((item) => (
+                  <div class="attach-item">
+                    <div class="attach-item__media">
+                      {item.src ? (
+                        <Image
+                          src={item.src}
+                          alt={item.name}
+                          width={192}
+                          height={192}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span class="attach-item__empty" aria-hidden="true">
+                          {item.name
+                            .split(" ")
+                            .map((word) => word[0])
+                            .filter((char) => /[A-Za-z]/.test(char))
+                            .join("")
+                            .slice(0, 2)}
+                        </span>
+                      )}
+                    </div>
+                    <div class="attach-item__body">
+                      <h3>{item.name}</h3>
+                      <p class="attach-item__zh">{item.zh}</p>
+                      <p class="attach-item__note">{item.note}</p>
+                      <p class="attach-item__best">{item.best}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                The cost that surprises people here is not the box. It is the
+                carton: a rigid box that measures 90 mm on each side takes four
+                times the volume of a carded pin, so the freight per unit rises
+                even when the box itself is cheap.
+              </p>
+            </section>
+
+            <!-- ---------- 09 ---------- -->
+            <section
+              id="pack-detail"
+              class="attach-section"
+              data-article-section="pack-detail"
+            >
+              <header class="attach-section__header">
+                <span class="attach-section__index">09</span>
+                <div>
+                  <p class="attach-section__eyebrow">Details</p>
+                  <h2>Details that decide quality</h2>
+                </div>
+              </header>
+
+              <p>
+                Two suppliers can quote the same “printed backing card” and hand
+                over different objects. The difference is in five numbers, none
+                of which appear in a photograph.
+              </p>
+
+              <div class="attach-specs">
+                {packDetails.map((item) => (
+                  <div class="attach-spec">
+                    <span class="attach-spec__label">{item.label}</span>
+                    <p>{item.text}</p>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                The hole is the one worth arguing about. A card hole a fraction
+                too large lets the pin rotate under its own weight, so the face
+                sits at an angle on every peg — and the fix is a new die for the
+                card, not a new print file.
+              </p>
+            </section>
+
+            <!-- ---------- 10 ---------- -->
+            <section
+              id="compliance"
+              class="attach-section"
+              data-article-section="compliance"
+            >
+              <header class="attach-section__header">
+                <span class="attach-section__index">10</span>
+                <div>
+                  <p class="attach-section__eyebrow">Compliance</p>
+                  <h2>Nickel, lead, and what to ask for</h2>
+                </div>
+              </header>
+
+              <p>
+                Compliance is not a document you attach at the end. It is a
+                property of the part, and the part is decided by the attachment
+                and the plating — the two things that touch skin.
+              </p>
+
+              <div class="attach-compliance">
+                {compliance.map((item) => (
+                  <div class="attach-compliance__row">
+                    <h3>{item.label}</h3>
+                    <p>
+                      <span>Market</span>
+                      {item.market}
+                    </p>
+                    <p>
+                      <span>Test</span>
+                      {item.test}
+                    </p>
+                    <p>
+                      <span>Ask</span>
+                      {item.ask}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                The practical test of a report is whether it names the part. A
+                certificate that names the factory, or the material, or a
+                generic “sample”, tells you nothing about the batch in your
+                hand. What you want is the part number, the test method, the
+                laboratory, and the date — and the same four things on the next
+                order.
+              </p>
+
+              <div class="attach-note">
+                <p class="attach-note__label">Where wear and compliance meet</p>
+                <p class="attach-note__foot">
+                  Nickel release is a wear question in disguise. The barrier
+                  layer sits under the colour, so a finish that has worn through
+                  at the rim is also a finish that has exposed what the
+                  regulation is about. That is why the care advice in deep dive
+                  04 is not only cosmetic.
+                </p>
+              </div>
+            </section>
+
+            <!-- ---------- CLOSING ---------- -->
+            <footer class="attach-conclusion">
+              <div class="attach-conclusion__rule"></div>
+              <p class="attach-conclusion__label">The decision</p>
+
+              <div class="attach-rule">
+                <p>
+                  <strong>Choose the attachment by fabric and frequency.</strong>
+                  Not by the look of the back, which nobody sees, and not by the
+                  few cents between one clutch and another.
+                </p>
+                <p>
+                  <strong>Choose packaging by the moment of handover.</strong>
+                  A bag protects, a card sells, a box gives. Decide which moment
+                  matters before pricing the box.
+                </p>
+                <p>
+                  <strong>Ask for the report on the part.</strong> Compliance
+                  lives in the attachment and the plating, so the document has
+                  to name them.
+                </p>
+              </div>
+
+              <p class="attach-conclusion__text">
+                If the program mixes product families — pins for the giveaway,
+                keychains for retail, cufflinks for the gift tier — send the whole
+                set at once. The hardware and the packaging are cheaper to
+                standardise across a program than to optimise one product at a
+                time.
+              </p>
+
+              <div class="attach-conclusion__signature">
+                <span>METALCRAFTS</span>
+                <span>CRAFT · DETAIL · QUALITY</span>
+              </div>
+
+              {/*
+                Cluster navigation rule:
+                01 → left: back to the guide, right: next deep dive
+                02–05 → left: previous deep dive, right: next deep dive
+                06 → left: previous deep dive, right: back to the guide
+              */}
+              <nav class="attach-cluster" aria-label="Guide navigation">
+                <a
+                  href="/resources/metal-craft-guide/plating-durability"
+                  class="attach-cluster__link"
+                >
+                  <span class="attach-cluster__label">Previous deep dive</span>
+                  <span class="attach-cluster__title">
+                    <span aria-hidden="true">←</span> Plating &amp; durability
+                  </span>
+                </a>
+
+                <a
+                  href="/resources/metal-craft-guide/quality-control-tolerances"
+                  class="attach-cluster__link attach-cluster__link--next"
+                >
+                  <span class="attach-cluster__label">Next deep dive</span>
+                  <span class="attach-cluster__title">
+                    Quality control &amp; tolerances
+                    <span aria-hidden="true">→</span>
+                  </span>
+                </a>
+              </nav>
+            </footer>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<!-- =========================================================
+     TABLE OF CONTENTS INTERACTION
+========================================================== -->
+<script>
+  type AttachWindow = Window & {
+    __attachGuideCleanup?: () => void;
+  };
+
+  function initAttachGuide() {
+    const root = document.querySelector<HTMLElement>(".attach-page");
+    const nav = document.querySelector<HTMLElement>(".nav");
+    const tocLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]")
+    );
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-article-section]")
+    );
+
+    if (!root || !nav || !tocLinks.length || !sections.length) return;
+
+    const win = window as AttachWindow;
+    win.__attachGuideCleanup?.();
+
+    const syncNavHeight = () => {
+      root.style.setProperty(
+        "--attach-nav-height",
+        `${nav.getBoundingClientRect().height}px`
+      );
+    };
+
+    const setActive = (id: string) => {
+      tocLinks.forEach((link) => {
+        const active = link.dataset.tocLink === id;
+        link.classList.toggle("is-active", active);
+
+        if (active) {
+          link.setAttribute("aria-current", "location");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+
+    const handleLinkClick = (event: MouseEvent) => {
+      const link = event.currentTarget as HTMLAnchorElement;
+      const id = link.dataset.tocLink;
+      if (!id) return;
+
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      event.preventDefault();
+
+      const navHeight = nav.getBoundingClientRect().height;
+      const targetTop =
+        target.getBoundingClientRect().top + window.scrollY - navHeight - 28;
+
+      window.scrollTo({
+        top: targetTop,
+        behavior: "smooth",
+      });
+
+      history.replaceState(null, "", `#${id}`);
+      setActive(id);
+
+      const mobileToc = root.querySelector<HTMLDetailsElement>(
+        ".attach-mobile-toc"
+      );
+
+      if (mobileToc?.open) {
+        mobileToc.open = false;
+      }
+    };
+
+    tocLinks.forEach((link) => {
+      link.addEventListener("click", handleLinkClick);
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+        if (!visible.length) return;
+
+        const activeId = (visible[0].target as HTMLElement).dataset
+          .articleSection;
+
+        if (activeId) setActive(activeId);
+      },
+      {
+        root: null,
+        rootMargin: `-${nav.getBoundingClientRect().height + 48}px 0px -62% 0px`,
+        threshold: 0,
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    syncNavHeight();
+
+    const resizeObserver = new ResizeObserver(syncNavHeight);
+    resizeObserver.observe(nav);
+
+    const handleResize = () => syncNavHeight();
+    window.addEventListener("resize", handleResize);
+
+    const hash = window.location.hash.replace("#", "");
+    if (hash && sections.some((section) => section.id === hash)) {
+      setActive(hash);
+    } else {
+      setActive(sections[0]?.id ?? "");
+    }
+
+    win.__attachGuideCleanup = () => {
+      tocLinks.forEach((link) => {
+        link.removeEventListener("click", handleLinkClick);
+      });
+
+      observer.disconnect();
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", handleResize);
+      win.__attachGuideCleanup = undefined;
+    };
+  }
+
+  initAttachGuide();
+  document.addEventListener("astro:page-load", initAttachGuide);
+</script>
+
+<style>
+  /* =========================================================
+     BASE
+  ========================================================== */
+
+  .attach-page {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .attach-page *,
+  .attach-page *::before,
+  .attach-page *::after {
+    box-sizing: border-box;
+  }
+
+  .attach-page img {
+    display: block;
+    max-width: 100%;
+  }
+
+  .attach-shell {
+    width: min(1240px, 92%);
+    margin-inline: auto;
+  }
+
+  /* =========================================================
+     HERO
+  ========================================================== */
+
+  .attach-hero {
+    padding: calc(var(--attach-nav-height, 72px) + 32px) 0 52px;
+  }
+
+  .attach-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+    gap: clamp(40px, 5vw, 64px);
+    align-items: start;
+    padding-block: clamp(34px, 4.4vw, 62px) 0;
+  }
+
+  .attach-hero__copy {
+    min-width: 0;
+    max-width: 540px;
+  }
+
+  .attach-hero__overline {
+    margin: 0 0 20px;
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .attach-hero__title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(44px, 5.2vw, 76px);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+
+  .attach-hero__title span {
+    display: block;
+    color: var(--color-muted);
+  }
+
+  .attach-hero__desc {
+    max-width: 470px;
+    margin: 28px 0 0;
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: clamp(17px, 1.4vw, 20px);
+    line-height: 1.62;
+  }
+
+  .attach-hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+    text-transform: uppercase;
+  }
+
+  .attach-hero__dot {
+    width: 3px;
+    height: 3px;
+    flex: 0 0 3px;
+    border-radius: 50%;
+    background: var(--color-gold);
+  }
+
+  .attach-hero__visual {
+    position: relative;
+    min-width: 0;
+    margin: 0;
+    padding-bottom: 22px;
+  }
+
+  .attach-hero__frame {
+    position: relative;
+    z-index: 1;
+  }
+
+  .attach-hero__frame::before {
+    position: absolute;
+    z-index: -1;
+    inset: -12px;
+    border: 1px solid var(--color-line);
+    content: "";
+    pointer-events: none;
+  }
+
+  .attach-hero__frame img {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.13 / 1;
+    object-fit: cover;
+    background: var(--color-surface);
+  }
+
+  .attach-hero__visual figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 2px 0;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  /* =========================================================
+     ARTICLE LAYOUT
+  ========================================================== */
+
+  .attach-article {
+    padding: 62px 0 104px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .attach-reading {
+    display: grid;
+    grid-template-columns: minmax(180px, 216px) minmax(0, 1fr);
+    gap: clamp(40px, 6vw, 76px);
+  }
+
+  .attach-sidebar {
+    min-width: 0;
+  }
+
+  .attach-sidebar__sticky {
+    position: sticky;
+    top: calc(var(--attach-nav-height, 72px) + 34px);
+  }
+
+  .attach-sidebar__heading {
+    margin: 0 0 20px;
+    color: var(--color-ink);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .attach-toc {
+    position: relative;
+    display: grid;
+    gap: 2px;
+  }
+
+  .attach-toc::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    background: var(--color-line);
+    content: "";
+  }
+
+  .attach-toc__link {
+    position: relative;
+    display: grid;
+    grid-template-columns: 25px minmax(0, 1fr);
+    gap: 11px;
+    align-items: start;
+    padding: 11px 0 11px 16px;
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: 15px;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: color 180ms ease;
+  }
+
+  .attach-toc__number {
+    padding-top: 3px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .attach-toc__link:hover,
+  .attach-toc__link.is-active {
+    color: var(--color-ink);
+  }
+
+  .attach-toc__link.is-active::before {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 2px;
+    background: var(--color-gold);
+    content: "";
+  }
+
+  .attach-toc__link.is-active .attach-toc__number {
+    color: var(--color-gold-dark);
+  }
+
+  .attach-sidebar__note {
+    display: flex;
+    gap: 13px;
+    align-items: flex-start;
+    margin-top: 36px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .attach-sidebar__mark {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    place-items: center;
+    border: 1px solid var(--color-line);
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 12px;
+  }
+
+  .attach-sidebar__note-body {
+    min-width: 0;
+  }
+
+  .attach-sidebar__note p {
+    margin: 0;
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .attach-sidebar__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 12px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-ink);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition:
+      color var(--ease-out),
+      border-color var(--ease-out),
+      gap var(--ease-out);
+  }
+
+  .attach-sidebar__back span {
+    color: var(--color-gold);
+    font-size: 12px;
+  }
+
+  .attach-sidebar__back:hover {
+    color: var(--color-gold-dark);
+    border-color: var(--color-gold);
+    gap: 11px;
+  }
+
+  .attach-content {
+    min-width: 0;
+    font-size: 16px;
+    line-height: 1.85;
+  }
+
+  .attach-content p {
+    margin: 0 0 20px;
+  }
+
+  .attach-content a {
+    color: var(--color-ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-gold);
+  }
+
+  .attach-mobile-toc {
+    display: none;
+  }
+
+  /* =========================================================
+     THESIS
+  ========================================================== */
+
+  .attach-thesis {
+    position: relative;
+    margin-bottom: 64px;
+    padding: 36px 40px 34px 72px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper-2);
+  }
+
+  .attach-thesis::before {
+    content: "\201C";
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: var(--color-gold);
+    font-family: var(--font-serif);
+    font-size: 76px;
+    line-height: 1;
+    opacity: 0.7;
+  }
+
+  .attach-thesis__label {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .attach-thesis p {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: clamp(18px, 1.9vw, 22px);
+    line-height: 1.58;
+    letter-spacing: -0.012em;
+  }
+
+  /* =========================================================
+     SECTIONS
+  ========================================================== */
+
+  .attach-section {
+    min-width: 0;
+    margin-top: 76px;
+    scroll-margin-top: calc(var(--attach-nav-height, 72px) + 32px);
+  }
+
+  .attach-section__header {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .attach-section__index {
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 34px;
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .attach-section__eyebrow {
+    margin: 0 0 9px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .attach-section h2 {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: clamp(27px, 2.9vw, 37px);
+    font-weight: 400;
+    line-height: 1.14;
+    letter-spacing: -0.035em;
+  }
+
+  /* =========================================================
+     VARIABLES
+  ========================================================== */
+
+  .attach-vars {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    margin: 28px 0 28px;
+    border-top: 1px solid var(--color-ink);
+  }
+
+  .attach-vars__item {
+    padding: 18px 22px 4px 0;
+    border-right: 1px solid var(--color-line);
+  }
+
+  .attach-vars__item:last-child {
+    border-right: 0;
+    padding-right: 0;
+  }
+
+  .attach-vars__label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .attach-vars__item p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* =========================================================
+     HARDWARE GRID
+  ========================================================== */
+
+  .attach-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 44px;
+    margin: 26px 0 24px;
+  }
+
+  .attach-item {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 16px;
+    padding: 18px 0 16px;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .attach-item__media {
+    width: 64px;
+    height: 64px;
+    flex: 0 0 64px;
+    background: var(--color-paper-2);
+    overflow: hidden;
+  }
+
+  .attach-item__media img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border: 1px solid var(--color-line);
+  }
+
+  .attach-item__empty {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    place-items: center;
+    border: 1px dashed var(--color-line);
+    color: var(--color-muted-2);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+
+  .attach-item__body {
+    min-width: 0;
+  }
+
+  .attach-item h3 {
+    margin: 0 0 2px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  .attach-item__zh {
+    margin: 0 0 8px;
+    color: var(--color-muted-2);
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .attach-item__note {
+    margin: 0 0 6px;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .attach-item__best {
+    margin: 0;
+    color: var(--color-gold-dark);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .attach-item__best::before {
+    content: "Best for · ";
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* =========================================================
+     SPECS
+  ========================================================== */
+
+  .attach-specs {
+    margin: 26px 0 26px;
+    border-top: 1px solid var(--color-ink);
+  }
+
+  .attach-spec {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .attach-spec__label {
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    line-height: 1.9;
+    text-transform: uppercase;
+  }
+
+  .attach-spec p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* =========================================================
+     COMPLIANCE
+  ========================================================== */
+
+  .attach-compliance {
+    margin: 26px 0 26px;
+    border-top: 1px solid var(--color-ink);
+  }
+
+  .attach-compliance__row {
+    padding: 20px 0 18px;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .attach-compliance h3 {
+    margin: 0 0 10px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.018em;
+  }
+
+  .attach-compliance p {
+    margin: 0 0 6px;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .attach-compliance p span {
+    display: inline-block;
+    min-width: 62px;
+    margin-right: 8px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* =========================================================
+     NOTE
+  ========================================================== */
+
+  .attach-note {
+    margin: 30px 0 8px;
+    padding: 24px 26px;
+    border: 1px solid var(--color-line);
+    border-left: 2px solid var(--color-gold);
+    background: var(--color-paper-2);
+  }
+
+  .attach-note__label {
+    margin: 0 0 10px;
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .attach-note__foot {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  /* =========================================================
+     CONCLUSION
+  ========================================================== */
+
+  .attach-conclusion {
+    margin-top: 78px;
+  }
+
+  .attach-conclusion__rule {
+    width: 48px;
+    height: 2px;
+    margin-bottom: 22px;
+    background: var(--color-gold);
+  }
+
+  .attach-conclusion__label {
+    margin-bottom: 16px;
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .attach-rule {
+    margin-bottom: 30px;
+    padding-left: 22px;
+    border-left: 2px solid var(--color-gold);
+  }
+
+  .attach-rule p {
+    margin: 0 0 12px;
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .attach-rule p:last-child {
+    margin-bottom: 0;
+  }
+
+  .attach-rule strong {
+    color: var(--color-ink);
+    font-weight: 400;
+  }
+
+  .attach-conclusion__text {
+    color: var(--color-muted);
+    font-size: 16px;
+    line-height: 1.85;
+  }
+
+  .attach-conclusion__signature {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-line);
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+
+  /* =========================================================
+     CLUSTER NAV
+  ========================================================== */
+
+  .attach-cluster {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 34px;
+  }
+
+  .attach-cluster__link {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 22px;
+    border: 1px solid var(--color-line);
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: border-color var(--ease-out), background var(--ease-out);
+  }
+
+  .attach-cluster__link:hover {
+    border-color: var(--color-gold);
+    background: var(--color-paper-2);
+  }
+
+  .attach-cluster__link--next {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  .attach-cluster__label {
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .attach-cluster__title {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  .attach-cluster__title span {
+    color: var(--color-gold);
+  }
+
+  /* =========================================================
+     RESPONSIVE — TABLET
+  ========================================================== */
+
+  @media (max-width: 1100px) {
+    .attach-reading {
+      grid-template-columns: minmax(165px, 195px) minmax(0, 1fr);
+      gap: 38px;
+    }
+
+    .attach-content {
+      font-size: 15px;
+    }
+
+    .attach-thesis {
+      padding: 30px 30px 28px 60px;
+    }
+
+    .attach-grid {
+      column-gap: 32px;
+    }
+  }
+
+  /* =========================================================
+     RESPONSIVE — SMALL TABLET
+  ========================================================== */
+
+  @media (max-width: 820px) {
+    .attach-hero {
+      padding-top: calc(var(--attach-nav-height, 72px) + 26px);
+    }
+
+    .attach-hero__grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding-block: 26px 30px;
+    }
+
+    .attach-hero__copy {
+      max-width: 680px;
+    }
+
+    .attach-hero__title {
+      font-size: clamp(40px, 7.6vw, 62px);
+    }
+
+    .attach-hero__desc {
+      max-width: 600px;
+    }
+
+    .attach-hero__frame img {
+      aspect-ratio: 1.6 / 1;
+    }
+
+    .attach-article {
+      padding-block: 46px 76px;
+    }
+
+    .attach-reading {
+      display: block;
+    }
+
+    .attach-sidebar {
+      display: none;
+    }
+
+    .attach-content {
+      max-width: 760px;
+      margin-inline: auto;
+      font-size: 16px;
+    }
+
+    .attach-mobile-toc {
+      display: block;
+      margin-bottom: 40px;
+      border: 1px solid var(--color-line);
+      background: var(--color-paper-2);
+    }
+
+    .attach-mobile-toc summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 18px;
+      color: var(--color-ink);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      list-style: none;
+      text-transform: uppercase;
+    }
+
+    .attach-mobile-toc summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .attach-mobile-toc__icon {
+      color: var(--color-gold-dark);
+      font-size: 19px;
+      font-weight: 400;
+      transition: transform 180ms ease;
+    }
+
+    .attach-mobile-toc[open] .attach-mobile-toc__icon {
+      transform: rotate(45deg);
+    }
+
+    .attach-mobile-toc nav {
+      display: grid;
+      padding: 0 18px 12px;
+    }
+
+    .attach-mobile-toc nav a {
+      display: flex;
+      gap: 14px;
+      align-items: baseline;
+      padding: 10px 0;
+      border-top: 1px solid var(--color-line);
+      color: var(--color-muted);
+      font-family: var(--font-serif);
+      font-size: 15px;
+      text-decoration: none;
+    }
+
+    .attach-mobile-toc nav a span {
+      color: var(--color-gold-dark);
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .attach-thesis {
+      margin-bottom: 52px;
+    }
+
+    .attach-section {
+      margin-top: 62px;
+    }
+
+    .attach-cluster {
+      grid-template-columns: 1fr;
+    }
+
+    .attach-cluster__link--next {
+      text-align: left;
+      align-items: flex-start;
+    }
+  }
+
+  /* =========================================================
+     RESPONSIVE — MOBILE
+  ========================================================== */
+
+  @media (max-width: 560px) {
+    .attach-hero {
+      padding-top: calc(var(--attach-nav-height, 72px) + 18px);
+    }
+
+    .attach-hero__grid {
+      gap: 26px;
+      padding-block: 22px 26px;
+    }
+
+    .attach-hero__overline {
+      margin-bottom: 14px;
+      font-size: 9px;
+    }
+
+    .attach-hero__title {
+      font-size: clamp(36px, 9.8vw, 50px);
+      letter-spacing: -0.045em;
+    }
+
+    .attach-hero__desc {
+      margin-top: 18px;
+      font-size: 16px;
+      line-height: 1.68;
+    }
+
+    .attach-hero__meta {
+      gap: 8px;
+      margin-top: 22px;
+      font-size: 8px;
+    }
+
+    .attach-hero__frame::before {
+      inset: -8px;
+    }
+
+    .attach-hero__frame img {
+      aspect-ratio: 1.2 / 1;
+    }
+
+    .attach-hero__visual figcaption {
+      padding-top: 10px;
+      font-size: 8px;
+    }
+
+    .attach-article {
+      padding-block: 32px 62px;
+    }
+
+    .attach-mobile-toc {
+      margin-bottom: 32px;
+    }
+
+    .attach-thesis {
+      margin-bottom: 42px;
+      padding: 22px 20px 22px 44px;
+    }
+
+    .attach-thesis::before {
+      top: 12px;
+      left: 10px;
+      font-size: 54px;
+    }
+
+    .attach-thesis p {
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .attach-section {
+      margin-top: 50px;
+    }
+
+    .attach-section__header {
+      grid-template-columns: 36px minmax(0, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+    }
+
+    .attach-section__index {
+      font-size: 26px;
+    }
+
+    .attach-section__eyebrow {
+      margin-bottom: 7px;
+      font-size: 8px;
+    }
+
+    .attach-section h2 {
+      font-size: clamp(24px, 6.8vw, 30px);
+      line-height: 1.18;
+    }
+
+    .attach-content {
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .attach-content p {
+      margin-bottom: 17px;
+    }
+
+    .attach-vars {
+      grid-template-columns: 1fr;
+    }
+
+    .attach-vars__item {
+      padding: 16px 0 14px;
+      border-right: 0;
+      border-bottom: 1px solid var(--color-line);
+    }
+
+    .attach-vars__item:last-child {
+      border-bottom: 0;
+    }
+
+    .attach-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .attach-item {
+      grid-template-columns: 56px minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .attach-item__media,
+    .attach-item__media img {
+      width: 56px;
+      height: 56px;
+    }
+
+    .attach-item__empty {
+      width: 100%;
+      height: 100%;
+    }
+
+    .attach-item h3 {
+      font-size: 16px;
+    }
+
+    .attach-spec {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+
+    .attach-spec__label {
+      line-height: 1.5;
+    }
+
+    .attach-compliance p span {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .attach-rule p {
+      font-size: 17px;
+    }
+
+    .attach-conclusion {
+      margin-top: 54px;
+    }
+
+    .attach-conclusion__text {
+      font-size: 15px;
+    }
+  }
+
+  /* =========================================================
+     ACCESSIBILITY
+  ========================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+    .attach-page *,
+    .attach-page *::before,
+    .attach-page *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+</style>

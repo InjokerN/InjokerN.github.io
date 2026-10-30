@@ -1,0 +1,901 @@
+---
+/*
+  PAGE  : /about
+  FILE  : src/pages/about.astro
+  ROLE  : 关于页 — 公司定位、承诺、生产流程、发展时间线、认证、FAQ 与 CTA
+*/
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+
+import factory1 from "../assets/aboutus/factory-1.jpg";
+import factory2 from "../assets/aboutus/factory-2.jpg";
+import factory3 from "../assets/aboutus/factory-3.jpg";
+import factory4 from "../assets/aboutus/factory-4.jpg";
+import certBsci from "../assets/aboutus/cert-bsci.jpg";
+import certIso9001 from "../assets/aboutus/cert-iso9001.jpg";
+
+const pageUrl = Astro.url.href;
+
+/* 公司发展时间线 */
+const timeline = [
+  {
+    year: "2015",
+    title: "Founded in Hunan, China",
+    text: "Started with die-struck medals for regional sports events.",
+  },
+  {
+    year: "2017",
+    title: "First export orders",
+    text: "Shipped to Europe and North America — 15 countries in the first year.",
+  },
+  {
+    year: "2019",
+    title: "ISO 9001 certified",
+    text: "Formalized a 3-stage quality control process across every order.",
+  },
+  {
+    year: "2021",
+    title: "Tooling brought fully in-house",
+    text: "File-to-die capability built and run in our own workshop.",
+  },
+  {
+    year: "2023",
+    title: "80,000-piece single order",
+    text: "Largest single run to date, delivered on schedule.",
+  },
+  {
+    year: "2025",
+    title: "50+ countries shipped",
+    text: "Team of 30+, with production steps controlled in-house.",
+  },
+];
+
+/* 4 张工厂图对应 4 个流程节点 */
+const processSteps = [
+  {
+    number: "01",
+    image: factory1,
+    alt: "Production line at the factory",
+    title: "Production",
+    text: "Your design enters the line. We control every step, so we don't have to chase anyone.",
+  },
+  {
+    number: "02",
+    image: factory2,
+    alt: "Quality inspection on finished pieces",
+    title: "Inspection",
+    text: "Every piece is checked before it moves on. Not a sample. Every piece.",
+  },
+  {
+    number: "03",
+    image: factory3,
+    alt: "Warehouse with finished and sorted goods",
+    title: "Warehouse",
+    text: "Finished, sorted, protected. Ready to leave the moment the paperwork is done.",
+  },
+  {
+    number: "04",
+    image: factory4,
+    alt: "Shipping and logistics preparation",
+    title: "Shipping",
+    text: "DHL, FedEx, sea freight, air freight. 50+ countries, most by express within 7–10 days.",
+  },
+];
+
+/* FAQ */
+const faqs = [
+  {
+    q: "Do you sign NDAs?",
+    a: "Yes. We sign an NDA whenever a client asks, before any files are shared. Your design, files and mold stay yours.",
+  },
+  {
+    q: "Can I visit the factory?",
+    a: "Yes. We welcome factory visits. Contact us to schedule a time and we'll arrange everything.",
+  },
+  {
+    q: "What if there's a quality issue?",
+    a: "We re-make or refund. Every order is inspected before it ships, so issues are rare — but if one slips through, we fix it.",
+  },
+  {
+    q: "Do you keep my mold after production?",
+    a: "Molds are stored for 2 years in case you reorder. If you prefer, we destroy them on request.",
+  },
+  {
+    q: "Can you handle rush orders?",
+    a: "Yes. Rush production is available. Tell us your deadline and we'll confirm whether we can hit it before you commit.",
+  },
+];
+---
+
+<BaseLayout
+  title="About CM Crafts & Gifts — Custom Metal Crafts Manufacturer Since 2015"
+  description="CM Crafts & Gifts is a custom metal crafts manufacturer with 10+ years of experience, ISO 9001 and BSCI certified. In-house design, tooling, production and global shipping."
+>
+  <main class="about-page">
+    <section class="about-hero">
+      <div class="about-container">
+        <div class="about-hero__inner">
+          <p class="about-hero__eyebrow">CM CRAFTS &amp; GIFTS · SINCE 2015</p>
+
+          <h1 class="about-hero__title">
+            Made in-house.
+            <br />
+            <em>Made to be kept.</em>
+          </h1>
+
+          <p class="about-hero__subtitle">
+            Custom medals, coins, badges and awards — designed, produced and
+            shipped from one workshop to clients around the world.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <div class="about-container">
+        <p class="about-eyebrow">HOW WE WORK</p>
+
+        <div class="how-grid">
+          <div class="how-item">
+            <span class="how-number">01</span>
+            <h3>We design with you, not for you.</h3>
+            <p>You get a free artwork proof and revise it until the layout is right. Nothing is cut before you sign off.</p>
+          </div>
+
+          <div class="how-item">
+            <span class="how-number">02</span>
+            <h3>We quote honestly.</h3>
+            <p>Unit price, tooling cost and lead time are quoted as separate lines, so you can see what each one costs.</p>
+          </div>
+
+          <div class="how-item">
+            <span class="how-number">03</span>
+            <h3>We ship on time.</h3>
+            <p>We confirm the delivery date before you commit, and tell you the moment anything threatens it.</p>
+          </div>
+
+          <div class="how-item">
+            <span class="how-number">04</span>
+            <h3>Your design stays yours.</h3>
+            <p>NDA available before files are shared. Mold destroyed on request.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <div class="about-container">
+        <p class="about-eyebrow">FROM FILE TO FREIGHT</p>
+
+        <h2 class="about-section-title">
+          One workshop.
+          <br />
+          Every step.
+        </h2>
+
+        <div class="process-grid">
+          {processSteps.map((step) => (
+            <figure class="process-item">
+              <div class="process-image">
+                <Image
+                  src={step.image}
+                  alt={step.alt}
+                  loading="lazy"
+                  widths={[400, 600, 800]}
+                  sizes="(max-width: 640px) 100vw, (max-width: 900px) 45vw, 30vw"
+                />
+
+                <span class="process-number">{step.number}</span>
+              </div>
+
+              <figcaption>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <div class="about-container">
+        <p class="about-eyebrow">OUR TIMELINE</p>
+
+        <h2 class="about-section-title">
+          A decade of
+          <br />
+          building this.
+        </h2>
+
+        <div class="timeline">
+          {timeline.map((item) => (
+            <div class="timeline-item">
+              <span class="timeline-year">{item.year}</span>
+
+              <div class="timeline-body">
+                <strong>{item.title}</strong>
+                <p>{item.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <div class="about-container">
+        <p class="about-eyebrow">QUALITY & COMPLIANCE</p>
+
+        <div class="quality-row">
+          <div class="quality-certs">
+            <Image
+              src={certIso9001}
+              alt="ISO 9001 certification"
+              loading="lazy"
+              widths={[120, 240]}
+              sizes="120px"
+            />
+
+            <Image
+              src={certBsci}
+              alt="BSCI certification"
+              loading="lazy"
+              widths={[120, 240]}
+              sizes="120px"
+            />
+          </div>
+
+          <p class="quality-note">
+            ISO 9001:2015 · BSCI Audited. Every order passes a 3-stage QC
+            process before it leaves the factory.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <div class="about-container">
+        <p class="about-eyebrow">COMMON QUESTIONS</p>
+
+        <div class="faq-list">
+          {faqs.map((item) => (
+            <details class="faq-item">
+              <summary>
+                <span>{item.q}</span>
+                <span class="faq-plus">+</span>
+              </summary>
+
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="site-cta">
+      <div class="site-cta__circle" aria-hidden="true"></div>
+
+      <div class="site-cta__inner">
+        <p class="site-cta__eyebrow">WANT TO WORK WITH US?</p>
+
+        <h2>
+          Tell us what
+          <br />
+          you're planning.
+        </h2>
+
+        <p class="site-cta__desc">
+          Whether it's one piece or a full production run — we'd like to hear
+          about it. No commitment, just a conversation about what you have in
+          mind.
+        </p>
+
+        <a
+          href="#contact"
+          class="cta-button"
+          data-modal-open
+          data-modal-product="About page"
+        >
+          Start a Conversation
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Fragment slot="structured-data">
+    <script
+      type="application/ld+json"
+      set:html={`{
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "name": "About CM Crafts & Gifts",
+      "description": "CM Crafts & Gifts is a custom metal crafts manufacturer with 10+ years of experience, ISO 9001 and BSCI certified.",
+      "url": "${pageUrl}",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "CM Crafts & Gifts",
+        "foundingDate": "2015",
+        "description": "Custom metal crafts manufacturer"
+      }
+    }`}
+    />
+  </Fragment>
+</BaseLayout>
+
+<style>
+  .about-page {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .about-page *,
+  .about-page *::before,
+  .about-page *::after {
+    box-sizing: border-box;
+  }
+
+  .about-container {
+    width: var(--container-width);
+    margin: 0 auto;
+  }
+
+  .about-eyebrow {
+    margin: 0 0 10px;
+    color: var(--color-gold-dark);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .about-section-title {
+    margin: 0 0 40px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(34px, 4.2vw, 54px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .about-section {
+    padding: 54px 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  /* ---------- HERO ---------- */
+  .about-hero {
+    padding: 88px 0 96px;
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--color-paper);
+    text-align: center;
+  }
+
+  .about-hero__inner {
+    max-width: 820px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-hero__eyebrow {
+    margin: 0 0 24px;
+    color: var(--color-gold);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .about-hero__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(44px, 5vw, 72px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--color-ink);
+  }
+
+  .about-hero__title em {
+    color: var(--color-gold);
+    font-style: normal;
+  }
+
+  .about-hero__subtitle {
+    max-width: 620px;
+    margin: 30px auto 0;
+    color: var(--color-muted);
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  /* ---------- HOW WE WORK ---------- */
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 60px;
+    margin-top: 20px;
+  }
+
+  .how-item {
+    padding-top: 20px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .how-number {
+    display: block;
+    margin-bottom: 14px;
+    color: var(--color-gold);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .how-item h3 {
+    margin: 0 0 12px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: clamp(26px, 2.4vw, 32px);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  .how-item p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ---------- FROM FILE TO FREIGHT ---------- */
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 45px 32px;
+    margin: 0;
+  }
+
+  .process-item {
+    margin: 0;
+  }
+
+  .process-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+  }
+
+  .process-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--ease-slow);
+  }
+
+  .process-item:hover .process-image img {
+    transform: scale(1.035);
+  }
+
+  .process-number {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 6px 10px;
+    background: rgba(23, 23, 23, 0.86);
+    color: var(--color-white);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    border-radius: 999px;
+  }
+
+  .process-item figcaption {
+    padding-top: 20px;
+  }
+
+  .process-item h3 {
+    margin: 0 0 10px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .process-item p {
+    max-width: 520px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ---------- TIMELINE ---------- */
+  .timeline {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 28px 0 28px 130px;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: 100px;
+    top: 34px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-gold);
+  }
+
+  .timeline-item::after {
+    content: "";
+    position: absolute;
+    left: 104px;
+    top: 45px;
+    bottom: -1px;
+    width: 1px;
+    background: var(--color-line);
+  }
+
+  .timeline-item:last-child::after {
+    display: none;
+  }
+
+  .timeline-year {
+    position: absolute;
+    left: 0;
+    top: 30px;
+    width: 80px;
+    text-align: right;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-gold);
+    letter-spacing: 0;
+  }
+
+  .timeline-body strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .timeline-body p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ---------- QUALITY & COMPLIANCE ---------- */
+  .quality-row {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+
+  .quality-certs {
+    display: flex;
+    gap: 18px;
+  }
+
+  .quality-certs img {
+    width: 120px;
+    height: auto;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+    background: var(--color-white);
+  }
+
+  .quality-note {
+    flex: 1;
+    min-width: 280px;
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ---------- FAQ ---------- */
+  .faq-list {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 24px 0;
+    cursor: pointer;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    list-style: none;
+    transition: color var(--ease-out);
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary:hover {
+    color: var(--color-gold);
+  }
+
+  .faq-plus {
+    flex-shrink: 0;
+    color: var(--color-gold);
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1;
+    transition: transform var(--ease-out);
+  }
+
+  .faq-item[open] .faq-plus {
+    transform: rotate(45deg);
+  }
+
+  .faq-item > p {
+    margin: 0;
+    padding: 0 0 24px;
+    max-width: 760px;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ---------- CTA ---------- */
+  .site-cta {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 78px 6%;
+    min-height: 500px;
+    background: var(--color-ink-deep);
+    color: var(--color-cream);
+    overflow: hidden;
+  }
+
+  .site-cta::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 42px;
+    height: 1px;
+    background: var(--color-gold);
+    transform: translateX(-50%);
+  }
+
+  .site-cta__circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 480px;
+    height: 480px;
+    border: 1px solid rgba(174, 141, 90, 0.18);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .site-cta__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .site-cta__eyebrow {
+    margin: 0 0 20px;
+    color: var(--color-gold-soft);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .site-cta h2 {
+    margin: 0 0 22px;
+    color: var(--color-cream);
+    font-family: var(--font-display);
+    font-size: clamp(38px, 5vw, 64px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .site-cta__desc {
+    max-width: 570px;
+    margin: 0 auto 30px;
+    color: var(--color-cream-muted);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  .site-cta .cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    min-width: 180px;
+    padding: 15px 24px;
+    background: var(--color-gold);
+    color: var(--color-white);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 999px;
+    transition:
+      background var(--ease-out),
+      color var(--ease-out),
+      transform var(--ease-out);
+  }
+
+  .site-cta .cta-button:hover {
+    background: var(--color-white);
+    color: var(--color-ink);
+    transform: translateY(-2px);
+  }
+
+  .site-cta .cta-button span {
+    font-size: 17px;
+    font-weight: 400;
+  }
+
+  /* ---------- 平板适配 ---------- */
+  @media (max-width: 1024px) {
+    .about-hero {
+      padding: 72px 0 80px;
+      min-height: 440px;
+    }
+
+    .about-section {
+      padding: 44px 0;
+    }
+
+    .how-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .process-grid {
+      gap: 36px 22px;
+    }
+
+    .quality-row {
+      gap: 40px;
+    }
+  }
+
+  /* ---------- 手机适配 ---------- */
+  @media (max-width: 640px) {
+    .about-container {
+      width: calc(100% - 36px);
+    }
+
+    .about-hero {
+      padding: 48px 0 56px;
+      min-height: 0;
+    }
+
+    .about-hero__title {
+      font-size: clamp(36px, 10vw, 48px);
+    }
+
+    .about-hero__subtitle {
+      margin-top: 22px;
+      font-size: 15px;
+    }
+
+    .about-section {
+      padding: 34px 0;
+    }
+
+    .about-section-title {
+      margin-bottom: 28px;
+      font-size: 32px;
+    }
+
+    .how-item h3 {
+      font-size: 22px;
+    }
+
+    .process-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .timeline-item {
+      padding: 22px 0;
+    }
+
+    .timeline-item::before,
+    .timeline-item::after {
+      display: none;
+    }
+
+    .timeline-year {
+      position: static;
+      display: block;
+      width: auto;
+      text-align: left;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .quality-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .quality-certs img {
+      width: 100px;
+    }
+
+    .faq-item summary {
+      padding: 20px 0;
+      font-size: 16px;
+    }
+
+    .site-cta {
+      padding: 60px 20px;
+    }
+
+    .site-cta::after {
+      width: 36px;
+    }
+
+    .site-cta__circle {
+      width: 380px;
+      height: 380px;
+    }
+
+    .site-cta h2 {
+      font-size: 34px;
+    }
+
+    .site-cta__desc {
+      font-size: 14px;
+    }
+  }
+</style>

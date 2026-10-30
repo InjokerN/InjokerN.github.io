@@ -1,0 +1,517 @@
+---
+import { Image } from "astro:assets";
+import ProductDetailLayout from "../../components/ProductDetailLayout.astro";
+
+import { manufacturingProcess } from "../../data/manufacturing-process";
+
+import medalHero from "../../assets/products/medals/medal-hero.jpg";
+import medalGallery01 from "../../assets/products/medals/medal-gallery-01.jpg";
+import medalGallery02 from "../../assets/products/medals/medal-gallery-02.jpg";
+import medalGallery03 from "../../assets/products/medals/medal-gallery-03.jpg";
+import medalGallery04 from "../../assets/products/medals/medal-gallery-04.jpg";
+import medalGallery05 from "../../assets/products/medals/medal-gallery-05.jpg";
+
+import medalUseSports from "../../assets/products/medals/medal-use-sports.jpg";
+import medalUseCorporate from "../../assets/products/medals/medal-use-corporate.jpg";
+import medalUseEducation from "../../assets/products/medals/medal-use-education.jpg";
+import medalUseService from "../../assets/products/medals/medal-use-service.jpg";
+import medalUseCommunity from "../../assets/products/medals/medal-use-community.jpg";
+import medalUseCollectors from "../../assets/products/medals/medal-use-collectors.jpg";
+
+import medalCase01 from "../../assets/products/medals/medal-case-01.jpg";
+import medalCase02 from "../../assets/products/medals/medal-case-02.jpg";
+
+import softEnamel from "../../assets/crafts/soft-enamel.jpg";
+import hardEnamel from "../../assets/crafts/hard-enamel.jpg";
+
+/* ============================================================
+   MEDALS — PAGE CONTENT
+   ============================================================ */
+
+const product = {
+  slug: "medals",
+  title: "Medals",
+
+  image: medalHero,
+  alt: "Custom medal with detailed metal relief and premium finish",
+
+  desc: "Made for the moment worth remembering. We turn your events, achievements, and milestones into custom metal medals.",
+
+  heroTitle: "Made for the moment worth remembering.",
+
+  statement: ["The finish line.", "The final score.", "The standing ovation."],
+
+  quickFacts: [
+    "MOQ 100 pcs per design",
+    "Sample 7–10 working days",
+    "Production 12–18 working days",
+  ],
+
+  gallery: [
+    {
+      image: medalHero,
+      alt: "Custom medal with detailed metal relief and premium finish",
+    },
+    {
+      image: medalGallery01,
+      alt: "Custom marathon medal with event ribbon",
+    },
+    {
+      image: medalGallery02,
+      alt: "Custom medal with detailed 3D relief",
+    },
+    {
+      image: medalGallery03,
+      alt: "Custom sports medal with enamel color details",
+    },
+    {
+      image: medalGallery04,
+      alt: "Custom medal with distinctive cutout shape",
+    },
+    {
+      image: medalGallery05,
+      alt: "Custom commemorative medal with premium metal finish",
+    },
+  ],
+
+  options: [
+    {
+      title: "Soft Enamel",
+      text: "Bright, dimensional color with raised metal lines. A strong choice for colorful sports and event medals.",
+      image: softEnamel,
+      alt: "Soft enamel finish for custom metal products",
+    },
+    {
+      title: "Hard Enamel",
+      text: "A smooth, polished surface for a cleaner premium look, especially suited to refined award designs.",
+      image: hardEnamel,
+      alt: "Hard enamel finish for custom metal products",
+    },
+    {
+      title: "3D Relief",
+      text: "Adds depth and dimensional detail to logos, landmarks, figures, and championship-style designs.",
+      image: medalCase02,
+      alt: "Custom medal with deep 3D relief",
+    },
+    {
+      title: "Custom Cutout",
+      text: "Create distinctive silhouettes and internal openings that make the medal immediately recognizable.",
+      image: medalCase01,
+      alt: "Custom medal with cutout shape",
+    },
+  ],
+
+  specs: [
+    {
+      label: "Typical Size",
+      value: "40–90 mm diameter",
+    },
+    {
+      label: "Material",
+      value: "Zinc alloy, brass, iron, stainless steel",
+    },
+    {
+      label: "Plating",
+      value:
+        "Gold, silver, bronze, antique gold / silver / bronze, black nickel",
+    },
+    {
+      label: "Craft",
+      value:
+        "Die-cast, stamped, soft enamel, hard enamel, 3D relief, UV printing",
+    },
+    {
+      label: "Attachment",
+      value: "Ribbon, lanyard, velvet pouch, gift box",
+    },
+    {
+      label: "Packaging",
+      value: "OPP bag, velvet pouch, gift box, custom backing card",
+    },
+    {
+      label: "Quality Control",
+      value: "100% inspected before packing",
+    },
+  ],
+
+  whereItFits: [
+    {
+      title: "Sports Events",
+      text: "Marathons, triathlons, cycling races, tournaments, championships, and finishers' medals.",
+      image: medalUseSports,
+      alt: "Custom medal for a sports event",
+    },
+    {
+      title: "Corporate",
+      text: "Anniversaries, employee recognition, sales awards, milestones, and company events.",
+      image: medalUseCorporate,
+      alt: "Custom medal for a corporate award",
+    },
+    {
+      title: "Education",
+      text: "Graduations, academic competitions, school sports, student clubs, and achievement awards.",
+      image: medalUseEducation,
+      alt: "Custom medal for an education or school award",
+    },
+    {
+      title: "Service & Organizations",
+      text: "Service recognition, commemorative medals, unit achievements, and organizational awards.",
+      image: medalUseService,
+      alt: "Custom medal for service recognition",
+    },
+    {
+      title: "Community Events",
+      text: "Charity runs, festivals, cultural celebrations, memorial events, and local competitions.",
+      image: medalUseCommunity,
+      alt: "Custom medal for a community event",
+    },
+    {
+      title: "Brands & Collectors",
+      text: "Limited editions, collaborations, fan merchandise, commemorative sets, and collector pieces.",
+      image: medalUseCollectors,
+      alt: "Custom collectible medal for a brand or collector",
+    },
+  ],
+
+  faq: [
+    {
+      q: "What is the minimum order quantity?",
+      a: "Our standard MOQ is 100 pieces per design. For test orders, we can accept 50 pieces with a small surcharge.",
+    },
+    {
+      q: "How long does sampling take?",
+      a: "Sampling normally takes 7–10 working days after artwork approval, depending on the design complexity and finishing requirements.",
+    },
+    {
+      q: "Can you make custom shapes and cutouts?",
+      a: "Yes. We can manufacture fully custom outlines, cutouts, relief details, and 3D elements using die-casting or stamping.",
+    },
+    {
+      q: "Do you keep the mold after production?",
+      a: "Yes. We store molds free of charge for 3–5 years. Reorders normally do not require a new tooling fee.",
+    },
+    {
+      q: "Can I mix different sizes in one order?",
+      a: "Yes, but each different size or design normally requires its own mold, so tooling fees may apply separately.",
+    },
+  ],
+};
+
+const hasProcess = manufacturingProcess.length > 0;
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: product.faq.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.a,
+    },
+  })),
+};
+---
+
+<ProductDetailLayout
+  title={product.title}
+  description={product.desc}
+  ogImage={product.image.src}
+>
+  <Fragment slot="structured-data">
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+
+  <section id="hero" class="product-hero">
+    <div class="product-hero__grid">
+      <div class="product-hero__copy">
+        <p class="product-hero__eyebrow">
+          CUSTOM {product.title.toUpperCase()}
+        </p>
+
+        <h1 class="product-hero__title">{product.heroTitle}</h1>
+
+        <p class="product-hero__desc">{product.desc}</p>
+
+        {product.statement.length > 0 && (
+          <div class="product-hero__statement">
+            {product.statement.map((line) => (
+              <span>{line}</span>
+            ))}
+          </div>
+        )}
+
+        {product.quickFacts.length > 0 && (
+          <ul class="product-hero__facts">
+            {product.quickFacts.map((fact) => (
+              <li>{fact}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <div class="product-gallery" data-product-gallery>
+        <div class="product-gallery__stage">
+          {product.gallery.map((item, index) => (
+            <Image
+              src={item.image}
+              alt={item.alt}
+              class:list={[
+                "product-gallery__image",
+                index === 0 && "is-active",
+              ]}
+              data-gallery-stage
+              loading={index === 0 ? "eager" : "lazy"}
+              sizes="(min-width: 900px) 55vw, 100vw"
+            />
+          ))}
+        </div>
+
+        <div
+          class="product-gallery__thumbs"
+          style={`--gallery-count: ${product.gallery.length}`}
+        >
+          {product.gallery.map((item, index) => (
+            <button
+              type="button"
+              class:list={[
+                "product-gallery__thumb",
+                index === 0 && "is-active",
+              ]}
+              data-gallery-thumb={String(index)}
+              aria-selected={index === 0 ? "true" : "false"}
+              aria-label={`Show product image ${index + 1}`}
+            >
+              <Image
+                src={item.image}
+                alt=""
+                loading="lazy"
+                sizes="(min-width: 900px) 10vw, 20vw"
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       I. SPECIFICATIONS
+       ============================================================ -->
+
+  <section id="specifications" class="product-section">
+    <div class="product-section__inner">
+      <p class="product-eyebrow">I · SPECIFICATIONS</p>
+
+      <h2 class="product-section__title">Built to your spec.</h2>
+
+      <p class="product-section__lead">
+        From the metal itself to the smallest finishing detail, every part can
+        be tailored to your project.
+      </p>
+
+      <div class="specs-layout">
+        <div class="specs-feature">
+          <div class="specs-feature__value">
+            {product.specs[0]?.value ?? "Custom"}
+          </div>
+
+          <div class="specs-feature__label">
+            {product.specs[0]?.label ?? "Specification"}
+          </div>
+
+          <div class="specs-feature__line"></div>
+
+          <div class="specs-feature__mark">
+            CUSTOM
+            <br />
+            MADE
+          </div>
+        </div>
+
+        <div class="specs-list">
+          {product.specs.map((spec, index) => (
+            <div class="spec-row">
+              <div class="spec-row__number">
+                {String(index + 1).padStart(2, "0")}
+              </div>
+
+              <div class="spec-row__label">{spec.label}</div>
+
+              <div class="spec-row__value">{spec.value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       II. CRAFT & PROCESS
+       ============================================================ -->
+
+  <section id="craft" class="product-section">
+    <div class="product-section__inner">
+      <p class="product-eyebrow">II · CRAFT &amp; PROCESS</p>
+
+      <h2 class="product-section__title">Make this product your own.</h2>
+
+      <p class="product-section__lead">
+        Choose from the crafts and finishes most useful for this product. When
+        you want a deeper look at a specific technique, explore the individual
+        craft guides in our resource library.
+      </p>
+
+      <div class="product-option-grid">
+        {product.options.map((item) => (
+          <article class="product-option-card">
+            <div class="product-option-card__image">
+              <Image
+                src={item.image}
+                alt={item.alt}
+                loading="lazy"
+                sizes="(min-width: 900px) 22vw, 90vw"
+              />
+            </div>
+
+            <div class="product-option-card__body">
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {hasProcess && (
+        <>
+          <div class="product-section__subhead">
+            <h3>From artwork to finished product.</h3>
+            <p>
+              A controlled six-step process — from your first artwork to the
+              finished, inspected product.
+            </p>
+          </div>
+
+          <div class="production-strip">
+            {manufacturingProcess.map((step) => (
+              <article class="production-strip__step">
+                <span class="production-strip__dot">{step.step}</span>
+
+                <div class="production-strip__image">
+                  <Image
+                    src={step.image}
+                    alt={step.alt}
+                    loading="lazy"
+                    sizes="(min-width: 900px) 15vw, 45vw"
+                  />
+                </div>
+
+                <div class="production-strip__body">
+                  <h3>{step.title}</h3>
+                  {step.text && <p>{step.text}</p>}
+                </div>
+              </article>
+            ))}
+          </div>
+        </>
+      )}
+
+      <div class="product-section__note">
+        <strong>Want a deeper walkthrough?</strong>
+        Soft enamel vs hard enamel, plating comparisons, surface finishing,
+        artwork preparation — our craft guides cover each technique in detail,
+        with reference photos and production notes you can hand to a designer.
+      </div>
+
+      <a href="/resources#craft-guides" class="product-section__link-btn">
+        Explore Craft Guides
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       III. APPLICATIONS
+       ============================================================ -->
+
+  <section id="applications" class="product-section">
+    <div class="product-section__inner">
+      <p class="product-eyebrow">III · APPLICATIONS</p>
+
+      <h2 class="product-section__title">Where it fits.</h2>
+
+      <p class="product-section__lead">
+        From race finish lines to award ceremonies and collector editions — a
+        few of the contexts custom medals are made for.
+      </p>
+
+      <div class="fit-grid">
+        {product.whereItFits.map((item, index) => (
+          <article class="fit-card">
+            <div class="fit-card__image">
+              <Image
+                src={item.image}
+                alt={item.alt}
+                loading="lazy"
+                sizes="(min-width: 900px) 28vw, 90vw"
+              />
+            </div>
+
+            <div class="fit-card__content">
+              <span class="fit-card__number">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+
+              <h3>{item.title}</h3>
+
+              <p>{item.text}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       IV. FAQ
+       ============================================================ -->
+
+  <section id="faq" class="product-section">
+    <div class="product-section__inner">
+      <p class="product-eyebrow">IV · FAQ</p>
+
+      <div class="faq-grid">
+        <div class="faq-intro">
+          <h2 class="product-section__title">Frequently asked questions.</h2>
+
+          <p class="faq-intro__text">
+            Still have a question? Send us your artwork and project details and
+            we'll help you work it out.
+          </p>
+        </div>
+
+        <div class="faq-list">
+          {product.faq.map((item) => (
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>{item.q}</span>
+
+                <span class="faq-plus" aria-hidden="true">
+                  +
+                </span>
+              </summary>
+
+              <div class="faq-answer">
+                <p>{item.a}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</ProductDetailLayout>

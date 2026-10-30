@@ -1,0 +1,2805 @@
+---
+/*
+  PAGE: /resources/metal-craft-guide/color-matching-artwork
+  FILE: src/pages/resources/metal-craft-guide/color-matching-artwork.astro
+  ROLE: Deep dive 03 — Colour matching, artwork standards, proof approval
+*/
+
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import { formatNewsDate, toNewsISO } from "../../../data/news-list";
+
+import colorShot from "../../../assets/resources/guide/glitter.jpg";
+import measureShot from "../../../assets/resources/guide/exposy.jpg";
+
+const meta = {
+  date: "2026-10-21",
+  title: "Color Matching & Artwork Standards",
+  subtitle: "Pantone codes, the proof you sign, and what ΔE can and cannot tell you",
+  excerpt:
+    "Colour is not agreed on a screen. It is agreed on a code, printed on a proof, signed before production — and measured afterwards to check that nothing drifted.",
+  ogImage: colorShot.src,
+};
+
+const sections = [
+  { id: "screen", number: "01", title: "Screen colour is not pigment" },
+  { id: "file", number: "02", title: "The file that survives production" },
+  { id: "pantone", number: "03", title: "Pantone is the working standard" },
+  { id: "proof", number: "04", title: "The proof is where colour is agreed" },
+  { id: "delta", number: "05", title: "ΔE is a check, not an agreement" },
+  { id: "disagree", number: "06", title: "When the number and the eye disagree" },
+  { id: "handover", number: "07", title: "What to send, what comes back" },
+];
+
+const renderRows = [
+  {
+    label: "On your screen",
+    note: "Emissive light, gamma-corrected, sitting inside a bright interface.",
+  },
+  {
+    label: "On the Pantone chip",
+    note: "Reflective ink printed on coated paper, viewed under one light.",
+  },
+  {
+    label: "On the finished part",
+    note: "Reflective enamel over metal, seen under whatever light it is worn in.",
+  },
+];
+
+const fileRules = [
+  {
+    title: "Vector, 1:1, with real dimensions",
+    text: "A file drawn at 1:1 removes one class of error before it starts. Scaled artwork invites scaled line weights, and a 0.2 mm line that becomes 0.15 mm after scaling is no longer a line the process can hold.",
+  },
+  {
+    title: "One closed path per colour",
+    text: "Every colour area is a closed shape, separate from its neighbours. The metal between them is not a stroke you draw — it is the space the die leaves behind, so the gap has to exist in the geometry.",
+  },
+  {
+    title: "A Pantone code on every area",
+    text: "Not a hex value, not an RGB triplet, not “the blue from the website”. Each shape carries a Pantone code, and the count of codes is the colour count that gets quoted.",
+  },
+  {
+    title: "Text outlined, not live",
+    text: "Fonts get substituted, weights get lost, and a re-flowed line changes the metal around it. Convert type to outlines, then check the smallest stroke against the process minimum.",
+  },
+  {
+    title: "No gradients, halftones, shadows or transparency",
+    text: "Enamel is a solid colour in a cell. Anything that depends on a smooth transition has to become print, a dome, or a different design — and that decision belongs before the tool is cut, not after.",
+  },
+  {
+    title: "Front and back registered to one origin",
+    text: "Double-sided parts are checked against each other. If both faces are drawn from the same centre line and the same trim, alignment is a measurement; if they are drawn separately, it is a hope.",
+  },
+];
+
+const mixSteps = [
+  {
+    num: "01",
+    title: "The code comes in",
+    text: "Not a screenshot, not a hex value, not “a warm red”. A Pantone number, because that is the only part of the brief that survives being emailed, printed, and read by someone mixing pigment at seven in the morning.",
+  },
+  {
+    num: "02",
+    title: "A formula comes out",
+    text: "The enamel supplier's mixing formula for that code, weighed on a scale rather than eyeballed. This is the step that turns a reference into something repeatable — and it is why the formula, not the code alone, is what gets recorded for the reorder.",
+  },
+  {
+    num: "03",
+    title: "A drawdown is cured",
+    text: "A patch of the mixed enamel is applied to the same substrate the part will use, then cured. Wet enamel is not the final colour; it darkens and shifts as it sets, so the comparison happens after curing, never before.",
+  },
+  {
+    num: "04",
+    title: "It is compared, adjusted, and written down",
+    text: "The cured patch is held against the chip under D65. Small pigment additions follow until the two read as the same colour. The formula that produced the match is written into the record, so the next batch starts from it instead of starting over.",
+  },
+];
+
+const proofLegend = [
+  {
+    num: "01",
+    code: "PANTONE 186 C",
+    area: "Field",
+    note: "Flat enamel. Reproducible as drawn.",
+  },
+  {
+    num: "02",
+    code: "PANTONE 872 C",
+    area: "Accent",
+    note: "Metallic. Needs a metallic base — flat enamel will read duller.",
+  },
+  {
+    num: "03",
+    code: "Bare metal",
+    area: "Border",
+    note: "No enamel at all. This is the plating colour, not an ink.",
+  },
+  {
+    num: "04",
+    code: "PANTONE 423 C",
+    area: "Background",
+    note: "Dark field. Substrate shows through less, so it holds closer.",
+  },
+];
+
+const gates = [
+  {
+    num: "01",
+    title: "File check",
+    locks: "Colour count, line weights, text, spot assignments.",
+    leaves: "Everything else — no colour is fixed at this point.",
+  },
+  {
+    num: "02",
+    title: "Proof sign-off",
+    locks: "Every Pantone code, area by area, in writing.",
+    leaves: "The physical match, which is proven at the next gate.",
+  },
+  {
+    num: "03",
+    title: "Press-side mix",
+    locks: "The cured colour against the signed proof.",
+    leaves: "Drift between batches.",
+  },
+  {
+    num: "04",
+    title: "Batch check",
+    locks: "Drift, measured against the approved sample.",
+    leaves: "Nothing. This is the record that closes the loop.",
+  },
+];
+
+const deltaBands = [
+  {
+    range: "0–1",
+    label: "not visible",
+    note: "Most people cannot see a difference without a reference beside it.",
+  },
+  {
+    range: "1–2",
+    label: "trained eye",
+    note: "Visible to someone who compares colour for a living, side by side.",
+  },
+  {
+    range: "2–3",
+    label: "side by side",
+    note: "Visible to anyone once the two parts are held next to each other.",
+  },
+  {
+    range: "3+",
+    label: "another colour",
+    note: "Reads as a different colour, not a variant of the same one.",
+  },
+];
+
+const conditions = [
+  "The formula — ΔE*ab (1976) or ΔE00 (2000). The same number is not the same difference.",
+  "The illuminant — D65 is the reference; tungsten or a phone torch will answer differently.",
+  "The observer — 10° standard observer, not 2°.",
+  "The geometry — 45/0 or an integrating sphere, with specular included or excluded.",
+  "The spot — a flat enamel field, away from metal lines, edges and curvature.",
+];
+
+const cases = [
+  {
+    title: "Metamerism",
+    text: "Two samples match under D65 and separate under the warm light of a shop. Their spectral curves differ even though their coordinates agree — enamel pigment and Pantone ink are not the same chemistry.",
+  },
+  {
+    title: "Area effect",
+    text: "A 2 mm dot and a 20 mm field of the same mix do not read the same. Small areas look deeper and more saturated, which is why a colour approved on a large patch can look wrong once it is used for a thin rule.",
+  },
+  {
+    title: "Gloss",
+    text: "Hard enamel is polished and reflects the room; soft enamel scatters light. Same pigment, different appearance — and an instrument with specular included will report a different number for each.",
+  },
+  {
+    title: "Adjacency",
+    text: "The same enamel beside gold plating and beside silver plating does not look the same. The metal is part of the composition, not a neutral frame around it.",
+  },
+];
+
+const sendList = [
+  "Vector artwork at 1:1, with dimensions on the drawing.",
+  "One closed path per colour, each carrying a Pantone code.",
+  "Type converted to outlines.",
+  "The colour count, stated explicitly.",
+  "The intended substrate and plating — brass, zinc alloy, gold, silver, antique.",
+];
+
+const backList = [
+  "A proof with every colour area numbered and its code listed.",
+  "A note on any code that cannot be reproduced in enamel, with the nearest alternative.",
+  "A physical sample of the approved colours before the bulk run.",
+  "The mixing formula recorded against your design, for the reorder.",
+];
+---
+
+<BaseLayout
+  title={`${meta.title} — ${meta.subtitle} | MetalCrafts`}
+  description={meta.excerpt}
+  ogImage={meta.ogImage}
+>
+  <main class="color-page">
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+    <header class="color-hero">
+      <div class="color-shell">
+        <div class="color-hero__grid">
+          <div class="color-hero__copy">
+            <p class="color-hero__overline">
+              Deep dive 03 · Design &amp; colour
+            </p>
+
+            <h1 class="color-hero__title">
+              Color Matching
+              <span>&amp; Artwork Standards</span>
+            </h1>
+
+            <p class="color-hero__desc">{meta.excerpt}</p>
+
+            <div class="color-hero__meta">
+              <time datetime={toNewsISO(meta.date)}>
+                {formatNewsDate(meta.date)}
+              </time>
+              <span class="color-hero__dot"></span>
+              <span>METALCRAFTS</span>
+              <span class="color-hero__dot"></span>
+              <span>Deep dive · 03 of 06</span>
+            </div>
+          </div>
+
+          <figure class="color-hero__visual">
+            <div class="color-hero__frame">
+              <Image
+                src={colorShot}
+                alt="Colour and finish reference"
+                loading="eager"
+                widths={[720, 1080, 1440]}
+                sizes="(max-width: 820px) 100vw, 52vw"
+              />
+            </div>
+            <figcaption>
+              <span>Colour &amp; surface</span>
+              <span>Reference</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </header>
+
+    <!-- =====================================================
+         ARTICLE
+    ====================================================== -->
+    <section class="color-article">
+      <div class="color-shell">
+        <div class="color-reading">
+          <!-- Desktop contents -->
+          <aside class="color-sidebar" aria-label="Article contents">
+            <div class="color-sidebar__sticky">
+              <p class="color-sidebar__heading">In this deep dive</p>
+
+              <nav class="color-toc">
+                {sections.map((item) => (
+                  <a
+                    href={`#${item.id}`}
+                    class="color-toc__link"
+                    data-toc-link={item.id}
+                  >
+                    <span class="color-toc__number">{item.number}</span>
+                    <span class="color-toc__text">{item.title}</span>
+                  </a>
+                ))}
+              </nav>
+
+              <div class="color-sidebar__note">
+                <span class="color-sidebar__mark">MC</span>
+                <div class="color-sidebar__note-body">
+                  <p>
+                    Part of the manufacturing guide. Nothing on this page is
+                    judged from a screen — that is the whole point of it.
+                  </p>
+
+                  <a
+                    href="/resources/metal-craft-guide"
+                    class="color-sidebar__back"
+                  >
+                    <span aria-hidden="true">←</span>
+                    Back to the full guide
+                  </a>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Body -->
+          <article class="color-content">
+            <!-- Mobile contents -->
+            <details class="color-mobile-toc">
+              <summary>
+                <span>In this deep dive</span>
+                <span class="color-mobile-toc__icon" aria-hidden="true">+</span>
+              </summary>
+              <nav aria-label="Mobile article contents">
+                {sections.map((item) => (
+                  <a href={`#${item.id}`}>
+                    <span>{item.number}</span>
+                    {item.title}
+                  </a>
+                ))}
+              </nav>
+            </details>
+
+            <!-- ---------- THESIS ---------- -->
+            <section class="color-thesis" aria-label="The short answer">
+              <span class="color-thesis__label">The short answer</span>
+              <p>
+                Colour is not approved on a screen, and it is not approved by
+                eye. It is approved as a set of Pantone codes printed on a proof,
+                signed before production starts — because a code is the one thing
+                in the conversation that does not change when the monitor, the
+                lighting or the person looking at it changes.
+              </p>
+            </section>
+
+            <!-- ---------- 01 ---------- -->
+            <section
+              id="screen"
+              class="color-section"
+              data-article-section="screen"
+            >
+              <header class="color-section__header">
+                <span class="color-section__index">01</span>
+                <div>
+                  <p class="color-section__eyebrow">Perception</p>
+                  <h2>Screen colour is not pigment</h2>
+                </div>
+              </header>
+
+              <p>
+                The same colour code passes through three completely different
+                physical systems before it reaches a finished pin, and each one
+                changes the result in its own way.
+              </p>
+
+              <div class="color-render">
+                {renderRows.map((row, index) => (
+                  <div class="color-render__item">
+                    <span class="color-render__num">0{index + 1}</span>
+                    <h3>{row.label}</h3>
+                    <p>{row.note}</p>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                A screen emits light; enamel reflects it. A screen has a fixed
+                white point and a fixed gamma; the room around you does not. And
+                between the screen and the finished part sits a metal body whose
+                own colour is part of the result: the same enamel over brass, over
+                zinc alloy and over aluminium is not the same enamel, and a light
+                or pastel mix will show the substrate far more than a dark one
+                does.
+              </p>
+
+              <p>
+                This is not a supplier failing to try hard enough. It is a
+                mismatch between two media, and no amount of care closes it. What
+                care can do is move the agreement onto something that does not
+                depend on either medium — which is where the Pantone code comes
+                in.
+              </p>
+
+              <div class="color-note">
+                <p class="color-note__label">Why this page has no colour swatches</p>
+                <p class="color-note__foot">
+                  A swatch on this page would be rendered by your screen, in your
+                  room, at your brightness — the exact conditions the article says
+                  cannot be trusted. The diagrams here show structure and
+                  sequence, never colour. Any colour judgement has to happen on a
+                  chip and on a cured sample.
+                </p>
+              </div>
+            </section>
+
+            <!-- ---------- 02 ---------- -->
+            <section id="file" class="color-section" data-article-section="file">
+              <header class="color-section__header">
+                <span class="color-section__index">02</span>
+                <div>
+                  <p class="color-section__eyebrow">Artwork</p>
+                  <h2>The file that survives production</h2>
+                </div>
+              </header>
+
+              <p>
+                Most colour disputes are not colour disputes. They are file
+                disputes that surface later, when a line is too thin to hold
+                enamel or a font has quietly changed shape on someone else's
+                machine. A production-ready file is not a beautiful file; it is a
+                file with no remaining decisions in it.
+              </p>
+
+              <figure class="color-figure">
+                <div class="color-figure__frame">
+                  <svg
+                    viewBox="0 0 660 246"
+                    role="img"
+                    aria-labelledby="artboard-title artboard-desc"
+                  >
+                    <title id="artboard-title">
+                      A production-ready artboard, annotated
+                    </title>
+                    <desc id="artboard-desc">
+                      An artboard at 1:1 with a trim line, a safety margin, one
+                      closed path per colour, and outlined type.
+                    </desc>
+
+                    <rect
+                      x="40"
+                      y="36"
+                      width="300"
+                      height="176"
+                      fill="var(--color-paper-2)"
+                      stroke="var(--color-line)"
+                      stroke-width="1"
+                    ></rect>
+                    <rect
+                      x="72"
+                      y="64"
+                      width="236"
+                      height="120"
+                      fill="none"
+                      stroke="var(--color-line)"
+                      stroke-width="1"
+                      stroke-dasharray="5 4"
+                    ></rect>
+                    <rect
+                      x="86"
+                      y="78"
+                      width="208"
+                      height="92"
+                      fill="none"
+                      stroke="var(--color-line)"
+                      stroke-width="0.75"
+                      stroke-dasharray="2 4"
+                    ></rect>
+
+                    <circle
+                      cx="190"
+                      cy="124"
+                      r="30"
+                      fill="none"
+                      stroke="var(--color-ink)"
+                      stroke-width="1"
+                    ></circle>
+                    <line
+                      x1="160"
+                      y1="124"
+                      x2="220"
+                      y2="124"
+                      stroke="var(--color-gold)"
+                      stroke-width="1"
+                    ></line>
+
+                    <text
+                      x="52"
+                      y="52"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      letter-spacing="0.12em"
+                      fill="var(--color-muted-2)"
+                    >
+                      1:1 · REV A
+                    </text>
+
+                    <line
+                      x1="340"
+                      y1="64"
+                      x2="366"
+                      y2="64"
+                      stroke="var(--color-line)"
+                      stroke-width="0.75"
+                    ></line>
+                    <line
+                      x1="340"
+                      y1="94"
+                      x2="366"
+                      y2="94"
+                      stroke="var(--color-line)"
+                      stroke-width="0.75"
+                    ></line>
+                    <line
+                      x1="340"
+                      y1="124"
+                      x2="366"
+                      y2="124"
+                      stroke="var(--color-line)"
+                      stroke-width="0.75"
+                    ></line>
+                    <line
+                      x1="340"
+                      y1="154"
+                      x2="366"
+                      y2="154"
+                      stroke="var(--color-line)"
+                      stroke-width="0.75"
+                    ></line>
+                    <line
+                      x1="340"
+                      y1="184"
+                      x2="366"
+                      y2="184"
+                      stroke="var(--color-line)"
+                      stroke-width="0.75"
+                    ></line>
+
+                    <text
+                      x="372"
+                      y="64"
+                      font-family="var(--font-body)"
+                      font-size="11"
+                      fill="var(--color-ink)"
+                    >
+                      trim line
+                    </text>
+                    <text
+                      x="372"
+                      y="94"
+                      font-family="var(--font-body)"
+                      font-size="11"
+                      fill="var(--color-ink)"
+                    >
+                      safety margin
+                    </text>
+                    <text
+                      x="372"
+                      y="124"
+                      font-family="var(--font-body)"
+                      font-size="11"
+                      fill="var(--color-ink)"
+                    >
+                      one closed path per colour
+                    </text>
+                    <text
+                      x="372"
+                      y="154"
+                      font-family="var(--font-body)"
+                      font-size="11"
+                      fill="var(--color-ink)"
+                    >
+                      type outlined
+                    </text>
+                    <text
+                      x="372"
+                      y="184"
+                      font-family="var(--font-body)"
+                      font-size="11"
+                      fill="var(--color-ink)"
+                    >
+                      no gradients or effects
+                    </text>
+
+                    <text
+                      x="40"
+                      y="234"
+                      font-family="var(--font-body)"
+                      font-size="10"
+                      fill="var(--color-muted-2)"
+                    >
+                      The metal between colour areas is a gap in the geometry,
+                      not a stroke.
+                    </text>
+                  </svg>
+                </div>
+                <figcaption>
+                  What a production file looks like before anything is quoted
+                  from it.
+                </figcaption>
+              </figure>
+
+              <ul class="color-rules">
+                {fileRules.map((rule, index) => (
+                  <li>
+                    <span class="color-rules__num">0{index + 1}</span>
+                    <div>
+                      <h3>{rule.title}</h3>
+                      <p>{rule.text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <!-- ---------- 03 ---------- -->
+            <section
+              id="pantone"
+              class="color-section"
+              data-article-section="pantone"
+            >
+              <header class="color-section__header">
+                <span class="color-section__index">03</span>
+                <div>
+                  <p class="color-section__eyebrow">Standard</p>
+                  <h2>Pantone is the working standard</h2>
+                </div>
+              </header>
+
+              <p>
+                In a metal workshop, colour is not matched to a file. It is
+                matched to a Pantone code, and that code is the reference the
+                whole shop organises around: the mixing bench, the sample room,
+                the inspection bench, and the reorder two years later all read
+                from the same number.
+              </p>
+
+              <div class="color-steps">
+                {mixSteps.map((step) => (
+                  <div class="color-step">
+                    <span class="color-step__num">{step.num}</span>
+                    <div>
+                      <h3>{step.title}</h3>
+                      <p>{step.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                The code is a reference, not a recipe, and being honest about
+                that is what makes it usable. A Pantone chip is ink on coated
+                paper. Enamel is pigment in a binder over metal. They can be
+                brought close, and a good mixing bench brings them very close —
+                but the code fixes the intention, while the substrate, the enamel
+                thickness and the finish decide the result.
+              </p>
+
+              <p>
+                Three practical consequences follow. Codes in the metallic range
+                cannot be reproduced as flat enamel at all — they need a metallic
+                base or a plated field, and a proof should say so rather than
+                quietly substituting. Pastel and light mixes sit closer to the
+                substrate and shift more than dark ones. And a chip that has been
+                sitting in a window for a year is no longer a reference, which is
+                why the book gets replaced rather than trusted indefinitely.
+              </p>
+            </section>
+
+            <!-- ---------- 04 ---------- -->
+            <section id="proof" class="color-section" data-article-section="proof">
+              <header class="color-section__header">
+                <span class="color-section__index">04</span>
+                <div>
+                  <p class="color-section__eyebrow">Agreement</p>
+                  <h2>The proof is where colour is agreed</h2>
+                </div>
+              </header>
+
+              <p>
+                This is the step that decides whether the finished part is right,
+                and it happens before any metal is cut. The proof we send back is
+                not a picture of the design. It is the design with every colour
+                area numbered and its Pantone code listed beside it, plus the
+                colour count, the substrate and the plating. The client confirms
+                the codes — not the impression — and production starts after that
+                confirmation.
+              </p>
+
+              <figure class="color-figure">
+                <div class="color-figure__frame">
+                  <svg
+                    viewBox="0 0 660 300"
+                    role="img"
+                    aria-labelledby="proof-title proof-desc"
+                  >
+                    <title id="proof-title">
+                      A colour proof with numbered areas and codes
+                    </title>
+                    <desc id="proof-desc">
+                      Each colour area on the artwork is numbered and matched to a
+                      Pantone code in a legend, with a sign-off line at the
+                      bottom.
+                    </desc>
+
+                    <rect
+                      x="40"
+                      y="34"
+                      width="300"
+                      height="232"
+                      fill="var(--color-paper-2)"
+                      stroke="var(--color-line)"
+                      stroke-width="1"
+                    ></rect>
+
+                    <text
+                      x="56"
+                      y="56"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      letter-spacing="0.12em"
+                      fill="var(--color-muted-2)"
+                    >
+                      PROOF · 1:1 · REV A
+                    </text>
+
+                    <circle
+                      cx="190"
+                      cy="152"
+                      r="70"
+                      fill="none"
+                      stroke="var(--color-ink)"
+                      stroke-width="1"
+                    ></circle>
+                    <circle
+                      cx="190"
+                      cy="152"
+                      r="42"
+                      fill="var(--color-gold)"
+                      opacity="0.16"
+                      stroke="var(--color-line)"
+                      stroke-width="1"
+                    ></circle>
+
+                    <line
+                      x1="148"
+                      y1="118"
+                      x2="362"
+                      y2="126"
+                      stroke="var(--color-line)"
+                      stroke-width="0.75"
+                    ></line>
+                    <line
+                      x1="196"
+                      y1="192"
+                      x2="362"
+                      y2="164"
+                      stroke="var(--color-line)"
+                      stroke-width="0.75"
+                    ></line>
+                    <line
+                      x1="240"
+                      y1="104"
+                      x2="362"
+                      y2="202"
+                      stroke="var(--color-line)"
+                      stroke-width="0.75"
+                    ></line>
+
+                    <circle
+                      cx="148"
+                      cy="118"
+                      r="9"
+                      fill="var(--color-paper)"
+                      stroke="var(--color-gold)"
+                      stroke-width="1"
+                    ></circle>
+                    <text
+                      x="148"
+                      y="118"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-ink)"
+                      text-anchor="middle"
+                      dominant-baseline="central"
+                    >
+                      01
+                    </text>
+                    <circle
+                      cx="196"
+                      cy="192"
+                      r="9"
+                      fill="var(--color-paper)"
+                      stroke="var(--color-gold)"
+                      stroke-width="1"
+                    ></circle>
+                    <text
+                      x="196"
+                      y="192"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-ink)"
+                      text-anchor="middle"
+                      dominant-baseline="central"
+                    >
+                      02
+                    </text>
+                    <circle
+                      cx="240"
+                      cy="104"
+                      r="9"
+                      fill="var(--color-paper)"
+                      stroke="var(--color-gold)"
+                      stroke-width="1"
+                    ></circle>
+                    <text
+                      x="240"
+                      y="104"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-ink)"
+                      text-anchor="middle"
+                      dominant-baseline="central"
+                    >
+                      03
+                    </text>
+
+                    <text
+                      x="56"
+                      y="240"
+                      font-family="var(--font-body)"
+                      font-size="8"
+                      fill="var(--color-muted-2)"
+                    >
+                      Client confirms codes · date
+                    </text>
+                    <line
+                      x1="56"
+                      y1="246"
+                      x2="300"
+                      y2="246"
+                      stroke="var(--color-line)"
+                      stroke-width="0.75"
+                    ></line>
+
+                    <text
+                      x="372"
+                      y="96"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      font-weight="700"
+                      letter-spacing="0.14em"
+                      fill="var(--color-gold-dark)"
+                    >
+                      COLOR LEGEND
+                    </text>
+
+                    <text
+                      x="372"
+                      y="126"
+                      font-family="var(--font-body)"
+                      font-size="11"
+                      fill="var(--color-ink)"
+                    >
+                      01 · PANTONE 186 C
+                    </text>
+                    <text
+                      x="372"
+                      y="164"
+                      font-family="var(--font-body)"
+                      font-size="11"
+                      fill="var(--color-ink)"
+                    >
+                      02 · PANTONE 872 C
+                    </text>
+                    <text
+                      x="372"
+                      y="202"
+                      font-family="var(--font-body)"
+                      font-size="11"
+                      fill="var(--color-ink)"
+                    >
+                      03 · bare metal
+                    </text>
+                    <text
+                      x="372"
+                      y="226"
+                      font-family="var(--font-body)"
+                      font-size="10"
+                      fill="var(--color-muted-2)"
+                    >
+                      4 colours · brass · gold plating
+                    </text>
+                  </svg>
+                </div>
+                <figcaption>
+                  The proof is the agreement: numbered areas, a code for each,
+                  and a line for the client to confirm.
+                </figcaption>
+              </figure>
+
+              <ul class="color-legend">
+                {proofLegend.map((item) => (
+                  <li>
+                    <span class="color-legend__num">{item.num}</span>
+                    <div>
+                      <h3>{item.code}</h3>
+                      <p>
+                        <span class="color-legend__area">{item.area}</span>
+                        {item.note}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <p>
+                Why this step removes the error the client is actually worried
+                about: once the agreement is a list of codes, there is nothing
+                left for a monitor, a phone photo or a tired pair of eyes to
+                disagree with. Two people in two countries can read the same
+                proof and be confirming the same thing. The conversation moves
+                from “does it look right” to “is 186 C the red you mean”, and the
+                second question has an answer.
+              </p>
+
+              <div class="color-gates">
+                {gates.map((gate) => (
+                  <div class="color-gate">
+                    <span class="color-gate__num">{gate.num}</span>
+                    <h3>{gate.title}</h3>
+                    <p class="color-gate__locks">
+                      <span>Locks</span>
+                      {gate.locks}
+                    </p>
+                    <p class="color-gate__leaves">
+                      <span>Leaves</span>
+                      {gate.leaves}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <!-- ---------- 05 ---------- -->
+            <section id="delta" class="color-section" data-article-section="delta">
+              <header class="color-section__header">
+                <span class="color-section__index">05</span>
+                <div>
+                  <p class="color-section__eyebrow">Measurement</p>
+                  <h2>ΔE is a check, not an agreement</h2>
+                </div>
+              </header>
+
+              <p>
+                ΔE is the distance between two colours in a colour space. It is a
+                genuinely useful number, and it is also the most misused one in
+                this trade — because a ΔE value on its own does not describe
+                anything. It describes a difference <em>under a set of
+                conditions</em>, and if the conditions are not stated, the number
+                cannot be reproduced or argued with.
+              </p>
+
+              <figure class="color-figure">
+                <div class="color-figure__frame">
+                  <svg
+                    viewBox="0 0 660 186"
+                    role="img"
+                    aria-labelledby="de-title de-desc"
+                  >
+                    <title id="de-title">
+                      Approximate perception bands for ΔE00
+                    </title>
+                    <desc id="de-desc">
+                      Four bands from zero to above three, labelled by how visible
+                      the difference is, with no colour fills.
+                    </desc>
+
+                    <rect
+                      x="40"
+                      y="72"
+                      width="140"
+                      height="18"
+                      fill="var(--color-surface)"
+                      stroke="var(--color-line)"
+                      stroke-width="0.5"
+                    ></rect>
+                    <rect
+                      x="180"
+                      y="72"
+                      width="140"
+                      height="18"
+                      fill="var(--color-paper-2)"
+                      stroke="var(--color-line)"
+                      stroke-width="0.5"
+                    ></rect>
+                    <rect
+                      x="320"
+                      y="72"
+                      width="140"
+                      height="18"
+                      fill="var(--color-surface)"
+                      stroke="var(--color-line)"
+                      stroke-width="0.5"
+                    ></rect>
+                    <rect
+                      x="460"
+                      y="72"
+                      width="140"
+                      height="18"
+                      fill="var(--color-paper-2)"
+                      stroke="var(--color-line)"
+                      stroke-width="0.5"
+                    ></rect>
+
+                    <text
+                      x="40"
+                      y="106"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-muted-2)"
+                      text-anchor="middle"
+                    >
+                      0
+                    </text>
+                    <text
+                      x="180"
+                      y="106"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-muted-2)"
+                      text-anchor="middle"
+                    >
+                      1
+                    </text>
+                    <text
+                      x="320"
+                      y="106"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-muted-2)"
+                      text-anchor="middle"
+                    >
+                      2
+                    </text>
+                    <text
+                      x="460"
+                      y="106"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-muted-2)"
+                      text-anchor="middle"
+                    >
+                      3
+                    </text>
+                    <text
+                      x="600"
+                      y="106"
+                      font-family="var(--font-body)"
+                      font-size="9"
+                      fill="var(--color-muted-2)"
+                      text-anchor="middle"
+                    >
+                      ΔE
+                    </text>
+
+                    <text
+                      x="40"
+                      y="140"
+                      font-family="var(--font-body)"
+                      font-size="10"
+                      fill="var(--color-muted-2)"
+                    >
+                      Indicative bands for ΔE00. The formula and conditions must
+                      be stated with the number.
+                    </text>
+                  </svg>
+                </div>
+                <figcaption>
+                  Bands describe perception, not acceptance. They are a guide for
+                  a conversation, not a specification on their own.
+                </figcaption>
+              </figure>
+
+              <div class="color-bands">
+                {deltaBands.map((band) => (
+                  <div class="color-bands__item">
+                    <span class="color-bands__range">{band.range}</span>
+                    <h3>{band.label}</h3>
+                    <p>{band.note}</p>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                Two formulas are in common use. ΔE*ab from 1976 is a straight
+                Euclidean distance; ΔE00 from 2000 corrects for the fact that the
+                eye is more sensitive to some directions in colour space than
+                others. For the same pair of samples, ΔE00 usually returns a
+                smaller number than ΔE*ab — so “≤ 1.5” means two different things
+                depending on which one is being quoted, and neither is meaningful
+                without the rest of the conditions.
+              </p>
+
+              <ul class="color-conditions">
+                {conditions.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+
+              <p>
+                This is why we do not publish a single ΔE threshold as the
+                definition of a correct colour. What we stand behind is narrower
+                and more useful: the Pantone code on the signed proof, on the
+                stated substrate, matched by the recorded formula, with a cured
+                sample kept as the reference. ΔE is used to check drift between
+                batches and to settle a disagreement with a number instead of an
+                opinion — not to replace the reference that was agreed.
+              </p>
+
+              <div class="color-note">
+                <p class="color-note__label">The honest version</p>
+                <p class="color-note__foot">
+                  A measurement can pass while the eye still objects, and a
+                  measurement can fail on a part that looks right. That is not a
+                  reason to stop measuring — it is a reason to measure the same
+                  way every time, and to keep the signed sample as the final
+                  arbiter.
+                </p>
+              </div>
+            </section>
+
+            <!-- ---------- 06 ---------- -->
+            <section
+              id="disagree"
+              class="color-section"
+              data-article-section="disagree"
+            >
+              <header class="color-section__header">
+                <span class="color-section__index">06</span>
+                <div>
+                  <p class="color-section__eyebrow">Limits</p>
+                  <h2>When the number and the eye disagree</h2>
+                </div>
+              </header>
+
+              <p>
+                Four situations come up often enough to name. None of them means
+                the measurement is wrong or the eye is wrong; they mean the two
+                are answering slightly different questions.
+              </p>
+
+              <div class="color-cases">
+                {cases.map((item) => (
+                  <div class="color-case">
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </div>
+                ))}
+              </div>
+
+              <p>
+                The practical response to all four is the same: judge colour
+                under the light the part will actually be seen in, on the actual
+                substrate, at the actual size. A colour that only matches on a
+                50 mm patch under a lab lamp has not been approved for a 3 mm
+                line on a pin.
+              </p>
+            </section>
+
+            <!-- ---------- 07 ---------- -->
+            <section
+              id="handover"
+              class="color-section"
+              data-article-section="handover"
+            >
+              <header class="color-section__header">
+                <span class="color-section__index">07</span>
+                <div>
+                  <p class="color-section__eyebrow">Handover</p>
+                  <h2>What to send, what comes back</h2>
+                </div>
+              </header>
+
+              <p>
+                The whole system only works if the handover is complete. These
+                are the two lists worth checking before a project starts — the
+                first on your side, the second on ours.
+              </p>
+
+              <div class="color-handover">
+                <div class="color-handover__col">
+                  <p class="color-handover__label">What to send</p>
+                  <ul>
+                    {sendList.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="color-handover__col">
+                  <p class="color-handover__label">What comes back</p>
+                  <ul>
+                    {backList.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <p>
+                If a supplier starts production before you have confirmed the
+                codes in writing, the colour conversation has already been lost —
+                whatever happens afterwards is a discussion about who remembers
+                what, and memory is not a reference.
+              </p>
+            </section>
+
+            <!-- ---------- CLOSING ---------- -->
+            <footer class="color-conclusion">
+              <div class="color-conclusion__rule"></div>
+              <p class="color-conclusion__label">The decision</p>
+
+              <div class="color-rule">
+                <p>
+                  <strong>Approve codes, not impressions.</strong> A screen can
+                  show you an idea; only a code can be confirmed by two people in
+                  two places.
+                </p>
+                <p>
+                  <strong>Treat the proof as part of the order.</strong> The
+                  signed colour list is the document the whole batch is checked
+                  against.
+                </p>
+                <p>
+                  <strong>When the eye and the number disagree.</strong> Go back
+                  to the signed sample, under the light the part will live in —
+                  not to the screen, and not to the argument.
+                </p>
+              </div>
+
+              <p class="color-conclusion__text">
+                If you already have artwork, send it before the quote. Checking
+                the colour count and the line weights takes minutes, and it is
+                the cheapest moment in the project to find out that a colour
+                cannot be reproduced in enamel.
+              </p>
+
+              <div class="color-conclusion__signature">
+                <span>METALCRAFTS</span>
+                <span>CRAFT · DETAIL · QUALITY</span>
+              </div>
+
+              {/*
+                Cluster navigation rule:
+                01 → left: back to the guide, right: next deep dive
+                02–05 → left: previous deep dive, right: next deep dive
+                06 → left: previous deep dive, right: back to the guide
+              */}
+              <nav class="color-cluster" aria-label="Guide navigation">
+                <a
+                  href="/resources/metal-craft-guide/metal-forming-mold-fees"
+                  class="color-cluster__link"
+                >
+                  <span class="color-cluster__label">Previous deep dive</span>
+                  <span class="color-cluster__title">
+                    <span aria-hidden="true">←</span> Metal forming &amp; mold fees
+                  </span>
+                </a>
+
+                <a
+                  href="/resources/metal-craft-guide/plating-durability"
+                  class="color-cluster__link color-cluster__link--next"
+                >
+                  <span class="color-cluster__label">Next deep dive</span>
+                  <span class="color-cluster__title">
+                    Plating &amp; durability <span aria-hidden="true">→</span>
+                  </span>
+                </a>
+              </nav>
+            </footer>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<!-- =========================================================
+     TABLE OF CONTENTS INTERACTION
+========================================================== -->
+<script>
+  type ColorWindow = Window & {
+    __colorGuideCleanup?: () => void;
+  };
+
+  function initColorGuide() {
+    const root = document.querySelector<HTMLElement>(".color-page");
+    const nav = document.querySelector<HTMLElement>(".nav");
+    const tocLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]")
+    );
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-article-section]")
+    );
+
+    if (!root || !nav || !tocLinks.length || !sections.length) return;
+
+    const win = window as ColorWindow;
+    win.__colorGuideCleanup?.();
+
+    const syncNavHeight = () => {
+      root.style.setProperty(
+        "--color-nav-height",
+        `${nav.getBoundingClientRect().height}px`
+      );
+    };
+
+    const setActive = (id: string) => {
+      tocLinks.forEach((link) => {
+        const active = link.dataset.tocLink === id;
+        link.classList.toggle("is-active", active);
+
+        if (active) {
+          link.setAttribute("aria-current", "location");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    };
+
+    const handleLinkClick = (event: MouseEvent) => {
+      const link = event.currentTarget as HTMLAnchorElement;
+      const id = link.dataset.tocLink;
+      if (!id) return;
+
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      event.preventDefault();
+
+      const navHeight = nav.getBoundingClientRect().height;
+      const targetTop =
+        target.getBoundingClientRect().top + window.scrollY - navHeight - 28;
+
+      window.scrollTo({
+        top: targetTop,
+        behavior: "smooth",
+      });
+
+      history.replaceState(null, "", `#${id}`);
+      setActive(id);
+
+      const mobileToc = root.querySelector<HTMLDetailsElement>(
+        ".color-mobile-toc"
+      );
+
+      if (mobileToc?.open) {
+        mobileToc.open = false;
+      }
+    };
+
+    tocLinks.forEach((link) => {
+      link.addEventListener("click", handleLinkClick);
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+        if (!visible.length) return;
+
+        const activeId = (visible[0].target as HTMLElement).dataset
+          .articleSection;
+
+        if (activeId) setActive(activeId);
+      },
+      {
+        root: null,
+        rootMargin: `-${nav.getBoundingClientRect().height + 48}px 0px -62% 0px`,
+        threshold: 0,
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    syncNavHeight();
+
+    const resizeObserver = new ResizeObserver(syncNavHeight);
+    resizeObserver.observe(nav);
+
+    const handleResize = () => syncNavHeight();
+    window.addEventListener("resize", handleResize);
+
+    const hash = window.location.hash.replace("#", "");
+    if (hash && sections.some((section) => section.id === hash)) {
+      setActive(hash);
+    } else {
+      setActive(sections[0]?.id ?? "");
+    }
+
+    win.__colorGuideCleanup = () => {
+      tocLinks.forEach((link) => {
+        link.removeEventListener("click", handleLinkClick);
+      });
+
+      observer.disconnect();
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", handleResize);
+      win.__colorGuideCleanup = undefined;
+    };
+  }
+
+  initColorGuide();
+  document.addEventListener("astro:page-load", initColorGuide);
+</script>
+
+<style>
+  /* =========================================================
+     BASE
+  ========================================================== */
+
+  .color-page {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .color-page *,
+  .color-page *::before,
+  .color-page *::after {
+    box-sizing: border-box;
+  }
+
+  .color-page img {
+    display: block;
+    max-width: 100%;
+  }
+
+  .color-shell {
+    width: min(1240px, 92%);
+    margin-inline: auto;
+  }
+
+  /* =========================================================
+     HERO
+  ========================================================== */
+
+  .color-hero {
+    padding: calc(var(--color-nav-height, 72px) + 32px) 0 52px;
+  }
+
+  .color-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+    gap: clamp(40px, 5vw, 64px);
+    align-items: start;
+    padding-block: clamp(34px, 4.4vw, 62px) 0;
+  }
+
+  .color-hero__copy {
+    min-width: 0;
+    max-width: 540px;
+  }
+
+  .color-hero__overline {
+    margin: 0 0 20px;
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .color-hero__title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(42px, 5vw, 74px);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+
+  .color-hero__title span {
+    display: block;
+    color: var(--color-muted);
+  }
+
+  .color-hero__desc {
+    max-width: 470px;
+    margin: 28px 0 0;
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: clamp(17px, 1.4vw, 20px);
+    line-height: 1.62;
+  }
+
+  .color-hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+    text-transform: uppercase;
+  }
+
+  .color-hero__dot {
+    width: 3px;
+    height: 3px;
+    flex: 0 0 3px;
+    border-radius: 50%;
+    background: var(--color-gold);
+  }
+
+  .color-hero__visual {
+    position: relative;
+    min-width: 0;
+    margin: 0;
+    padding-bottom: 22px;
+  }
+
+  .color-hero__frame {
+    position: relative;
+    z-index: 1;
+  }
+
+  .color-hero__frame::before {
+    position: absolute;
+    z-index: -1;
+    inset: -12px;
+    border: 1px solid var(--color-line);
+    content: "";
+    pointer-events: none;
+  }
+
+  .color-hero__frame img {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.13 / 1;
+    object-fit: cover;
+    background: var(--color-surface);
+  }
+
+  .color-hero__visual figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 2px 0;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  /* =========================================================
+     ARTICLE LAYOUT
+  ========================================================== */
+
+  .color-article {
+    padding: 62px 0 104px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .color-reading {
+    display: grid;
+    grid-template-columns: minmax(180px, 216px) minmax(0, 1fr);
+    gap: clamp(40px, 6vw, 76px);
+  }
+
+  .color-sidebar {
+    min-width: 0;
+  }
+
+  .color-sidebar__sticky {
+    position: sticky;
+    top: calc(var(--color-nav-height, 72px) + 34px);
+  }
+
+  .color-sidebar__heading {
+    margin: 0 0 20px;
+    color: var(--color-ink);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .color-toc {
+    position: relative;
+    display: grid;
+    gap: 2px;
+  }
+
+  .color-toc::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    background: var(--color-line);
+    content: "";
+  }
+
+  .color-toc__link {
+    position: relative;
+    display: grid;
+    grid-template-columns: 25px minmax(0, 1fr);
+    gap: 11px;
+    align-items: start;
+    padding: 12px 0 12px 16px;
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: 15px;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: color 180ms ease;
+  }
+
+  .color-toc__number {
+    padding-top: 3px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .color-toc__link:hover,
+  .color-toc__link.is-active {
+    color: var(--color-ink);
+  }
+
+  .color-toc__link.is-active::before {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 2px;
+    background: var(--color-gold);
+    content: "";
+  }
+
+  .color-toc__link.is-active .color-toc__number {
+    color: var(--color-gold-dark);
+  }
+
+  .color-sidebar__note {
+    display: flex;
+    gap: 13px;
+    align-items: flex-start;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .color-sidebar__mark {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    place-items: center;
+    border: 1px solid var(--color-line);
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 12px;
+  }
+
+  .color-sidebar__note-body {
+    min-width: 0;
+  }
+
+  .color-sidebar__note p {
+    margin: 0;
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .color-sidebar__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 12px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-ink);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition:
+      color var(--ease-out),
+      border-color var(--ease-out),
+      gap var(--ease-out);
+  }
+
+  .color-sidebar__back span {
+    color: var(--color-gold);
+    font-size: 12px;
+  }
+
+  .color-sidebar__back:hover {
+    color: var(--color-gold-dark);
+    border-color: var(--color-gold);
+    gap: 11px;
+  }
+
+  .color-content {
+    min-width: 0;
+    font-size: 16px;
+    line-height: 1.85;
+  }
+
+  .color-content p {
+    margin: 0 0 20px;
+  }
+
+  .color-content em {
+    font-style: italic;
+  }
+
+  .color-content a {
+    color: var(--color-ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-gold);
+  }
+
+  .color-mobile-toc {
+    display: none;
+  }
+
+  /* =========================================================
+     THESIS
+  ========================================================== */
+
+  .color-thesis {
+    position: relative;
+    margin-bottom: 64px;
+    padding: 36px 40px 34px 72px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper-2);
+  }
+
+  .color-thesis::before {
+    content: "\201C";
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: var(--color-gold);
+    font-family: var(--font-serif);
+    font-size: 76px;
+    line-height: 1;
+    opacity: 0.7;
+  }
+
+  .color-thesis__label {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .color-thesis p {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: clamp(18px, 1.9vw, 22px);
+    line-height: 1.58;
+    letter-spacing: -0.012em;
+  }
+
+  /* =========================================================
+     SECTIONS
+  ========================================================== */
+
+  .color-section {
+    min-width: 0;
+    margin-top: 78px;
+    scroll-margin-top: calc(var(--color-nav-height, 72px) + 32px);
+  }
+
+  .color-section__header {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .color-section__index {
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 34px;
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .color-section__eyebrow {
+    margin: 0 0 9px;
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .color-section h2 {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: clamp(27px, 2.9vw, 37px);
+    font-weight: 400;
+    line-height: 1.14;
+    letter-spacing: -0.035em;
+  }
+
+  /* =========================================================
+     NOTE
+  ========================================================== */
+
+  .color-note {
+    margin: 30px 0 8px;
+    padding: 24px 26px;
+    border: 1px solid var(--color-line);
+    border-left: 2px solid var(--color-gold);
+    background: var(--color-paper-2);
+  }
+
+  .color-note__label {
+    margin: 0 0 10px;
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .color-note__foot {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  /* =========================================================
+     FIGURE
+  ========================================================== */
+
+  .color-figure {
+    margin: 30px 0 26px;
+  }
+
+  .color-figure__frame {
+    padding: 22px 18px;
+    border: 1px solid var(--color-line);
+    background: var(--color-paper-2);
+    overflow-x: auto;
+  }
+
+  .color-figure svg {
+    display: block;
+    width: 100%;
+    min-width: 520px;
+    height: auto;
+  }
+
+  .color-figure figcaption {
+    margin-top: 12px;
+    color: var(--color-muted-2);
+    font-size: 11px;
+    line-height: 1.65;
+  }
+
+  /* =========================================================
+     RENDER STRIP
+  ========================================================== */
+
+  .color-render {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 28px 0 26px;
+    border: 1px solid var(--color-line);
+  }
+
+  .color-render__item {
+    padding: 22px 22px 24px;
+    border-right: 1px solid var(--color-line);
+    background: var(--color-paper-2);
+  }
+
+  .color-render__item:last-child {
+    border-right: 0;
+  }
+
+  .color-render__num {
+    display: block;
+    margin-bottom: 14px;
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 15px;
+    letter-spacing: -0.02em;
+  }
+
+  .color-render h3 {
+    margin: 0 0 8px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  .color-render p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.68;
+  }
+
+  /* =========================================================
+     RULES LIST
+  ========================================================== */
+
+  .color-rules {
+    margin: 30px 0 8px;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-ink);
+  }
+
+  .color-rules li {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 16px;
+    padding: 20px 0 18px;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .color-rules__num {
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .color-rules h3 {
+    margin: 0 0 7px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.018em;
+  }
+
+  .color-rules p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.72;
+  }
+
+  /* =========================================================
+     MIX STEPS
+  ========================================================== */
+
+  .color-steps {
+    margin: 28px 0 26px;
+    border-left: 1px solid var(--color-line);
+    padding-left: 0;
+  }
+
+  .color-step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 16px;
+    padding: 0 0 24px 20px;
+  }
+
+  .color-step::before {
+    position: absolute;
+    top: 4px;
+    left: -4px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-gold);
+    content: "";
+  }
+
+  .color-step__num {
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .color-step h3 {
+    margin: 0 0 6px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.018em;
+  }
+
+  .color-step p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.72;
+  }
+
+  /* =========================================================
+     LEGEND
+  ========================================================== */
+
+  .color-legend {
+    margin: 26px 0 26px;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-ink);
+  }
+
+  .color-legend li {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .color-legend__num {
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.9;
+  }
+
+  .color-legend h3 {
+    margin: 0 0 4px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .color-legend p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .color-legend__area {
+    display: inline-block;
+    margin-right: 8px;
+    padding: 1px 6px;
+    border: 1px solid var(--color-line);
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* =========================================================
+     GATES
+  ========================================================== */
+
+  .color-gates {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin: 30px 0 10px;
+    border-top: 1px solid var(--color-ink);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .color-gate {
+    padding: 20px 20px 22px;
+    border-right: 1px solid var(--color-line);
+  }
+
+  .color-gate:last-child {
+    border-right: 0;
+  }
+
+  .color-gate__num {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--color-gold-dark);
+    font-family: var(--font-serif);
+    font-size: 14px;
+  }
+
+  .color-gate h3 {
+    margin: 0 0 12px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  .color-gate p {
+    margin: 0 0 10px;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  .color-gate p span {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--color-gold-dark);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .color-gate__leaves {
+    margin-bottom: 0 !important;
+    color: var(--color-muted-2) !important;
+  }
+
+  /* =========================================================
+     DELTA E BANDS
+  ========================================================== */
+
+  .color-bands {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin: 22px 0 28px;
+    border-top: 1px solid var(--color-ink);
+  }
+
+  .color-bands__item {
+    padding: 16px 18px 18px 0;
+    border-right: 1px solid var(--color-line);
+  }
+
+  .color-bands__item:last-child {
+    border-right: 0;
+    padding-right: 0;
+  }
+
+  .color-bands__range {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-gold-dark);
+    font-family: var(--font-display);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+
+  .color-bands h3 {
+    margin: 0 0 6px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+  }
+
+  .color-bands p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  /* =========================================================
+     CONDITIONS
+  ========================================================== */
+
+  .color-conditions {
+    margin: 24px 0 26px;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .color-conditions li {
+    position: relative;
+    padding: 12px 0 12px 20px;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .color-conditions li::before {
+    position: absolute;
+    left: 0;
+    top: 20px;
+    width: 5px;
+    height: 1px;
+    background: var(--color-gold);
+    content: "";
+  }
+
+  /* =========================================================
+     CASES
+  ========================================================== */
+
+  .color-cases {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin: 28px 0 26px;
+    background: var(--color-line);
+    border: 1px solid var(--color-line);
+  }
+
+  .color-case {
+    padding: 22px 22px 20px;
+    background: var(--color-paper-2);
+  }
+
+  .color-case h3 {
+    margin: 0 0 8px;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.018em;
+  }
+
+  .color-case p {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.72;
+  }
+
+  /* =========================================================
+     HANDOVER
+  ========================================================== */
+
+  .color-handover {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin: 28px 0 26px;
+  }
+
+  .color-handover__col {
+    padding-top: 16px;
+    border-top: 1px solid var(--color-ink);
+  }
+
+  .color-handover__label {
+    margin: 0 0 14px;
+    color: var(--color-gold-dark);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .color-handover ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .color-handover li {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 18px;
+    color: var(--color-muted);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .color-handover li::before {
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 5px;
+    height: 1px;
+    background: var(--color-gold);
+    content: "";
+  }
+
+  /* =========================================================
+     CONCLUSION
+  ========================================================== */
+
+  .color-conclusion {
+    margin-top: 78px;
+  }
+
+  .color-conclusion__rule {
+    width: 48px;
+    height: 2px;
+    margin-bottom: 22px;
+    background: var(--color-gold);
+  }
+
+  .color-conclusion__label {
+    margin-bottom: 16px;
+    color: var(--color-gold-dark);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .color-rule {
+    margin-bottom: 30px;
+    padding-left: 22px;
+    border-left: 2px solid var(--color-gold);
+  }
+
+  .color-rule p {
+    margin: 0 0 12px;
+    color: var(--color-muted);
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .color-rule p:last-child {
+    margin-bottom: 0;
+  }
+
+  .color-rule strong {
+    color: var(--color-ink);
+    font-weight: 400;
+  }
+
+  .color-conclusion__text {
+    color: var(--color-muted);
+    font-size: 16px;
+    line-height: 1.85;
+  }
+
+  .color-conclusion__signature {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-line);
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+
+  /* =========================================================
+     CLUSTER NAV
+  ========================================================== */
+
+  .color-cluster {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 34px;
+  }
+
+  .color-cluster__link {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 22px;
+    border: 1px solid var(--color-line);
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: border-color var(--ease-out), background var(--ease-out);
+  }
+
+  .color-cluster__link:hover {
+    border-color: var(--color-gold);
+    background: var(--color-paper-2);
+  }
+
+  .color-cluster__link--next {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  .color-cluster__label {
+    color: var(--color-muted-2);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .color-cluster__title {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  .color-cluster__title span {
+    color: var(--color-gold);
+  }
+
+  /* =========================================================
+     RESPONSIVE — TABLET
+  ========================================================== */
+
+  @media (max-width: 1100px) {
+    .color-reading {
+      grid-template-columns: minmax(165px, 195px) minmax(0, 1fr);
+      gap: 38px;
+    }
+
+    .color-content {
+      font-size: 15px;
+    }
+
+    .color-thesis {
+      padding: 30px 30px 28px 60px;
+    }
+
+    .color-gates {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .color-gate {
+      border-bottom: 1px solid var(--color-line);
+    }
+
+    .color-gate:nth-child(2n) {
+      border-right: 0;
+    }
+
+    .color-gate:nth-child(3),
+    .color-gate:nth-child(4) {
+      border-bottom: 0;
+    }
+  }
+
+  /* =========================================================
+     RESPONSIVE — SMALL TABLET
+  ========================================================== */
+
+  @media (max-width: 820px) {
+    .color-hero {
+      padding-top: calc(var(--color-nav-height, 72px) + 26px);
+    }
+
+    .color-hero__grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding-block: 26px 30px;
+    }
+
+    .color-hero__copy {
+      max-width: 680px;
+    }
+
+    .color-hero__title {
+      font-size: clamp(40px, 7.6vw, 62px);
+    }
+
+    .color-hero__desc {
+      max-width: 600px;
+    }
+
+    .color-hero__frame img {
+      aspect-ratio: 1.6 / 1;
+    }
+
+    .color-article {
+      padding-block: 46px 76px;
+    }
+
+    .color-reading {
+      display: block;
+    }
+
+    .color-sidebar {
+      display: none;
+    }
+
+    .color-content {
+      max-width: 760px;
+      margin-inline: auto;
+      font-size: 16px;
+    }
+
+    .color-mobile-toc {
+      display: block;
+      margin-bottom: 40px;
+      border: 1px solid var(--color-line);
+      background: var(--color-paper-2);
+    }
+
+    .color-mobile-toc summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 18px;
+      color: var(--color-ink);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      list-style: none;
+      text-transform: uppercase;
+    }
+
+    .color-mobile-toc summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .color-mobile-toc__icon {
+      color: var(--color-gold-dark);
+      font-size: 19px;
+      font-weight: 400;
+      transition: transform 180ms ease;
+    }
+
+    .color-mobile-toc[open] .color-mobile-toc__icon {
+      transform: rotate(45deg);
+    }
+
+    .color-mobile-toc nav {
+      display: grid;
+      padding: 0 18px 12px;
+    }
+
+    .color-mobile-toc nav a {
+      display: flex;
+      gap: 14px;
+      align-items: baseline;
+      padding: 10px 0;
+      border-top: 1px solid var(--color-line);
+      color: var(--color-muted);
+      font-family: var(--font-serif);
+      font-size: 15px;
+      text-decoration: none;
+    }
+
+    .color-mobile-toc nav a span {
+      color: var(--color-gold-dark);
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .color-thesis {
+      margin-bottom: 52px;
+    }
+
+    .color-section {
+      margin-top: 64px;
+    }
+
+    .color-cluster {
+      grid-template-columns: 1fr;
+    }
+
+    .color-cluster__link--next {
+      text-align: left;
+      align-items: flex-start;
+    }
+  }
+
+  /* =========================================================
+     RESPONSIVE — MOBILE
+  ========================================================== */
+
+  @media (max-width: 560px) {
+    .color-hero {
+      padding-top: calc(var(--color-nav-height, 72px) + 18px);
+    }
+
+    .color-hero__grid {
+      gap: 26px;
+      padding-block: 22px 26px;
+    }
+
+    .color-hero__overline {
+      margin-bottom: 14px;
+      font-size: 9px;
+    }
+
+    .color-hero__title {
+      font-size: clamp(34px, 9.4vw, 48px);
+      letter-spacing: -0.045em;
+    }
+
+    .color-hero__desc {
+      margin-top: 18px;
+      font-size: 16px;
+      line-height: 1.68;
+    }
+
+    .color-hero__meta {
+      gap: 8px;
+      margin-top: 22px;
+      font-size: 8px;
+    }
+
+    .color-hero__frame::before {
+      inset: -8px;
+    }
+
+    .color-hero__frame img {
+      aspect-ratio: 1.2 / 1;
+    }
+
+    .color-hero__visual figcaption {
+      padding-top: 10px;
+      font-size: 8px;
+    }
+
+    .color-article {
+      padding-block: 32px 62px;
+    }
+
+    .color-mobile-toc {
+      margin-bottom: 32px;
+    }
+
+    .color-thesis {
+      margin-bottom: 42px;
+      padding: 22px 20px 22px 44px;
+    }
+
+    .color-thesis::before {
+      top: 12px;
+      left: 10px;
+      font-size: 54px;
+    }
+
+    .color-thesis p {
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .color-section {
+      margin-top: 52px;
+    }
+
+    .color-section__header {
+      grid-template-columns: 36px minmax(0, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+    }
+
+    .color-section__index {
+      font-size: 26px;
+    }
+
+    .color-section__eyebrow {
+      margin-bottom: 7px;
+      font-size: 8px;
+    }
+
+    .color-section h2 {
+      font-size: clamp(24px, 6.8vw, 30px);
+      line-height: 1.18;
+    }
+
+    .color-content {
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .color-content p {
+      margin-bottom: 17px;
+    }
+
+    .color-note {
+      padding: 18px;
+    }
+
+    .color-figure__frame {
+      padding: 14px 10px;
+    }
+
+    .color-figure svg {
+      min-width: 460px;
+    }
+
+    .color-render {
+      grid-template-columns: 1fr;
+    }
+
+    .color-render__item {
+      border-right: 0;
+      border-bottom: 1px solid var(--color-line);
+    }
+
+    .color-render__item:last-child {
+      border-bottom: 0;
+    }
+
+    .color-rules li,
+    .color-legend li {
+      grid-template-columns: 28px minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .color-rules h3,
+    .color-step h3,
+    .color-case h3 {
+      font-size: 17px;
+    }
+
+    .color-gates {
+      grid-template-columns: 1fr;
+    }
+
+    .color-gate {
+      border-right: 0;
+      border-bottom: 1px solid var(--color-line);
+    }
+
+    .color-gate:nth-child(3) {
+      border-bottom: 1px solid var(--color-line);
+    }
+
+    .color-gate:last-child {
+      border-bottom: 0;
+    }
+
+    .color-cases {
+      grid-template-columns: 1fr;
+    }
+
+    .color-bands {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .color-bands__item {
+      padding-right: 14px;
+    }
+
+    .color-bands__item:nth-child(2n) {
+      border-right: 0;
+    }
+
+    .color-handover {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .color-rule p {
+      font-size: 17px;
+    }
+
+    .color-conclusion {
+      margin-top: 54px;
+    }
+
+    .color-conclusion__text {
+      font-size: 15px;
+    }
+  }
+
+  /* =========================================================
+     ACCESSIBILITY
+  ========================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+    .color-page *,
+    .color-page *::before,
+    .color-page *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+</style>
