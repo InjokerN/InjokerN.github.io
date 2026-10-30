@@ -13,3 +13,7 @@ dist/
 .DS_Store
 Thumbs.db
 *.log
+
+# AI 助手本地规则与工作记录（仅本地，不进公开仓库）
+agent.md
+.workbuddy/
