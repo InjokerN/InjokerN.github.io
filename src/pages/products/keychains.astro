@@ -1312,6 +1312,19 @@ const faqSchema = {
     .hardware-rail { grid-template-columns: 1fr; }
   }
 
+  /* 桌面端：左侧硬件切换栏在本板块内吸顶，滚动时始终可点击切换 */
+  @media (min-width: 761px) {
+    .hardware-rail {
+      position: sticky;
+      top: calc(var(--nav-h) + 24px);
+      align-self: start;
+      max-height: calc(100vh - var(--nav-h) - 48px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     :global(html) { scroll-behavior: auto; }
     *, *::before, *::after {

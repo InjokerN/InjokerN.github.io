@@ -1602,9 +1602,15 @@ const orderSteps = [
 
     .flagship-card__media {
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr;
-      aspect-ratio: 4 / 3;
+      grid-template-rows: auto;
+      /* 必须显式还原：≤1024 的 16/7 仍然生效，不写在会压住图片高度导致溢出 */
+      aspect-ratio: auto;
       order: -1;
+    }
+
+    /* 双图按 4:5 微竖比例定高：高宽比恒为 1.25，不再随容器宽度变成 2:3 长条 */
+    .flagship-card__media-cell {
+      aspect-ratio: 4 / 5;
     }
 
     .flagship-card__body {
@@ -1659,8 +1665,8 @@ const orderSteps = [
     .order-step:nth-child(odd),
     .order-step:nth-child(even) {
       display: grid;
-      grid-template-columns: 36px minmax(0, 1fr);
-      column-gap: 18px;
+      grid-template-columns: minmax(0, 1fr);
+      column-gap: 0;
       padding: 0 0 32px;
     }
 
@@ -1669,30 +1675,35 @@ const orderSteps = [
     }
 
     .order-step__media {
-      grid-column: 2;
+      grid-column: 1;
       grid-row: 1;
       height: auto;
       aspect-ratio: 16 / 10;
     }
 
+    /* 序号与标题同一行：序号在左、标题右移，不再单独占一行 */
     .order-step__content {
-      grid-column: 2;
+      grid-column: 1;
       grid-row: 2;
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      column-gap: 12px;
+      align-items: start;
       padding: 16px 0 0;
     }
 
     .order-step__number {
-      position: absolute;
-      z-index: 3;
-      top: 18px;
-      left: 0;
-      min-width: 36px;
-      height: 36px;
-      padding: 0 8px;
-      box-sizing: border-box;
-      margin: 0;
+      grid-column: 1;
+      grid-row: 1;
+      position: static;
+      z-index: auto;
       display: grid;
       place-items: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      box-sizing: border-box;
+      margin: 0;
       background: var(--color-paper-2);
       border: 1px solid var(--color-gold);
       border-radius: 50%;
@@ -1701,11 +1712,18 @@ const orderSteps = [
     }
 
     .order-step__content h3 {
+      grid-column: 2;
+      grid-row: 1;
+      align-self: center;
+      margin: 0;
       font-size: 18px;
     }
 
     .order-step p {
+      grid-column: 2;
+      grid-row: 2;
       max-width: none;
+      margin: 8px 0 0;
     }
 
     .order-step__connector {
@@ -1724,9 +1742,10 @@ const orderSteps = [
       width: 100%;
     }
 
+    /* 移动端一行两张；图片框不再过大 */
     .craft-cards-grid {
-      grid-template-columns: 1fr;
-      gap: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
       max-width: none;
     }
 
@@ -1735,9 +1754,53 @@ const orderSteps = [
       width: 100%;
     }
 
+    /* 奇数张时最后一张居中，尺寸与其它卡片一致 */
+    .craft-cards-grid .craft-card:nth-child(odd):last-child {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: calc(50% - 5px);
+    }
+
+    .craft-card {
+      padding: 6px;
+    }
+
+    .craft-card__body {
+      padding: 12px 10px 10px;
+    }
+
+    .craft-card__body h3 {
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .craft-card__body p {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
     .package-grid--top,
     .package-grid--bottom {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .package-grid--bottom .package-card:nth-child(odd):last-child {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: calc(50% - 5px);
+    }
+
+    .package-card {
+      padding: 6px 6px 12px;
+    }
+
+    .package-card__img {
+      margin-bottom: 8px;
+    }
+
+    .package-card h4 {
+      font-size: 12px;
     }
 
     .craft-plating-footer {

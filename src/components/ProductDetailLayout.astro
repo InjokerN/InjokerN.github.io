@@ -1671,24 +1671,87 @@ const sections = sectionsProp ?? defaultSections;
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
-    .product-option-grid,
+    .product-option-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
     .fit-grid,
     .production-strip {
       grid-template-columns: 1fr;
+    }
+
+    /* 半宽工艺卡：压缩内边距与字号，避免 171px 宽时标题被挤成两行 */
+    .product-option-card__image {
+      margin: 6px;
+    }
+
+    .product-option-card__body {
+      padding: 4px 12px 14px;
+    }
+
+    .product-option-card__body h3 {
+      font-size: 16px;
+    }
+
+    .product-option-card__body p {
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    /* 序号嵌入图片左上角，不再单独占一行 */
+    .production-strip__dot {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 3;
+      width: 26px;
+      height: 26px;
+      margin: 0;
+      border-width: 1.5px;
+      font-size: 9px;
     }
 
     .production-strip {
       gap: 28px;
     }
 
+    /* 规格黑卡：去掉桌面的固定高度与大内边距，高度随内容走 */
+    .specs-feature {
+      min-height: 0;
+      padding: 22px 20px;
+    }
+
+    .specs-feature__line {
+      margin-top: 18px;
+      margin-bottom: 12px;
+    }
+
+    /* 规格行：编号占左栏，标签与值上下堆叠，长文本自动换行不互相挤压 */
     .spec-row {
-      grid-template-columns: 34px 110px minmax(0, 1fr);
-      gap: 12px;
-      min-height: 78px;
-      padding: 0 14px;
+      grid-template-columns: 28px minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      gap: 2px 12px;
+      align-items: start;
+      min-height: 0;
+      padding: 12px 14px;
+    }
+
+    .spec-row__number {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      padding-top: 2px;
+    }
+
+    .spec-row__label {
+      grid-column: 2;
+      grid-row: 1;
     }
 
     .spec-row__value {
+      grid-column: 2;
+      grid-row: 2;
       font-size: 12px;
     }
 
