@@ -17,3 +17,7 @@ Thumbs.db
 # AI 助手本地规则与工作记录（仅本地，不进公开仓库）
 agent.md
 .workbuddy/
+
+# 本地同步脚本（仅本地，不进公开仓库）
+push.bat
+pull.bat
