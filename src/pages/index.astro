@@ -827,14 +827,24 @@ const exploreLinks = [
 
   .hero__actions {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 11px;
     margin-top: 26px;
   }
 
+  /* 两个按钮永远同一排：不换行、按需压缩内边距与字号 */
+  .hero__actions .btn {
+    flex: 0 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
   .hero__visual {
     position: relative;
-    min-height: 610px;
+    /* 高宽比受控：高度由宽度推导，永不超过 1.5:1 */
+    aspect-ratio: 1 / 1;
+    max-height: 640px;
+    min-height: 0;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.8);
     border-radius: var(--radius-lg);
@@ -1672,7 +1682,9 @@ const exploreLinks = [
     }
 
     .hero__visual {
-      min-height: 540px;
+      aspect-ratio: 4 / 3;
+      max-height: 560px;
+      min-height: 0;
     }
 
     .hero__image--main {
@@ -1762,8 +1774,23 @@ const exploreLinks = [
       font-size: 9px;
     }
 
+    .hero__actions {
+      gap: 8px;
+      margin-top: 22px;
+    }
+
+    /* 窄屏下两个按钮平分一行，压缩字号与内边距以确保不折行 */
+    .hero__actions .btn {
+      flex: 1 1 0;
+      padding: 13px 8px;
+      font-size: 12px;
+      letter-spacing: 0;
+    }
+
     .hero__visual {
-      min-height: 460px;
+      aspect-ratio: 4 / 5;
+      max-height: 520px;
+      min-height: 0;
     }
 
     .hero__image--main {
@@ -1932,6 +1959,44 @@ const exploreLinks = [
     .case-foot__note {
       display: block;
       margin-top: 12px;
+    }
+  }
+
+  /* ============================================================
+     SMALL PHONES (≤380px)
+     ============================================================ */
+
+  @media (max-width: 380px) {
+    .hero__actions {
+      gap: 7px;
+    }
+
+    .hero__actions .btn {
+      padding: 12px 6px;
+      font-size: 11px;
+    }
+
+    .hero__image--main {
+      inset: 16px 16px 100px 50px;
+    }
+
+    .hero__image--secondary {
+      width: 102px;
+      height: 102px;
+      left: 14px;
+      bottom: 14px;
+      border-width: 3px;
+    }
+
+    .hero__card {
+      left: 120px;
+      right: 14px;
+      bottom: 14px;
+      padding: 10px 12px;
+    }
+
+    .hero__card h3 {
+      font-size: 16px;
     }
   }
 </style>
