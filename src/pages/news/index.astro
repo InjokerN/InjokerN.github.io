@@ -259,7 +259,7 @@ const archiveNews = sortedNewsList.slice(5);
 
   /* ---------- HERO ---------- */
   .news-hero {
-    padding: 88px 0 96px;
+    padding: calc(var(--nav-h) + var(--hero-gap)) 0 96px;
     min-height: 520px;
     display: flex;
     flex-direction: column;
@@ -593,7 +593,7 @@ const archiveNews = sortedNewsList.slice(5);
   /* ---------- 平板适配 ---------- */
   @media (max-width: 1024px) {
     .news-hero {
-      padding: 72px 0 80px;
+      padding-bottom: 80px;
       min-height: 440px;
     }
 
@@ -622,7 +622,7 @@ const archiveNews = sortedNewsList.slice(5);
     }
 
     .news-hero {
-      padding: 48px 0 56px;
+      padding-bottom: 56px;
       min-height: 0;
     }
 

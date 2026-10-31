@@ -649,7 +649,7 @@ const relatedNews = getRelatedNews("summer-2026", 2);
    ARTICLE LAYOUT — 200 TOC + 900 正文，整体居中
    ============================================================ */
 .news-detail__body {
-  padding: 76px 0 112px;
+  padding: calc(var(--nav-h) + var(--hero-gap)) 0 112px;
 }
 
 .news-detail__reading-layout {
@@ -769,7 +769,7 @@ const relatedNews = getRelatedNews("summer-2026", 2);
 }
 
 .news-detail__content h2 {
-  scroll-margin-top: calc(var(--nav-height, 72px) + 32px);
+  scroll-margin-top: calc(var(--nav-h) + 24px);
 }
 
 
@@ -802,7 +802,7 @@ const relatedNews = getRelatedNews("summer-2026", 2);
 
 /* Sections */
 .article-section {
-  scroll-margin-top: calc(var(--nav-height, 72px) + 34px);
+  scroll-margin-top: calc(var(--nav-h) + 24px);
 }
 
 .article-section + .article-section {
@@ -1111,7 +1111,7 @@ const relatedNews = getRelatedNews("summer-2026", 2);
   }
 
   .news-detail__body {
-    padding: 58px 0 74px;
+    padding-bottom: 74px;
   }
 
   .news-detail__content {

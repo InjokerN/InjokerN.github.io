@@ -746,12 +746,12 @@ const exploreLinks = [
      ============================================================ */
 
   .hero {
-    min-height: calc(100vh - 84px);
+    min-height: calc(100vh - var(--nav-h));
     display: grid;
     grid-template-columns: 0.94fr 1.06fr;
     align-items: center;
     gap: 56px;
-    padding: 28px 0 36px;
+    padding: calc(var(--nav-h) + var(--hero-gap)) 0 36px;
   }
 
   .hero__copy {
@@ -1742,7 +1742,7 @@ const exploreLinks = [
     }
 
     .hero {
-      padding: 20px 0 30px;
+      padding-bottom: 30px;
     }
 
     .hero__title {

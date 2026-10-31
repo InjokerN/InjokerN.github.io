@@ -736,7 +736,7 @@ const decisionFrames = [
   ========================================================== */
 
   .guide-article {
-    padding: 66px 0 110px;
+    padding: calc(var(--nav-h) + var(--hero-gap)) 0 110px;
     border-top: 1px solid var(--color-line);
   }
 
@@ -996,7 +996,7 @@ const decisionFrames = [
   .guide-section {
     min-width: 0;
     margin-top: 82px;
-    scroll-margin-top: calc(var(--guide-nav-height, 72px) + 32px);
+    scroll-margin-top: calc(var(--nav-h) + 24px);
   }
 
   .guide-section:first-of-type {

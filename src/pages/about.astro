@@ -370,7 +370,7 @@ const faqs = [
 
   /* ---------- HERO ---------- */
   .about-hero {
-    padding: 88px 0 96px;
+    padding: calc(var(--nav-h) + var(--hero-gap)) 0 96px;
     min-height: 520px;
     display: flex;
     flex-direction: column;
@@ -784,7 +784,7 @@ const faqs = [
   /* ---------- 平板适配 ---------- */
   @media (max-width: 1024px) {
     .about-hero {
-      padding: 72px 0 80px;
+      padding-bottom: 80px;
       min-height: 440px;
     }
 
@@ -813,7 +813,7 @@ const faqs = [
     }
 
     .about-hero {
-      padding: 48px 0 56px;
+      padding-bottom: 56px;
       min-height: 0;
     }
 

@@ -89,6 +89,15 @@
 
   /* Layout */
   --container-width: min(1240px, 92%);
+
+  /* Navigation offset — 全站唯一来源
+     --nav-h    固定导航栏的实际高度（BaseLayout 中 .nav 直接绑定此值）
+     --hero-gap 导航栏底边到页面首屏内容顶边的统一留白
+     所有页面的首屏区块统一使用：
+       padding-top: calc(var(--nav-h) + var(--hero-gap));
+     不要再手写具体像素值。 */
+  --nav-h: 82px;
+  --hero-gap: 32px;
 }
 
 /* ============================================================
@@ -140,6 +149,24 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+/* ============================================================
+   NAVIGATION OFFSET BREAKPOINTS
+   导航栏高度与首屏留白随屏幕变化，集中在这里维护
+   ============================================================ */
+
+@media (max-width: 1024px) {
+  :root {
+    --hero-gap: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --nav-h: 64px;
+    --hero-gap: 24px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

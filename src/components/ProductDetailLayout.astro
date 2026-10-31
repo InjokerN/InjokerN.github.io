@@ -418,7 +418,7 @@ const sections = sectionsProp ?? defaultSections;
 
     width: min(1380px, calc(100% - 96px));
     margin: 0 auto;
-    padding: 110px 0 120px;
+    padding: calc(var(--nav-h) + var(--hero-gap)) 0 120px;
 
     color: var(--ink);
   }
@@ -633,7 +633,7 @@ const sections = sectionsProp ?? defaultSections;
   .product-section {
     padding: 0 0 70px;
     border-bottom: 0;
-    scroll-margin-top: 130px;
+    scroll-margin-top: calc(var(--nav-h) + 24px);
   }
 
   .product-section:last-child {
@@ -1421,7 +1421,7 @@ const sections = sectionsProp ?? defaultSections;
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
 
-    scroll-margin-top: 130px;
+    scroll-margin-top: calc(var(--nav-h) + 24px);
   }
 
   .product-inquiry__intro {
@@ -1587,7 +1587,7 @@ const sections = sectionsProp ?? defaultSections;
     .product-dossier {
       display: block;
       width: min(100% - 32px, 760px);
-      padding: 90px 0 80px;
+      padding-bottom: 80px;
     }
 
     .product-sidebar {

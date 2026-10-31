@@ -1267,7 +1267,7 @@ const checks = [
   ========================================================== */
 
   .enamel-article {
-    padding: 62px 0 104px;
+    padding: calc(var(--nav-h) + var(--hero-gap)) 0 104px;
     border-top: 1px solid var(--color-line);
   }
 
@@ -1491,7 +1491,7 @@ const checks = [
   .enamel-section {
     min-width: 0;
     margin-top: 78px;
-    scroll-margin-top: calc(var(--enamel-nav-height, 72px) + 32px);
+    scroll-margin-top: calc(var(--nav-h) + 24px);
   }
 
   .enamel-section__header {

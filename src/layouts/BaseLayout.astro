@@ -71,7 +71,6 @@ const isContact = currentPath === "/contact";
       sizes="180x180"
       href="/icon/apple-touch-icon.png"
     />
-    <link rel="manifest" href="/icon/site.webmanifest" />
 
     <!-- Font preload -->
     <link
@@ -676,7 +675,8 @@ const isContact = currentPath === "/contact";
         background-color: rgba(255, 255, 255, 0.75);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        padding: 16px 6%;
+        height: var(--nav-h);
+        padding: 0 6%;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -791,7 +791,7 @@ const isContact = currentPath === "/contact";
 
       @media (max-width: 768px) {
         .nav {
-          padding: 10px 16px;
+          padding: 0 16px;
           gap: 10px;
         }
 

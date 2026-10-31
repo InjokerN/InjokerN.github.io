@@ -1375,7 +1375,7 @@ const compliance = [
   ========================================================== */
 
   .attach-article {
-    padding: 62px 0 104px;
+    padding: calc(var(--nav-h) + var(--hero-gap)) 0 104px;
     border-top: 1px solid var(--color-line);
   }
 
@@ -1592,7 +1592,7 @@ const compliance = [
   .attach-section {
     min-width: 0;
     margin-top: 76px;
-    scroll-margin-top: calc(var(--attach-nav-height, 72px) + 32px);
+    scroll-margin-top: calc(var(--nav-h) + 24px);
   }
 
   .attach-section__header {

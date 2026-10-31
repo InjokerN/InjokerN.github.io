@@ -663,7 +663,7 @@ const results = [
       minmax(0, 1.1fr);
     gap: clamp(48px, 6vw, 84px);
     align-items: center;
-    padding: 126px 0 72px;
+    padding: calc(var(--nav-h) + var(--hero-gap)) 0 72px;
   }
 
   .coin-hero__copy {
@@ -823,7 +823,7 @@ const results = [
   .case-next-step {
     padding: 74px 0;
     border-top: 1px solid var(--color-line);
-    scroll-margin-top: 100px;
+    scroll-margin-top: calc(var(--nav-h) + 24px);
   }
 
   .coin-section > .section-kicker {
